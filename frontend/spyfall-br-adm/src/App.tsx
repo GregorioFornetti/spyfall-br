@@ -4,7 +4,11 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Role from './interfaces/RoleInterface'
+import Place from './interfaces/PlaceInterface'
+import Category from './interfaces/CategoryInterface'
 import ModalRole from './components/ModalRole';
+import ModalPlace from './components/ModalPlace';
+import ModalCategory from './components/ModalCategory';
 import './App.css';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
@@ -24,6 +28,11 @@ function App() {
   const [showModalRole, setShowModalRole] = useState(false)
   const [role, setRole] = useState<Role>({id: -1, name: ""})
 
+  const [showModalPlace, setShowModalPlace] = useState(false)
+  const [place, setPlace] = useState<Place>({id: -1, name: "", selectedRolesIds: [], selectedCategoriesIds: []})
+
+  const [showModalCategory, setShowModalCategory] = useState(false)
+  const [category, setCategory] = useState<Category>({id: -1, name: ""})
 
   return (
     <>
@@ -64,6 +73,7 @@ function App() {
         </Navbar>
       </header>
 
+
       <main>
         <Container fluid="md">
           <Row className="justify-content-center mb-2">
@@ -81,6 +91,15 @@ function App() {
               <div className="d-grid">
                   <Button
                     variant="success"
+                    onClick={() => {
+                      if (page === 'category') {
+                        setShowModalCategory(true)
+                      } else if (page === 'place') {
+                        setShowModalPlace(true)
+                      } else if (page === 'role') {
+                        setShowModalRole(true)
+                      }
+                    }}
                   >
                     {buttoTitleMap[page]}
                   </Button>
@@ -95,6 +114,22 @@ function App() {
           type="create"
           role={role}
           setRole={setRole}
+        />
+
+        <ModalPlace
+          showModalPlace={showModalPlace}
+          setShowModalPlace={setShowModalPlace}
+          type="create"
+          place={place}
+          setPlace={setPlace}
+        />
+
+        <ModalCategory
+          showModalCategory={showModalCategory}
+          setShowModalCategory={setShowModalCategory}
+          type="create"
+          category={category}
+          setCategory={setCategory}
         />
       </main>
     </>
