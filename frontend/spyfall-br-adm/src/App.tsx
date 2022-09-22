@@ -14,12 +14,18 @@ import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
+import SimpleCard from './components/SimpleCard';
 
 const buttoTitleMap = {
   "role": "Criar novo cargo",
   "place": "Criar novo local",
   "category": "Criar nova categoria"
 }
+
+const roles: Role[] = [
+  {id: 1, name: "Cozinheiro"},
+  {id: 2, name: "Marinheiro"}
+]
 
 function App() {
   const [page, setPage] = useState<"role"|"place"|"category">("place")
@@ -37,7 +43,7 @@ function App() {
   return (
     <>
       <header>
-        <Navbar bg="dark" variant="dark" fixed="top" expand="lg">
+        <Navbar bg="dark" variant="dark" fixed="top">
           <Container>
             <Navbar.Brand href="#home">Spyfall admin</Navbar.Brand>
             <Nav className="me-auto">
@@ -105,6 +111,22 @@ function App() {
                   </Button>
               </div>
             </Col>
+          </Row>
+        </Container>
+
+        <Container fluid="md">
+          <Row xl={5} lg={4} md={3} sm={2} className={"gy-5 gx-4"}>
+            {roles.map((role) => (
+              <SimpleCard
+                name={role.name}
+                updateFunction={() => {
+
+                }}
+                deleteFunction={() => {
+
+                }}
+              />
+            ))}
           </Row>
         </Container>
 
