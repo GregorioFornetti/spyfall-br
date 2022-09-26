@@ -3,21 +3,22 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Role from '../../interfaces/RoleInterface'
+import ModalProperties from '../../interfaces/ModalProperties'
 
 interface ModalRoleProps {
-    showModalRole: boolean,
-    setShowModalRole: React.Dispatch<React.SetStateAction<boolean>>,
-    type: "update"|"create",
-    role: Role,
-    setRole: React.Dispatch<React.SetStateAction<Role>>
+    modalRoleProperties: ModalProperties<Role>,
+    setModalRoleProperties: React.Dispatch<React.SetStateAction<ModalProperties<Role>>>,
+    setRoles: React.Dispatch<React.SetStateAction<Role[]>>
 }
 
-export default function ModalRole({setShowModalRole, showModalRole, type, role, setRole}: ModalRoleProps) {
+export default function ModalRole({modalRoleProperties, setModalRoleProperties, setRoles}: ModalRoleProps) {
 
-    const handleClose = () => setShowModalRole(false);
+    let {show, type, currentValue} = modalRoleProperties
+    let role = currentValue
+    const handleClose = () => setModalRoleProperties({...modalRoleProperties, show: false});
 
     return (
-        <Modal show={showModalRole} onHide={handleClose}>
+        <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
                 <Modal.Title>
                     {(type === 'create') ?
@@ -30,7 +31,10 @@ export default function ModalRole({setShowModalRole, showModalRole, type, role, 
                     <Form.Label>Nome</Form.Label>
                     <Form.Control 
                         type="text"
-                        onChange={(event) => (setRole({...role, name: event.target.value}))}
+                        onChange={(event) => {
+                            role.name = event.target.value
+                            setModalRoleProperties({...modalRoleProperties, currentValue: role})
+                        }}
                         value={role.name}
                     />
                 </Form.Group>

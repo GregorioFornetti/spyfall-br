@@ -15,6 +15,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import SimpleCard from './components/SimpleCard';
+import ModalProperties from './interfaces/ModalProperties';
 
 const buttonTittleMap = {
   "role": "Criar novo cargo",
@@ -49,10 +50,11 @@ function App() {
     {id: 2, name: "Marinheiro"}
   ])
 
-
-  const [showModalRole, setShowModalRole] = useState(false)
-  const [role, setRole] = useState<Role>(createEmptyRole())
-  const [modalRoleType, setModalRoleType] = useState<"create"|"update"|"delete">("create")
+  const [modalRoleProperties, setModalRoleProperties] = useState<ModalProperties<Role>>({
+    show: false,
+    type: "create",
+    currentValue: createEmptyRole()
+  })
 
   const [showModalPlace, setShowModalPlace] = useState(false)
   const [place, setPlace] = useState<Place>(createEmptyPlace())
@@ -125,8 +127,11 @@ function App() {
                         setPlace(createEmptyPlace())
                         setShowModalPlace(true)
                       } else if (page === 'role') {
-                        setRole(createEmptyRole())
-                        setShowModalRole(true)
+                        setModalRoleProperties({
+                          show: true,
+                          type: "create",
+                          currentValue: createEmptyRole()
+                        })
                       }
                     }}
                   >
@@ -145,12 +150,19 @@ function App() {
               <SimpleCard
                 name={role.name}
                 updateFunction={() => {
-                  setRole(role)
-                  setShowModalRole(true)
+                  setModalRoleProperties({
+                    show: true,
+                    type: "update",
+                    currentValue: role
+                  })
                 }}
                 deleteFunction={() => {
                   // Chamar a remoção do cargo do backend AQUI
-                  
+                  setModalRoleProperties({
+                    show: true,
+                    type: "delete",
+                    currentValue: role
+                  })
                   // Remoção do cargo no frontend
                   setRoles(roles.filter((roleParam) => role !== roleParam))
                 }}
@@ -183,11 +195,9 @@ function App() {
 
         
         <ModalRole
-          showModalRole={showModalRole}
-          setShowModalRole={setShowModalRole}
-          type="create"
-          role={role}
-          setRole={setRole}
+          modalRoleProperties={modalRoleProperties}
+          setModalRoleProperties={setModalRoleProperties}
+          setRoles={setRoles}
         />
 
         <ModalPlace
