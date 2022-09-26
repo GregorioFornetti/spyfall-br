@@ -3,21 +3,22 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Category from '../../interfaces/CategoryInterface'
+import ModalProperties from '../../interfaces/ModalProperties';
 
 interface ModalCategoryProps {
-    showModalCategory: boolean,
-    setShowModalCategory: React.Dispatch<React.SetStateAction<boolean>>,
-    type: "update"|"create",
-    category: Category,
-    setCategory: React.Dispatch<React.SetStateAction<Category>>
+    modalCategoryProperties: ModalProperties<Category>,
+    setModalCategoryProperties: React.Dispatch<React.SetStateAction<ModalProperties<Category>>>,
+    setCategories: React.Dispatch<React.SetStateAction<Category[]>>
 }
 
-export default function ModalCategory({setShowModalCategory, showModalCategory, type, category, setCategory}: ModalCategoryProps) {
+export default function ModalCategory({modalCategoryProperties, setModalCategoryProperties, setCategories}: ModalCategoryProps) {
 
-    const handleClose = () => setShowModalCategory(false);
+    const {show, type, currentValue} = modalCategoryProperties
+    let category = currentValue
+    const handleClose = () => setModalCategoryProperties({...modalCategoryProperties, show: false});
 
     return (
-        <Modal show={showModalCategory} onHide={handleClose}>
+        <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
                 <Modal.Title>
                     {(type === 'create') ?
@@ -30,7 +31,10 @@ export default function ModalCategory({setShowModalCategory, showModalCategory, 
                     <Form.Label>Nome</Form.Label>
                     <Form.Control 
                         type="text"
-                        onChange={(event) => (setCategory({...category, name: event.target.value}))}
+                        onChange={(event) => {
+                            category.name = event.target.value
+                            setModalCategoryProperties({...modalCategoryProperties, currentValue: category})
+                        }}
                         value={category.name}
                     />
                 </Form.Group>

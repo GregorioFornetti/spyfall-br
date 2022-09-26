@@ -59,8 +59,11 @@ function App() {
   const [showModalPlace, setShowModalPlace] = useState(false)
   const [place, setPlace] = useState<Place>(createEmptyPlace())
 
-  const [showModalCategory, setShowModalCategory] = useState(false)
-  const [category, setCategory] = useState<Category>(createEmptyCategory())
+  const [modalCategoryProperties, setModalCategoryProperties] = useState<ModalProperties<Category>>({
+    show: false,
+    type: "create",
+    currentValue: createEmptyCategory()
+  })
 
   return (
     <>
@@ -121,8 +124,11 @@ function App() {
                     variant="success"
                     onClick={() => {
                       if (page === 'category') {
-                        setCategory(createEmptyCategory())
-                        setShowModalCategory(true)
+                        setModalCategoryProperties({
+                          show: true,
+                          type: "create",
+                          currentValue: createEmptyCategory()
+                        })
                       } else if (page === 'place') {
                         setPlace(createEmptyPlace())
                         setShowModalPlace(true)
@@ -153,17 +159,17 @@ function App() {
                   setModalRoleProperties({
                     show: true,
                     type: "update",
-                    currentValue: role
+                    currentValue: {...role}
                   })
                 }}
                 deleteFunction={() => {
                   // Chamar a remoção do cargo do backend AQUI
+                  // Remoção do cargo no frontend
                   setModalRoleProperties({
                     show: true,
                     type: "delete",
                     currentValue: role
                   })
-                  // Remoção do cargo no frontend
                   setRoles(roles.filter((roleParam) => role !== roleParam))
                 }}
               />
@@ -179,13 +185,21 @@ function App() {
               <SimpleCard
                 name={category.name}
                 updateFunction={() => {
-                  setCategory(category)
-                  setShowModalCategory(true)
+                  setModalCategoryProperties({
+                    show: true,
+                    type: "update",
+                    currentValue: {...category}
+                  })
                 }}
                 deleteFunction={() => {
                   // Chamar a remoção da categoria do backend AQUI
                   
                   // Remoção da categoria no frontend
+                  setModalCategoryProperties({
+                    show: true,
+                    type: "delete",
+                    currentValue: category
+                  })
                   setCategories(categories.filter((categoryParam) => category !== categoryParam))
                 }}
               />
@@ -209,11 +223,9 @@ function App() {
         />
 
         <ModalCategory
-          showModalCategory={showModalCategory}
-          setShowModalCategory={setShowModalCategory}
-          type="create"
-          category={category}
-          setCategory={setCategory}
+          setModalCategoryProperties={setModalCategoryProperties}
+          modalCategoryProperties={modalCategoryProperties}
+          setCategories={setCategories}
         />
       </main>
     </>
