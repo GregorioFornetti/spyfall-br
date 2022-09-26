@@ -16,35 +16,49 @@ import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import SimpleCard from './components/SimpleCard';
 
-const buttoTitleMap = {
+const buttonTittleMap = {
   "role": "Criar novo cargo",
   "place": "Criar novo local",
   "category": "Criar nova categoria"
 }
 
-const roles: Role[] = [
-  {id: 1, name: "Cozinheiro"},
-  {id: 2, name: "Marinheiro"}
-]
 
-const categories: Category[] = [
-  {id: 1, name: "Casual"},
-  {id: 2, name: "Apenas adultos"}
-]
+function createEmptyRole(): Role {
+  return {id: -1, name: ''}
+}
+
+function createEmptyPlace(): Place {
+  return {id: -1, name: '', selectedCategoriesIds: [], selectedRolesIds: []}
+}
+
+function createEmptyCategory(): Category {
+  return {id: -1, name: ''}
+}
 
 
 function App() {
   const [page, setPage] = useState<"role"|"place"|"category">("place")
   const [filter, setFilter] = useState("")
 
+  const [categories, setCategories] = useState<Category[]>([
+    {id: 1, name: "Casual"},
+    {id: 2, name: "Apenas adultos"}
+  ])
+  const [roles, setRoles] = useState<Role[]>([
+    {id: 1, name: "Cozinheiro"},
+    {id: 2, name: "Marinheiro"}
+  ])
+
+
   const [showModalRole, setShowModalRole] = useState(false)
-  const [role, setRole] = useState<Role>({id: -1, name: ""})
+  const [role, setRole] = useState<Role>(createEmptyRole())
+  const [modalRoleType, setModalRoleType] = useState<"create"|"update"|"delete">("create")
 
   const [showModalPlace, setShowModalPlace] = useState(false)
-  const [place, setPlace] = useState<Place>({id: -1, name: "", selectedRolesIds: [], selectedCategoriesIds: []})
+  const [place, setPlace] = useState<Place>(createEmptyPlace())
 
   const [showModalCategory, setShowModalCategory] = useState(false)
-  const [category, setCategory] = useState<Category>({id: -1, name: ""})
+  const [category, setCategory] = useState<Category>(createEmptyCategory())
 
   return (
     <>
@@ -105,15 +119,18 @@ function App() {
                     variant="success"
                     onClick={() => {
                       if (page === 'category') {
+                        setCategory(createEmptyCategory())
                         setShowModalCategory(true)
                       } else if (page === 'place') {
+                        setPlace(createEmptyPlace())
                         setShowModalPlace(true)
                       } else if (page === 'role') {
+                        setRole(createEmptyRole())
                         setShowModalRole(true)
                       }
                     }}
                   >
-                    {buttoTitleMap[page]}
+                    {buttonTittleMap[page]}
                   </Button>
               </div>
             </Col>
@@ -128,10 +145,14 @@ function App() {
               <SimpleCard
                 name={role.name}
                 updateFunction={() => {
-
+                  setRole(role)
+                  setShowModalRole(true)
                 }}
                 deleteFunction={() => {
-
+                  // Chamar a remoção do cargo do backend AQUI
+                  
+                  // Remoção do cargo no frontend
+                  setRoles(roles.filter((roleParam) => role !== roleParam))
                 }}
               />
             ))}
@@ -146,10 +167,14 @@ function App() {
               <SimpleCard
                 name={category.name}
                 updateFunction={() => {
-
+                  setCategory(category)
+                  setShowModalCategory(true)
                 }}
                 deleteFunction={() => {
-
+                  // Chamar a remoção da categoria do backend AQUI
+                  
+                  // Remoção da categoria no frontend
+                  setCategories(categories.filter((categoryParam) => category !== categoryParam))
                 }}
               />
             ))}
