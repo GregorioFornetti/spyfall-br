@@ -27,6 +27,12 @@ const roles: Role[] = [
   {id: 2, name: "Marinheiro"}
 ]
 
+const categories: Category[] = [
+  {id: 1, name: "Casual"},
+  {id: 2, name: "Apenas adultos"}
+]
+
+
 function App() {
   const [page, setPage] = useState<"role"|"place"|"category">("place")
   const [filter, setFilter] = useState("")
@@ -114,9 +120,11 @@ function App() {
           </Row>
         </Container>
 
-        <Container fluid="md">
+        <Container fluid="md" className={(page === 'role') ? ('') : ("d-none")}>
           <Row xl={5} lg={4} md={3} sm={2} className={"gy-5 gx-4"}>
-            {roles.map((role) => (
+            {roles
+            .filter((role) => role.name.toLowerCase().startsWith(filter.toLowerCase()))
+            .map((role) => (
               <SimpleCard
                 name={role.name}
                 updateFunction={() => {
@@ -129,7 +137,26 @@ function App() {
             ))}
           </Row>
         </Container>
+        
+        <Container fluid="md" className={(page === 'category') ? ('') : ("d-none")}>
+          <Row xl={5} lg={4} md={3} sm={2} className={"gy-5 gx-4"}>
+            {categories
+            .filter((category) => category.name.toLowerCase().startsWith(filter.toLowerCase()))
+            .map((category) => (
+              <SimpleCard
+                name={category.name}
+                updateFunction={() => {
 
+                }}
+                deleteFunction={() => {
+
+                }}
+              />
+            ))}
+          </Row>
+        </Container>
+
+        
         <ModalRole
           showModalRole={showModalRole}
           setShowModalRole={setShowModalRole}
