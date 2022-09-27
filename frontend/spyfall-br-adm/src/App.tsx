@@ -49,16 +49,21 @@ function App() {
     {id: 1, name: "Cozinheiro"},
     {id: 2, name: "Marinheiro"}
   ])
+  const [places, setPlaces] = useState<Place[]>([
+    {id: 1, name: "Cemitério", selectedCategoriesIds: [], selectedRolesIds: []}
+  ])
+
 
   const [modalRoleProperties, setModalRoleProperties] = useState<ModalProperties<Role>>({
     show: false,
     type: "create",
     currentValue: createEmptyRole()
   })
-
-  const [showModalPlace, setShowModalPlace] = useState(false)
-  const [place, setPlace] = useState<Place>(createEmptyPlace())
-
+  const [modalPlaceProperties, setModalPlaceProperties] = useState<ModalProperties<Place>>({
+    show: false,
+    type: "create",
+    currentValue: createEmptyPlace()
+  })
   const [modalCategoryProperties, setModalCategoryProperties] = useState<ModalProperties<Category>>({
     show: false,
     type: "create",
@@ -130,8 +135,11 @@ function App() {
                           currentValue: createEmptyCategory()
                         })
                       } else if (page === 'place') {
-                        setPlace(createEmptyPlace())
-                        setShowModalPlace(true)
+                        setModalPlaceProperties({
+                          show: true,
+                          type: "create",
+                          currentValue: createEmptyPlace()
+                        })
                       } else if (page === 'role') {
                         setModalRoleProperties({
                           show: true,
@@ -209,11 +217,12 @@ function App() {
         />
 
         <ModalPlace
-          showModalPlace={showModalPlace}
-          setShowModalPlace={setShowModalPlace}
-          type="create"
-          place={place}
-          setPlace={setPlace}
+          modalPlaceProperties={modalPlaceProperties}
+          setModalPlaceProperties={setModalPlaceProperties}
+          setPlaces={setPlaces}
+          places={places}
+          categories={categories}
+          roles={roles}
         />
 
         <ModalCategory
