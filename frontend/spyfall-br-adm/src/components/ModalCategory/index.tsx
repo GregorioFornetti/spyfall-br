@@ -8,10 +8,11 @@ import ModalProperties from '../../interfaces/ModalProperties';
 interface ModalCategoryProps {
     modalCategoryProperties: ModalProperties<Category>,
     setModalCategoryProperties: React.Dispatch<React.SetStateAction<ModalProperties<Category>>>,
-    setCategories: React.Dispatch<React.SetStateAction<Category[]>>
+    setCategories: React.Dispatch<React.SetStateAction<Category[]>>,
+    categories: Category[]
 }
 
-export default function ModalCategory({modalCategoryProperties, setModalCategoryProperties, setCategories}: ModalCategoryProps) {
+export default function ModalCategory({modalCategoryProperties, categories, setModalCategoryProperties, setCategories}: ModalCategoryProps) {
 
     const {show, type, currentValue} = modalCategoryProperties
     let category = currentValue
@@ -25,11 +26,6 @@ export default function ModalCategory({modalCategoryProperties, setModalCategory
         create: 'Criar categoria',
         update: 'Salvar categoria',
         delete: 'Deletar categoria'
-    }
-    const functionMap = {
-        create: createCategory,
-        update: updateCategory,
-        delete: deleteCategory
     }
 
     return (
@@ -65,7 +61,13 @@ export default function ModalCategory({modalCategoryProperties, setModalCategory
                 <Button 
                     variant={(type === 'delete') ? ('danger') : ('primary')}
                     onClick={() => {
-                        functionMap[type](category, setCategories)
+                        if (type === 'create') {
+                            createCategory(category, categories, setCategories)
+                        } else if (type === 'update') {
+                            updateCategory(category, categories, setCategories)
+                        } else if (type === 'delete') {
+                            deleteCategory(category, categories, setCategories)
+                        }
                         handleClose()
                     }}
                 >
@@ -76,16 +78,20 @@ export default function ModalCategory({modalCategoryProperties, setModalCategory
     )
 }
 
-function createCategory(category: Category, setCategories: React.Dispatch<React.SetStateAction<Category[]>>) {
+function createCategory(currentCategory: Category, categories: Category[], setCategories: React.Dispatch<React.SetStateAction<Category[]>>) {
     // Para atualizar o frontend
-    
+    // OBS IMPORTANTE: é preciso pegar o id novo do backend depois que retornar...
+    setCategories([...categories, currentCategory])
 }
 
-function updateCategory(category: Category, setCategories: React.Dispatch<React.SetStateAction<Category[]>>) {
+function updateCategory(category: Category, categories: Category[], setCategories: React.Dispatch<React.SetStateAction<Category[]>>) {
     // Para atualizar o frontend
+    let categoryIndex = categories.findIndex((categoryParam) => (categoryParam.id === category.id))
+    categories[categoryIndex] = category
+    setCategories([...categories])
 }
 
-function deleteCategory(category: Category, setCategories: React.Dispatch<React.SetStateAction<Category[]>>) {
-
+function deleteCategory(category: Category, categories: Category[], setCategories: React.Dispatch<React.SetStateAction<Category[]>>) {
     // Para atualizar o frontend
+    setCategories(categories.filter((categoryParam) => category !== categoryParam))
 }

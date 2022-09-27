@@ -200,7 +200,6 @@ function App() {
                     type: "delete",
                     currentValue: category
                   })
-                  setCategories(categories.filter((categoryParam) => category !== categoryParam))
                 }}
               />
             ))}
@@ -226,6 +225,7 @@ function App() {
           setModalCategoryProperties={setModalCategoryProperties}
           modalCategoryProperties={modalCategoryProperties}
           setCategories={setCategories}
+          categories={categories}
         />
       </main>
     </>
