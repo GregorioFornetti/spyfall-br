@@ -8,6 +8,7 @@ import ModalProperties from '../../interfaces/ModalProperties'
 import Category from '../../interfaces/CategoryInterface'
 import Role from '../../interfaces/RoleInterface';
 import { category2CategoryOption, getCategoryById, getRoleById, getPlaceById, role2RoleOption } from '../../utils/utils';
+import { useState } from 'react';
 
 
 interface ModalPlaceProps {
@@ -24,6 +25,7 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
     const {show, type, currentValue} = modalPlaceProperties
     const place = currentValue
     const handleClose = () => setModalPlaceProperties({...modalPlaceProperties, show: false})
+    const [imgUrl, setImgUrl] = useState<string>("")
 
     const titleMap = {
         create: 'Criando novo local',
@@ -66,6 +68,16 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
                         <Form.Label>Imagem</Form.Label>
                         <Form.Control 
                             type="file"
+                            onChange={(event) => {
+                                const files = (event.target as HTMLInputElement).files
+                                if (files) {
+                                    const currentFile = files[0]
+                                    setImgUrl(URL.createObjectURL(currentFile))
+                                } else {
+                                    setImgUrl("")
+                                }
+                            }}
+                            accept="image/*"
                         />
                     </Form.Group>
 
@@ -98,7 +110,12 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
                             placeholder=""
                         />
                     </Form.Group>
+
                 </>
+                }
+
+                {imgUrl !== '' &&
+                    <img src={imgUrl} />
                 }
             </Modal.Body>
             <Modal.Footer>
