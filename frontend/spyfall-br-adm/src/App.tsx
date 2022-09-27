@@ -163,14 +163,11 @@ function App() {
                   })
                 }}
                 deleteFunction={() => {
-                  // Chamar a remoção do cargo do backend AQUI
-                  // Remoção do cargo no frontend
                   setModalRoleProperties({
                     show: true,
                     type: "delete",
                     currentValue: role
                   })
-                  setRoles(roles.filter((roleParam) => role !== roleParam))
                 }}
               />
             ))}
@@ -192,9 +189,6 @@ function App() {
                   })
                 }}
                 deleteFunction={() => {
-                  // Chamar a remoção da categoria do backend AQUI
-                  
-                  // Remoção da categoria no frontend
                   setModalCategoryProperties({
                     show: true,
                     type: "delete",
@@ -211,6 +205,7 @@ function App() {
           modalRoleProperties={modalRoleProperties}
           setModalRoleProperties={setModalRoleProperties}
           setRoles={setRoles}
+          roles={roles}
         />
 
         <ModalPlace

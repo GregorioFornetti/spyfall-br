@@ -17,6 +17,7 @@ export default function ModalCategory({modalCategoryProperties, categories, setM
     const {show, type, currentValue} = modalCategoryProperties
     let category = currentValue
     const handleClose = () => setModalCategoryProperties({...modalCategoryProperties, show: false})
+
     const titleMap = {
         create: 'Criando nova categoria',
         update: 'Editando categoria',
@@ -84,14 +85,14 @@ function createCategory(currentCategory: Category, categories: Category[], setCa
     setCategories([...categories, currentCategory])
 }
 
-function updateCategory(category: Category, categories: Category[], setCategories: React.Dispatch<React.SetStateAction<Category[]>>) {
+function updateCategory(currentCategory: Category, categories: Category[], setCategories: React.Dispatch<React.SetStateAction<Category[]>>) {
     // Para atualizar o frontend
-    let categoryIndex = categories.findIndex((categoryParam) => (categoryParam.id === category.id))
-    categories[categoryIndex] = category
+    let categoryIndex = categories.findIndex((categoryParam) => (categoryParam.id === currentCategory.id))
+    categories[categoryIndex] = currentCategory
     setCategories([...categories])
 }
 
-function deleteCategory(category: Category, categories: Category[], setCategories: React.Dispatch<React.SetStateAction<Category[]>>) {
+function deleteCategory(currentCategory: Category, categories: Category[], setCategories: React.Dispatch<React.SetStateAction<Category[]>>) {
     // Para atualizar o frontend
-    setCategories(categories.filter((categoryParam) => category !== categoryParam))
+    setCategories(categories.filter((categoryParam) => currentCategory !== categoryParam))
 }
