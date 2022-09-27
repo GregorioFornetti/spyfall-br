@@ -50,7 +50,7 @@ function App() {
     {id: 2, name: "Marinheiro"}
   ])
   const [places, setPlaces] = useState<Place[]>([
-    {id: 1, name: "Cemitério", selectedCategoriesIds: [], selectedRolesIds: []}
+    {id: 1, name: "Cemitério", selectedCategoriesIds: [1, 2], selectedRolesIds: []}
   ])
 
 
@@ -153,6 +153,33 @@ function App() {
                   </Button>
               </div>
             </Col>
+          </Row>
+        </Container>
+
+
+        <Container fluid="md" className={(page === 'place') ? ('') : ("d-none")}>
+          <Row xl={5} lg={4} md={3} sm={2} className={"gy-5 gx-4"}>
+            {places
+            .filter((place) => place.name.toLowerCase().startsWith(filter.toLowerCase()))
+            .map((place) => (
+              <SimpleCard
+                name={place.name}
+                updateFunction={() => {
+                  setModalPlaceProperties({
+                    show: true,
+                    type: "update",
+                    currentValue: {...place}
+                  })
+                }}
+                deleteFunction={() => {
+                  setModalPlaceProperties({
+                    show: true,
+                    type: "delete",
+                    currentValue: place
+                  })
+                }}
+              />
+            ))}
           </Row>
         </Container>
 

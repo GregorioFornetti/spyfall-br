@@ -7,6 +7,7 @@ import Select from 'react-select'
 import ModalProperties from '../../interfaces/ModalProperties'
 import Category from '../../interfaces/CategoryInterface'
 import Role from '../../interfaces/RoleInterface';
+import { category2CategoryOption, getCategoryById, getRoleById, getPlaceById, role2RoleOption } from '../../utils/utils';
 
 
 interface ModalPlaceProps {
@@ -43,46 +44,62 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form.Group className="mb-3">
-                    <Form.Label>Nome</Form.Label>
-                    <Form.Control 
-                        type="text"
-                        onChange={(event) => {
-                            place.name = event.target.value
-                            setModalPlaceProperties({...modalPlaceProperties, currentValue: place})
-                        }}
-                        value={place.name}
-                    />
-                </Form.Group>
+                {type === 'delete' &&
+                    <p>Deseja mesmo excluir "{place.name}" ?</p>
+                }
 
-                <Form.Group className="mb-3">
-                    <Form.Label>Imagem</Form.Label>
-                    <Form.Control 
-                        type="file"
-                    />
-                </Form.Group>
+                {(type === 'create' || type === 'update') && 
+                <>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Nome</Form.Label>
+                        <Form.Control 
+                            type="text"
+                            onChange={(event) => {
+                                place.name = event.target.value
+                                setModalPlaceProperties({...modalPlaceProperties, currentValue: place})
+                            }}
+                            value={place.name}
+                        />
+                    </Form.Group>
 
-                <Form.Group className="mb-3">
-                    <Form.Label>Cargos</Form.Label>
-                    <Select
-                        isMulti
-                        options={roles.map((role) => ({value: role.id, label: role.name}))}
-                        className="basic-multi-select"
-                        classNamePrefix="select"
-                        placeholder=""
-                    />
-                </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Imagem</Form.Label>
+                        <Form.Control 
+                            type="file"
+                        />
+                    </Form.Group>
 
-                <Form.Group className="mb-3">
-                    <Form.Label>Categorias</Form.Label>
-                    <Select
-                        isMulti
-                        options={categories.map((category) => ({value: category.id, label: category.name}))}
-                        className="basic-multi-select"
-                        classNamePrefix="select"
-                        placeholder=""
-                    />
-                </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Cargos</Form.Label>
+                        <Select
+                            isMulti
+                            options={roles.map(role2RoleOption)}
+                            defaultValue={place.selectedRolesIds.map((roleId) => role2RoleOption(getRoleById(roleId, roles)))}
+                            onChange={(selectedRolesOptions) => {
+                                place.selectedRolesIds = selectedRolesOptions.map((roleOption) => (roleOption.value))
+                            }}
+                            className="basic-multi-select"
+                            classNamePrefix="select"
+                            placeholder=""
+                        />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                        <Form.Label>Categorias</Form.Label>
+                        <Select
+                            isMulti
+                            options={categories.map(category2CategoryOption)}
+                            defaultValue={place.selectedCategoriesIds.map((categoryId) => category2CategoryOption(getCategoryById(categoryId, categories)))}
+                            onChange={(selectedCategoriesOptions) => {
+                                place.selectedCategoriesIds = selectedCategoriesOptions.map((categoryOption) => (categoryOption.value))
+                            }}
+                            className="basic-multi-select"
+                            classNamePrefix="select"
+                            placeholder=""
+                        />
+                    </Form.Group>
+                </>
+                }
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
@@ -90,11 +107,39 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
                 </Button>
                 <Button 
                     variant={(type === 'delete') ? ('danger') : ('primary')}
-                    onClick={handleClose}
+                    onClick={() => {
+                        if (type === 'create') {
+                            createPlace(place, places, setPlaces)
+                        } else if (type === 'update') {
+                            updatePlace(place, places, setPlaces)
+                        } else if (type === 'delete') {
+                            deletePlace(place, places, setPlaces)
+                        }
+                        handleClose()
+                    }}
                 >
                     {btnLabelMap[type]}
                 </Button>
             </Modal.Footer>
         </Modal>
     )
+}
+
+
+function createPlace(currentPlace: Place, places: Place[], setPlaces: React.Dispatch<React.SetStateAction<Place[]>>) {
+    // Para atualizar o frontend
+    // OBS IMPORTANTE: é preciso pegar o id novo do backend depois que retornar...
+    setPlaces([...places, currentPlace])
+}
+
+function updatePlace(currentPlace: Place, places: Place[], setPlaces: React.Dispatch<React.SetStateAction<Place[]>>) {
+    // Para atualizar o frontend
+    let placeIndex = places.findIndex((placeParam) => (placeParam.id === currentPlace.id))
+    places[placeIndex] = currentPlace
+    setPlaces([...places])
+}
+
+function deletePlace(currentPlace: Place, places: Place[], setPlaces: React.Dispatch<React.SetStateAction<Place[]>>) {
+    // Para atualizar o frontend
+    setPlaces(places.filter((placeParam) => currentPlace !== placeParam))
 }
