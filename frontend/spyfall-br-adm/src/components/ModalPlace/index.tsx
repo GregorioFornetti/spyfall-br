@@ -9,6 +9,7 @@ import Category from '../../interfaces/CategoryInterface'
 import Role from '../../interfaces/RoleInterface';
 import { category2CategoryOption, getCategoryById, getRoleById, getPlaceById, role2RoleOption } from '../../utils/utils';
 import { useState } from 'react';
+import PlaceCardPreview from '../PlaceCardPreview';
 
 
 interface ModalPlaceProps {
@@ -25,7 +26,6 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
     const {show, type, currentValue} = modalPlaceProperties
     const place = currentValue
     const handleClose = () => setModalPlaceProperties({...modalPlaceProperties, show: false})
-    const [imgUrl, setImgUrl] = useState<string>("")
 
     const titleMap = {
         create: 'Criando novo local',
@@ -70,11 +70,13 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
                             type="file"
                             onChange={(event) => {
                                 const files = (event.target as HTMLInputElement).files
-                                if (files) {
+                                if (files && files.length !== 0) {
                                     const currentFile = files[0]
-                                    setImgUrl(URL.createObjectURL(currentFile))
+                                    place.imgURL = URL.createObjectURL(currentFile)
+                                    setModalPlaceProperties({...modalPlaceProperties, currentValue: place})
                                 } else {
-                                    setImgUrl("")
+                                    delete place.imgURL
+                                    setModalPlaceProperties({...modalPlaceProperties, currentValue: place})
                                 }
                             }}
                             accept="image/*"
@@ -114,9 +116,12 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
                 </>
                 }
 
-                {imgUrl !== '' &&
-                    <img src={imgUrl} />
-                }
+                <hr/>
+
+                <PlaceCardPreview
+                    imgURL={place.imgURL}
+                    title={place.name}
+                />
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
