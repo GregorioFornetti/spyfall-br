@@ -13,3 +13,5 @@ try {
 } catch(error) {
     console.error('deu ruim', error)
 }
+
+export default sequelize;
