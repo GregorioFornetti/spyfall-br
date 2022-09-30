@@ -1,20 +1,40 @@
 
 export function getAllPlaces(req, res) {
-    res.status(200).json({'message': 'TODO'})
+    try {
+        return res.status(200).json({'message': 'TODO'})
+    } catch(error) {
+        return res.status(500).json(error.message)
+    }
 }
 
 export function getPlaceById(req, res) {
-    res.status(200).json({'message': 'TODO'})
+    try {
+        return res.status(200).json({'message': 'TODO'})
+    } catch(error) {
+        return res.status(500).json(error.message)
+    }
 }
 
 export function createPlace(req, res) {
-    res.status(200).json({'message': 'TODO'})
+    try {
+        return res.status(200).json({'message': 'TODO'})
+    } catch(error) {
+        return res.status(500).json(error.message)
+    }
 }
 
 export function updatePlace(req, res) {
-    res.status(200).json({'message': 'TODO'})
+    try {
+        return res.status(200).json({'message': 'TODO'})
+    } catch(error) {
+        return res.status(500).json(error.message)
+    }
 }
 
 export function deletePlace(req, res) {
-    res.status(200).json({'message': 'TODO'})
+    try {
+        return res.status(200).json({'message': 'TODO'})
+    } catch(error) {
+        return res.status(500).json(error.message)
+    }
 }

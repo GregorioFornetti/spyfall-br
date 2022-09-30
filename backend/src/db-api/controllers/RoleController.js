@@ -1,20 +1,67 @@
+import Role from '../models/Role.js'
 
-export function getAllRoles(req, res) {
-    res.status(200).json({'message': 'TODO'})
+export async function getAllRoles(req, res) {
+    try {
+        const roles = await Role.findAll({
+            attributes: ['id', 'name']
+        })
+        return res.status(200).json(roles)
+    } catch(error) {
+        return res.status(500).json(error.message)
+    }
 }
 
-export function getRoleById(req, res) {
-    res.status(200).json({'message': 'TODO'})
+export async function getRoleById(req, res) {
+    try {
+        const role = await Role.findOne({
+            where: {
+                id: Number(req.params.id)
+            },
+            attributes: ['id', 'name']
+        })
+        return res.status(200).json(role)
+    } catch(error) {
+        return res.status(500).json(error.message)
+    }
 }
 
-export function createRole(req, res) {
-    res.status(200).json({'message': 'TODO'})
+export async function createRole(req, res) {
+    try {
+        const newRole = await Role.create(req.body)
+        return res.status(200).json({id: newRole.id, name: newRole.name})
+    } catch(error) {
+        return res.status(500).json(error.message)
+    }
 }
 
-export function updateRole(req, res) {
-    res.status(200).json({'message': 'TODO'})
+export async function updateRole(req, res) {
+    try {
+        await Role.update(req.body, {
+            where: {
+                id: Number(req.params.id)
+            }
+        })
+        const updatedRole = await Role.findOne({
+            where: {
+                id: Number(req.params.id)
+            },
+            attributes: ['id', 'name']
+        })
+        return res.status(200).json(updatedRole)
+    } catch(error) {
+        return res.status(500).json(error.message)
+    }
 }
 
-export function deleteRole(req, res) {
-    res.status(200).json({'message': 'TODO'})
+export async function deleteRole(req, res) {
+    try {
+        await Role.destroy({
+            where: {
+                id: Number(req.params.id)
+            }
+        })
+        return res.status(200).json({message: `Role with id ${req.params.id} deleted`})
+    } catch(error) {
+        return res.status(500).json(error.message)
+    }
 }
