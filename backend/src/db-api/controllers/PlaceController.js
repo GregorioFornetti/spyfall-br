@@ -93,8 +93,16 @@ export async function updatePlace(req, res) {
     try {
         const id = Number(req.params.id)
         const {name, rolesIds, categoriesIds} = req.body
+
+        const oldPlace = await Place.findOne({
+            where: {
+                id: id
+            }
+        })
+
         await Place.update({
-            name: name
+            name: name,
+            imgPath: (req.body.imgPath) ? (req.body.imgPath) : (null)
         }, {
             where: {
                 id: id
@@ -112,18 +120,33 @@ export async function updatePlace(req, res) {
             }
         })
 
-        await Place_Role.bulkCreate(
-            rolesIds.map((roleId) => ({roleId: roleId, placeId: id}))
-        )
-        await Place_Category.bulkCreate(
-            categoriesIds.map((categoryId) => ({categoryId: categoryId, placeId: id}))
-        )
+        if (rolesIds) {
+            await Place_Role.bulkCreate(
+                JSON.parse(rolesIds).map((roleId) => ({roleId: roleId, placeId: id}))
+            )
+        }
+        if (categoriesIds) {
+            await Place_Category.bulkCreate(
+                JSON.parse(categoriesIds).map((categoryId) => ({categoryId: categoryId, placeId: id}))
+            )
+        }
+
+        if (oldPlace.imgPath) {
+            if (fs.existsSync(oldPlace.imgPath)) {
+                fs.rmSync(oldPlace.imgPath)
+            }
+        }
 
         return res.status(200).json({
             id: id,
             name: name
         })
     } catch(error) {
+        if (req.body && req.body.imgPath) {
+            if (fs.existsSync(req.body.imgPath)) {
+                fs.rmSync(req.body.imgPath)
+            }
+        }
         return res.status(500).json(error.message)
     }
 }
