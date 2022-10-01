@@ -3,6 +3,7 @@ import Category from '../models/Category.js'
 import Role from '../models/Role.js'
 import Place_Category from '../models/Place_Category.js'
 import Place_Role from '../models/Place_Role.js'
+import fs from 'fs'
 
 function place2JSON(place) {
     const placeJSON = {}
@@ -60,13 +61,18 @@ export async function getPlaceById(req, res) {
 export async function createPlace(req, res) {
     try {
         const {name, rolesIds, categoriesIds} = req.body
-        const newPlace = await Place.create({name: name})
+
+        const newPlaceJson = {name: name}
+        if (req.body.imgPath) {
+            newPlaceJson.imgPath = req.body.imgPath
+        }
+        const newPlace = await Place.create(newPlaceJson)
 
         await Place_Role.bulkCreate(
-            rolesIds.map((roleId) => ({roleId: roleId, placeId: newPlace.id}))
+            JSON.parse(rolesIds).map((roleId) => ({roleId: roleId, placeId: newPlace.id}))
         )
         await Place_Category.bulkCreate(
-            categoriesIds.map((categoryId) => ({categoryId: categoryId, placeId: newPlace.id}))
+            JSON.parse(categoriesIds).map((categoryId) => ({categoryId: categoryId, placeId: newPlace.id}))
         )
 
         return res.status(200).json({
@@ -74,6 +80,11 @@ export async function createPlace(req, res) {
             name: newPlace.name
         })
     } catch(error) {
+        if (req.body && req.body.imgPath) {
+            if (fs.existsSync(req.body.imgPath)) {
+                fs.rmSync(req.body.imgPath)
+            }
+        }
         return res.status(500).json(error.message)
     }
 }
@@ -119,11 +130,23 @@ export async function updatePlace(req, res) {
 
 export async function deletePlace(req, res) {
     try {
+        const deletedPlace = await Place.findOne({
+            where: {
+                id: req.params.id
+            }
+        })
         await Place.destroy({
             where: {
                 id: req.params.id
             }
         })
+
+        if (deletedPlace.imgPath) {
+            if (fs.existsSync(deletedPlace.imgPath)) {
+                fs.rmSync(deletedPlace.imgPath)
+            }
+        }
+        
         return res.status(200).json({'message': `Place with id ${req.params.id} deleted`})
     } catch(error) {
         return res.status(500).json(error.message)
