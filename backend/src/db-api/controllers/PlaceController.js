@@ -3,6 +3,7 @@ import Category from '../models/Category.js'
 import Role from '../models/Role.js'
 import Place_Category from '../models/Place_Category.js'
 import Place_Role from '../models/Place_Role.js'
+import { placeImgsPath } from '../configs/paths.js'
 import fs from 'fs'
 
 function place2JSON(place) {
@@ -174,4 +175,8 @@ export async function deletePlace(req, res) {
     } catch(error) {
         return res.status(500).json(error.message)
     }
+}
+
+export async function getPlaceImage(req, res) {
+    res.sendFile(`${placeImgsPath}/${req.params.filename}`, {root: '.'})
 }

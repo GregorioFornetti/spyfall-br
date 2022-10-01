@@ -2,8 +2,7 @@ import multer from 'multer'
 import crypto from 'crypto'
 import fs from 'fs'
 import path from 'path'
-
-const placeImgsPath = 'placeImgs'
+import { placeImgsPath } from '../configs/paths.js'
 
 if (!fs.existsSync(placeImgsPath)) {
     fs.mkdirSync(placeImgsPath)

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAllPlaces, getPlaceById, updatePlace, createPlace, deletePlace } from "../controllers/PlaceController.js";
+import { getAllPlaces, getPlaceById, updatePlace, createPlace, deletePlace, getPlaceImage } from "../controllers/PlaceController.js";
 import placeImgUpload from "../middlewares/upload.js"
 
 const router = Router()
@@ -10,5 +10,6 @@ router.get(`/${placePath}`, getAllPlaces)
       .post(`/${placePath}`, placeImgUpload, createPlace)
       .put(`/${placePath}/:id`, placeImgUpload, updatePlace)
       .delete(`/${placePath}/:id`, deletePlace)
+      .get('/placeImgs/:filename', getPlaceImage)
 
 export default router
