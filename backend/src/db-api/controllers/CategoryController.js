@@ -5,7 +5,10 @@ export async function getAllCategories(req, res) {
         const categories = await Category.findAll({
             attributes: ['id', 'name']
         })
-        return res.status(200).json(categories)
+        return res.status(200).json(categories.map((category) => ({
+           id: Number(category.id),
+           name: category.name
+        })))
     } catch(error) {
         return res.status(500).json(error.message)
     }
@@ -19,7 +22,10 @@ export async function getCategoryById(req, res) {
             },
             attributes: ['id', 'name']
         })
-        return res.status(200).json(category)
+        return res.status(200).json({
+            id: Number(category.id),
+            name: category.name
+        })
     } catch(error) {
         return res.status(500).json(error.message)
     }
@@ -28,7 +34,10 @@ export async function getCategoryById(req, res) {
 export async function createCategory(req, res) {
     try {
         const newCategory = await Category.create(req.body)
-        return res.status(200).json({id: newCategory.id, name: newCategory.name})
+        return res.status(200).json({
+            id: Number(newCategory.id), 
+            name: newCategory.name
+        })
     } catch(error) {
         return res.status(500).json(error.message)
     }
@@ -41,13 +50,16 @@ export async function updateCategory(req, res) {
                 id: Number(req.params.id)
             }
         })
-        const updateCategory = await Category.findOne({
+        const updatedCategory = await Category.findOne({
             where: {
                 id: Number(req.params.id)
             },
             attributes: ['id', 'name']
         })
-        return res.status(200).json(updateCategory)
+        return res.status(200).json({
+            id: Number(updatedCategory.id),
+            name: updatedCategory.name
+        })
     } catch(error) {
         return res.status(500).json(error.message)
     }

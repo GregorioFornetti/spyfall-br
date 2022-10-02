@@ -11,7 +11,7 @@ function place2JSON(place) {
     if (place.imgPath) {
         placeJSON.imgPath = place.imgPath
     }
-    placeJSON.id = place.id
+    placeJSON.id = Number(place.id)
     placeJSON.name = place.name
     placeJSON.rolesIds = place.Roles.map((role) => Number(role.id))
     placeJSON.categoriesIds = place.Categories.map((category) => Number(category.id))
@@ -77,7 +77,7 @@ export async function createPlace(req, res) {
         )
 
         return res.status(200).json({
-            id: newPlace.id,
+            id: Number(newPlace.id),
             name: newPlace.name
         })
     } catch(error) {

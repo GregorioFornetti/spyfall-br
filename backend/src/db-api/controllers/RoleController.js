@@ -5,7 +5,10 @@ export async function getAllRoles(req, res) {
         const roles = await Role.findAll({
             attributes: ['id', 'name']
         })
-        return res.status(200).json(roles)
+        return res.status(200).json(roles.map((role) => ({
+            id: Number(role.id),
+            name: role.name
+        })))
     } catch(error) {
         return res.status(500).json(error.message)
     }
@@ -19,7 +22,10 @@ export async function getRoleById(req, res) {
             },
             attributes: ['id', 'name']
         })
-        return res.status(200).json(role)
+        return res.status(200).json({
+            id: Number(role.id),
+            name: role.name
+        })
     } catch(error) {
         return res.status(500).json(error.message)
     }
@@ -28,7 +34,10 @@ export async function getRoleById(req, res) {
 export async function createRole(req, res) {
     try {
         const newRole = await Role.create(req.body)
-        return res.status(200).json({id: newRole.id, name: newRole.name})
+        return res.status(200).json({
+            id: Number(newRole.id), 
+            name: newRole.name
+        })
     } catch(error) {
         return res.status(500).json(error.message)
     }
@@ -47,7 +56,10 @@ export async function updateRole(req, res) {
             },
             attributes: ['id', 'name']
         })
-        return res.status(200).json(updatedRole)
+        return res.status(200).json({
+            id: Number(updatedRole.id),
+            name: updatedRole.name
+        })
     } catch(error) {
         return res.status(500).json(error.message)
     }

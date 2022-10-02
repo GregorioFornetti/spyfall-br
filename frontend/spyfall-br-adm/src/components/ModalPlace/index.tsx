@@ -88,9 +88,9 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
                         <Select
                             isMulti
                             options={roles.map(role2RoleOption)}
-                            defaultValue={place.selectedRolesIds.map((roleId) => role2RoleOption(getRoleById(roleId, roles)))}
-                            onChange={(selectedRolesOptions) => {
-                                place.selectedRolesIds = selectedRolesOptions.map((roleOption) => (roleOption.value))
+                            defaultValue={place.rolesIds.map((roleId) => role2RoleOption(getRoleById(roleId, roles)))}
+                            onChange={(rolesOptions) => {
+                                place.rolesIds = rolesOptions.map((roleOption) => (roleOption.value))
                             }}
                             className="basic-multi-select"
                             classNamePrefix="select"
@@ -103,9 +103,9 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
                         <Select
                             isMulti
                             options={categories.map(category2CategoryOption)}
-                            defaultValue={place.selectedCategoriesIds.map((categoryId) => category2CategoryOption(getCategoryById(categoryId, categories)))}
-                            onChange={(selectedCategoriesOptions) => {
-                                place.selectedCategoriesIds = selectedCategoriesOptions.map((categoryOption) => (categoryOption.value))
+                            defaultValue={place.categoriesIds.map((categoryId) => category2CategoryOption(getCategoryById(categoryId, categories)))}
+                            onChange={(categoriesOptions) => {
+                                place.categoriesIds = categoriesOptions.map((categoryOption) => (categoryOption.value))
                             }}
                             className="basic-multi-select"
                             classNamePrefix="select"

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -16,12 +16,19 @@ import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import SimpleCard from './components/SimpleCard';
 import ModalProperties from './interfaces/ModalProperties';
+import {serverURL} from './utils/configs'
+import ModalLoading from './components/ModalLoading';
 
 const buttonTittleMap = {
-  "role": "Criar novo cargo",
-  "place": "Criar novo local",
-  "category": "Criar nova categoria"
+  role: "Criar novo cargo",
+  place: "Criar novo local",
+  category: "Criar nova categoria"
 }
+
+var placesGetCalled = false
+var categoriesGetCalled = false
+var rolesGetCalled = false
+var pendingRequests = 3
 
 
 function createEmptyRole(): Role {
@@ -29,7 +36,7 @@ function createEmptyRole(): Role {
 }
 
 function createEmptyPlace(): Place {
-  return {id: -1, name: '', selectedCategoriesIds: [], selectedRolesIds: []}
+  return {id: -1, name: '', categoriesIds: [], rolesIds: []}
 }
 
 function createEmptyCategory(): Category {
@@ -38,20 +45,68 @@ function createEmptyCategory(): Category {
 
 
 function App() {
+  const [loading, setLoading] = useState(true)
   const [page, setPage] = useState<"role"|"place"|"category">("place")
   const [filter, setFilter] = useState("")
 
-  const [categories, setCategories] = useState<Category[]>([
-    {id: 1, name: "Casual"},
-    {id: 2, name: "Apenas adultos"}
-  ])
-  const [roles, setRoles] = useState<Role[]>([
-    {id: 1, name: "Cozinheiro"},
-    {id: 2, name: "Marinheiro"}
-  ])
-  const [places, setPlaces] = useState<Place[]>([
-    {id: 1, name: "Cemitério", selectedCategoriesIds: [1, 2], selectedRolesIds: []}
-  ])
+  const [categories, setCategories] = useState<Category[]>([])
+  const [roles, setRoles] = useState<Role[]>([])
+  const [places, setPlaces] = useState<Place[]>([])
+
+  useEffect(() => {
+    if (!placesGetCalled) {
+      placesGetCalled = true
+
+      fetch(`${serverURL}/places`, {method: 'GET'})
+      .then((response) => (response.json()))
+      .then((placesJSON) => {
+        console.log(placesJSON)
+        setPlaces(placesJSON)
+
+        pendingRequests--
+        if (pendingRequests === 0) {
+          setLoading(false)
+        }
+      })
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!categoriesGetCalled) {
+      categoriesGetCalled = true
+
+      fetch(`${serverURL}/categories`, {method: 'GET'})
+      .then((response) => (response.json()))
+      .then((categoriesJSON) => {
+        console.log(categoriesJSON)
+        setCategories(categoriesJSON)
+
+        pendingRequests--
+        if (pendingRequests === 0) {
+          setLoading(false)
+        }
+      })
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!rolesGetCalled) {
+      rolesGetCalled = true
+
+      fetch(`${serverURL}/roles`, {method: 'GET'})
+      .then((response) => (response.json()))
+      .then((rolesJSON) => {
+        console.log(rolesJSON)
+        setRoles(rolesJSON)
+
+        pendingRequests--
+        if (pendingRequests === 0) {
+          setLoading(false)
+        }
+      })
+    }
+  }, [])
+
 
 
   const [modalRoleProperties, setModalRoleProperties] = useState<ModalProperties<Role>>({
@@ -257,6 +312,10 @@ function App() {
           modalCategoryProperties={modalCategoryProperties}
           setCategories={setCategories}
           categories={categories}
+        />
+
+        <ModalLoading
+          show={loading}
         />
       </main>
     </>
