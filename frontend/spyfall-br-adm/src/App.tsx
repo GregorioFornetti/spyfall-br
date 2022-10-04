@@ -318,6 +318,8 @@ function App() {
           modalCategoryProperties={modalCategoryProperties}
           setCategories={setCategories}
           categories={categories}
+          places={places}
+          setPlaces={setPlaces}
         />
 
         <ModalLoading
