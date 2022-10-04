@@ -18,6 +18,7 @@ import SimpleCard from './components/SimpleCard';
 import ModalProperties from './interfaces/ModalProperties';
 import {serverURL} from './utils/configs'
 import ModalLoading from './components/ModalLoading';
+import axios from 'axios'
 
 const buttonTittleMap = {
   role: "Criar novo cargo",
@@ -52,16 +53,19 @@ function App() {
   const [categories, setCategories] = useState<Category[]>([])
   const [roles, setRoles] = useState<Role[]>([])
   const [places, setPlaces] = useState<Place[]>([])
-
   useEffect(() => {
     if (!placesGetCalled) {
       placesGetCalled = true
 
-      fetch(`${serverURL}/places`, {method: 'GET'})
-      .then((response) => (response.json()))
-      .then((placesJSON) => {
-        console.log(placesJSON)
-        setPlaces(placesJSON)
+      axios.get(`${serverURL}/places`)
+      .then((response) => {
+        let placesJSON = response.data as Place[]
+        setPlaces(placesJSON.map((place) => {
+          if (place.imgPath) {
+            return {...place, imgPath: `${serverURL}/${place.imgPath}`}
+          }
+          return place
+        }))
 
         pendingRequests--
         if (pendingRequests === 0) {
@@ -75,9 +79,9 @@ function App() {
     if (!categoriesGetCalled) {
       categoriesGetCalled = true
 
-      fetch(`${serverURL}/categories`, {method: 'GET'})
-      .then((response) => (response.json()))
-      .then((categoriesJSON) => {
+      axios.get(`${serverURL}/categories`)
+      .then((response) => {
+        let categoriesJSON = response.data
         console.log(categoriesJSON)
         setCategories(categoriesJSON)
 
@@ -93,9 +97,9 @@ function App() {
     if (!rolesGetCalled) {
       rolesGetCalled = true
 
-      fetch(`${serverURL}/roles`, {method: 'GET'})
-      .then((response) => (response.json()))
-      .then((rolesJSON) => {
+      axios.get(`${serverURL}/roles`)
+      .then((response) => {
+        let rolesJSON = response.data
         console.log(rolesJSON)
         setRoles(rolesJSON)
 

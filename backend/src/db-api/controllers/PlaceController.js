@@ -3,13 +3,13 @@ import Category from '../models/Category.js'
 import Role from '../models/Role.js'
 import Place_Category from '../models/Place_Category.js'
 import Place_Role from '../models/Place_Role.js'
-import { placeImgsPath, port, address } from '../configs/index.js'
+import { placeImgsPath } from '../configs/index.js'
 import fs from 'fs'
 
 function place2JSON(place) {
     const placeJSON = {}
     if (place.imgPath) {
-        placeJSON.imgPath = `http://${address}:${port}/${place.imgPath}`
+        placeJSON.imgPath = place.imgPath
     }
     placeJSON.id = Number(place.id)
     placeJSON.name = place.name

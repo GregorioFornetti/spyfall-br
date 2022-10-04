@@ -33,6 +33,7 @@ export async function getRoleById(req, res) {
 
 export async function createRole(req, res) {
     try {
+        console.log(req.body)
         const newRole = await Role.create(req.body)
         return res.status(200).json({
             id: Number(newRole.id), 
