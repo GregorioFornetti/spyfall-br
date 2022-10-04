@@ -300,6 +300,8 @@ function App() {
           setModalRoleProperties={setModalRoleProperties}
           setRoles={setRoles}
           roles={roles}
+          places={places}
+          setPlaces={setPlaces}
         />
 
         <ModalPlace

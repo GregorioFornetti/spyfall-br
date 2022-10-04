@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Role from '../../interfaces/RoleInterface'
+import Place from '../../interfaces/PlaceInterface'
 import ModalProperties from '../../interfaces/ModalProperties'
 import Spinner from 'react-bootstrap/Spinner'
 import {useState} from 'react'
@@ -13,10 +14,12 @@ interface ModalRoleProps {
     modalRoleProperties: ModalProperties<Role>,
     setModalRoleProperties: React.Dispatch<React.SetStateAction<ModalProperties<Role>>>,
     setRoles: React.Dispatch<React.SetStateAction<Role[]>>,
-    roles: Role[]
+    roles: Role[],
+    setPlaces: React.Dispatch<React.SetStateAction<Place[]>>,
+    places: Place[]
 }
 
-export default function ModalRole({modalRoleProperties, roles, setModalRoleProperties, setRoles}: ModalRoleProps) {
+export default function ModalRole({modalRoleProperties, roles, setModalRoleProperties, setRoles, setPlaces, places}: ModalRoleProps) {
 
     const [loading, setLoading] = useState(false)
     let {show, type, currentValue} = modalRoleProperties
@@ -59,6 +62,10 @@ export default function ModalRole({modalRoleProperties, roles, setModalRolePrope
     const deleteRole = () => {
         axios.delete(`${serverURL}/roles/${role.id}`)
         .then((response) => {
+            for (let place of places) {
+                place.rolesIds = place.rolesIds.filter((roleId) => (roleId !== role.id))
+            }
+            setPlaces([...places])
             setRoles(roles.filter((roleParam) => role !== roleParam))
 
             setLoading(false)
