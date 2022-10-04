@@ -4,5 +4,5 @@ export default interface PlaceInterface {
     name: string,
     rolesIds: number[],
     categoriesIds: number[],
-    imgURL?: string
+    imgPath?: string
 }

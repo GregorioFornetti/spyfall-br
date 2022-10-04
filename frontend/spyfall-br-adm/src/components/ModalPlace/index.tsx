@@ -72,10 +72,10 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
                                 const files = (event.target as HTMLInputElement).files
                                 if (files && files.length !== 0) {
                                     const currentFile = files[0]
-                                    place.imgURL = URL.createObjectURL(currentFile)
+                                    place.imgPath = URL.createObjectURL(currentFile)
                                     setModalPlaceProperties({...modalPlaceProperties, currentValue: place})
                                 } else {
-                                    delete place.imgURL
+                                    delete place.imgPath
                                     setModalPlaceProperties({...modalPlaceProperties, currentValue: place})
                                 }
                             }}
@@ -119,7 +119,7 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
                 <hr/>
 
                 <PlaceCardPreview
-                    imgURL={place.imgURL}
+                    imgURL={place.imgPath}
                     title={place.name}
                 />
             </Modal.Body>
