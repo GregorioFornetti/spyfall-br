@@ -33,6 +33,10 @@ export async function getCategoryById(req, res) {
 
 export async function createCategory(req, res) {
     try {
+        if (req.body.name.length === 0) {
+            return res.status(400).json({'error': 'O nome não pode ser vazio'})
+        }
+
         const newCategory = await Category.create(req.body)
         return res.status(200).json({
             id: Number(newCategory.id), 
@@ -45,6 +49,10 @@ export async function createCategory(req, res) {
 
 export async function updateCategory(req, res) {
     try {
+        if (req.body.name.length === 0) {
+            return res.status(400).json({'error': 'O nome não pode ser vazio'})
+        }
+        
         await Category.update(req.body, {
             where: {
                 id: Number(req.params.id)

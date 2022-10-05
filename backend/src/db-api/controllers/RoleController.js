@@ -33,7 +33,10 @@ export async function getRoleById(req, res) {
 
 export async function createRole(req, res) {
     try {
-        console.log(req.body)
+        if (req.body.name.length === 0) {
+            return res.status(400).json({'error': 'O nome não pode ser vazio'})
+        }
+        
         const newRole = await Role.create(req.body)
         return res.status(200).json({
             id: Number(newRole.id), 
@@ -46,6 +49,10 @@ export async function createRole(req, res) {
 
 export async function updateRole(req, res) {
     try {
+        if (req.body.name.length === 0) {
+            return res.status(400).json({'error': 'O nome não pode ser vazio'})
+        }
+
         await Role.update(req.body, {
             where: {
                 id: Number(req.params.id)

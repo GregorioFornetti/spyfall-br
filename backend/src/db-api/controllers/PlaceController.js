@@ -61,6 +61,10 @@ export async function getPlaceById(req, res) {
 
 export async function createPlace(req, res) {
     try {
+        if (req.body.name.length === 0) {
+            return res.status(400).json({'error': 'O nome não pode ser vazio'})
+        }
+
         const {name, rolesIds, categoriesIds} = req.body
 
         const newPlaceJson = {name: name}
@@ -92,6 +96,10 @@ export async function createPlace(req, res) {
 
 export async function updatePlace(req, res) {
     try {
+        if (req.body.name.length === 0) {
+            return res.status(400).json({'error': 'O nome não pode ser vazio'})
+        }
+        
         const id = Number(req.params.id)
         const {name, rolesIds, categoriesIds} = req.body
 

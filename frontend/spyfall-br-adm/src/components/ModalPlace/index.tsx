@@ -3,7 +3,6 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Place from '../../interfaces/PlaceInterface'
-import Select from 'react-select'
 import ModalProperties from '../../interfaces/ModalProperties'
 import Category from '../../interfaces/CategoryInterface'
 import Role from '../../interfaces/RoleInterface';
@@ -13,8 +12,10 @@ import { serverURL } from '../../utils/configs';
 import { useState } from 'react';
 import PlaceCardPreview from '../PlaceCardPreview';
 import axios from 'axios'
+import CreatableSelect from 'react-select/creatable';
 
 var currentFile: File|null = null
+
 
 interface ModalPlaceProps {
     modalPlaceProperties: ModalProperties<Place>,
@@ -26,6 +27,9 @@ interface ModalPlaceProps {
 }
 
 export default function ModalPlace({modalPlaceProperties, setModalPlaceProperties, setPlaces, places, categories, roles}: ModalPlaceProps) {
+
+    var newRoles: string[] = []
+    var newCategories: string[] = []
 
     const [loading, setLoading] = useState(false)
     const {show, type, currentValue} = modalPlaceProperties
@@ -149,12 +153,15 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
 
                         <Form.Group className="mb-3">
                             <Form.Label>Cargos</Form.Label>
-                            <Select
+                            <CreatableSelect
                                 isMulti
                                 options={roles.map(role2RoleOption)}
                                 defaultValue={place.rolesIds.map((roleId) => role2RoleOption(getRoleById(roleId, roles)))}
                                 onChange={(rolesOptions) => {
-                                    place.rolesIds = rolesOptions.map((roleOption) => (roleOption.value))
+                                    newRoles = rolesOptions.filter((roleOption) => (Object.hasOwn(roleOption, '__isNew__')))
+                                                           .map((roleOption) => (roleOption.label))
+                                    place.rolesIds = rolesOptions.filter((roleOption) => (!Object.hasOwn(roleOption, '__isNew__')))
+                                                                 .map((roleOption) => (roleOption.value))
                                 }}
                                 className="basic-multi-select"
                                 classNamePrefix="select"
@@ -164,12 +171,18 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
 
                         <Form.Group className="mb-3">
                             <Form.Label>Categorias</Form.Label>
-                            <Select
+                            <CreatableSelect
                                 isMulti
                                 options={categories.map(category2CategoryOption)}
                                 defaultValue={place.categoriesIds.map((categoryId) => category2CategoryOption(getCategoryById(categoryId, categories)))}
                                 onChange={(categoriesOptions) => {
-                                    place.categoriesIds = categoriesOptions.map((categoryOption) => (categoryOption.value))
+                                    newCategories = categoriesOptions
+                                                    .filter((categoryOption) => (Object.hasOwn(categoryOption, '__isNew__')))
+                                                    .map((categoryOption) => (categoryOption.label))
+                                    place.categoriesIds = categoriesOptions
+                                                          .filter((categoryOption) => (!Object.hasOwn(categoryOption, '__isNew__')))
+                                                          .map((categoryOption) => (categoryOption.value))
+                                    
                                 }}
                                 className="basic-multi-select"
                                 classNamePrefix="select"
