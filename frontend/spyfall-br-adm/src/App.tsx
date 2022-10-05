@@ -309,7 +309,9 @@ function App() {
           setModalPlaceProperties={setModalPlaceProperties}
           setPlaces={setPlaces}
           places={places}
+          setCategories={setCategories}
           categories={categories}
+          setRoles={setRoles}
           roles={roles}
         />
 

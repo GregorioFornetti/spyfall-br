@@ -4,7 +4,7 @@ import Role from '../models/Role.js'
 import Place_Category from '../models/Place_Category.js'
 import Place_Role from '../models/Place_Role.js'
 import { placeImgsPath } from '../configs/index.js'
-import fs from 'fs'
+import fs, { existsSync } from 'fs'
 
 function place2JSON(place) {
     const placeJSON = {}
@@ -96,6 +96,7 @@ export async function createPlace(req, res) {
 
 export async function updatePlace(req, res) {
     try {
+        var deleteImage = req.body.deleteImg !== undefined
         if (req.body.name.length === 0) {
             return res.status(400).json({'error': 'O nome não pode ser vazio'})
         }
@@ -109,9 +110,16 @@ export async function updatePlace(req, res) {
             }
         })
 
+        var newImgPath
+        if (deleteImage) {
+            newImgPath = null
+        } else {
+            newImgPath = (req.body.imgPath) ? (req.body.imgPath) : (oldPlace.imgPath)
+        }
+
         await Place.update({
             name: name,
-            imgPath: (req.body.imgPath) ? (req.body.imgPath) : (null)
+            imgPath: newImgPath
         }, {
             where: {
                 id: id
@@ -140,7 +148,7 @@ export async function updatePlace(req, res) {
             )
         }
 
-        if (oldPlace.imgPath) {
+        if (req.body.deleteImg || req.body.imgPath !== oldPlace.imgPath) {
             if (fs.existsSync(oldPlace.imgPath)) {
                 fs.rmSync(oldPlace.imgPath)
             }
@@ -186,5 +194,34 @@ export async function deletePlace(req, res) {
 }
 
 export async function getPlaceImage(req, res) {
-    res.sendFile(`${placeImgsPath}/${req.params.filename}`, {root: '.'})
+    try {
+        return res.status(200).sendFile(`${placeImgsPath}/${req.params.filename}`, {root: '.'})
+    } catch(error) {
+        return res.status(500).json(error.message)
+    }
+}
+
+export async function deletePlaceImage(req, res) {
+    try {
+        const place = await Place.findOne({
+            where: {
+                id: req.params.id
+            }
+        })
+        
+        if (place.imgPath && fs.existsSync(place.imgPath)) {
+            fs.rmSync(place.imgPath)
+        }
+
+        Place.update({
+            imgPath: null
+        }, {
+            where: {
+                id: req.params.id
+            }
+        })
+        return res.status(200).json({message: 'Imagem removida com sucesso'})
+    } catch(error) {
+        return res.status(400).json(error)
+    }
 }

@@ -15,68 +15,109 @@ import axios from 'axios'
 import CreatableSelect from 'react-select/creatable';
 
 var currentFile: File|null = null
-
+var newRoles: string[] = []
+var newCategories: string[] = []
+var deleteImage: boolean = false
 
 interface ModalPlaceProps {
     modalPlaceProperties: ModalProperties<Place>,
     setModalPlaceProperties: React.Dispatch<React.SetStateAction<ModalProperties<Place>>>,
     setPlaces: React.Dispatch<React.SetStateAction<Place[]>>,
     places: Place[],
+    setCategories: React.Dispatch<React.SetStateAction<Category[]>>,
     categories: Category[],
+    setRoles: React.Dispatch<React.SetStateAction<Role[]>>,
     roles: Role[]
 }
 
-export default function ModalPlace({modalPlaceProperties, setModalPlaceProperties, setPlaces, places, categories, roles}: ModalPlaceProps) {
-
-    var newRoles: string[] = []
-    var newCategories: string[] = []
+export default function ModalPlace({modalPlaceProperties, setModalPlaceProperties, setPlaces, places, categories, roles, setRoles, setCategories}: ModalPlaceProps) {
 
     const [loading, setLoading] = useState(false)
     const {show, type, currentValue} = modalPlaceProperties
     const place = currentValue
-    const handleClose = () => setModalPlaceProperties({...modalPlaceProperties, show: false})
+    const handleClose = () => {
+        setModalPlaceProperties({...modalPlaceProperties, show: false})
+        newRoles = []
+        newCategories = []
+        deleteImage = false
+    }
     const handleError = (error: any) => {
         console.error(error)
         alert('Ocorreu um erro ! Olhar o console para mais informações')
         setLoading(false)
     }
 
+    const createNewRoles = async () => {
+        return Promise.all(
+            newRoles.map((newRole) => (axios.post(`${serverURL}/roles`, {name: newRole})))
+        )
+        .then((responses) => {
+            place.rolesIds = place.rolesIds.concat(
+                responses.map((response) => (response.data.id))
+            )
+            setRoles([...roles, ...responses.map((response) => (response.data as Role))])
+        })
+    }
+
+    const createNewCategories = async () => {
+        return Promise.all(
+            newCategories.map((newCategory) => (axios.post(`${serverURL}/categories`, {name: newCategory})))
+        )
+        .then((responses) => {
+            place.categoriesIds = place.categoriesIds.concat(
+                responses.map((response) => (response.data.id))
+            )
+            setCategories([...categories, ...responses.map((response) => (response.data as Category))])
+        })
+    }
+
     const createPlace = () => {
-        const formData = new FormData()
-        formData.append('name', place.name)
-        formData.append('rolesIds', JSON.stringify(place.rolesIds))
-        formData.append('categoriesIds', JSON.stringify(place.categoriesIds))
-        if (place.imgPath && currentFile) {
-            formData.append('placeImg', currentFile)
-        }
-
-        axios.post(`${serverURL}/places`, formData)
+        Promise.all([createNewCategories(), createNewRoles()])
         .then((response) => {
-            setPlaces([...places, {...place, id: response.data.id}])
+            const formData = new FormData()
+            formData.append('name', place.name)
+            formData.append('rolesIds', JSON.stringify(place.rolesIds))
+            formData.append('categoriesIds', JSON.stringify(place.categoriesIds))
+            if (place.imgPath && currentFile) {
+                formData.append('placeImg', currentFile)
+            }
 
-            setLoading(false)
-            handleClose()
+            axios.post(`${serverURL}/places`, formData)
+            .then((response) => {
+                setPlaces([...places, {...place, id: response.data.id}])
+
+                setLoading(false)
+                handleClose()
+            })
+            .catch(handleError)
         })
         .catch(handleError)
     }
 
     const updatePlace = () => {
-        const formData = new FormData()
-        formData.append('name', place.name)
-        formData.append('rolesIds', JSON.stringify(place.rolesIds))
-        formData.append('categoriesIds', JSON.stringify(place.categoriesIds))
-        if (place.imgPath && currentFile) {
-            formData.append('placeImg', currentFile)
-        }
-
-        axios.put(`${serverURL}/places/${place.id}`, formData)
+        Promise.all([createNewCategories(), createNewRoles()])
         .then((response) => {
-            let placeIndex = places.findIndex((placeParam) => (placeParam.id === place.id))
-            places[placeIndex] = place
-            setPlaces([...places])
+            const formData = new FormData()
+            formData.append('name', place.name)
+            formData.append('rolesIds', JSON.stringify(place.rolesIds))
+            formData.append('categoriesIds', JSON.stringify(place.categoriesIds))
+            if (deleteImage) {
+                formData.append('deleteImg', '')
+            }
+            if (place.imgPath && currentFile) {
+                formData.append('placeImg', currentFile)
+            }
 
-            setLoading(false)
-            handleClose()
+            axios.put(`${serverURL}/places/${place.id}`, formData)
+            .then((response) => {
+                let placeIndex = places.findIndex((placeParam) => (placeParam.id === place.id))
+                places[placeIndex] = place
+                setPlaces([...places])
+
+                setLoading(false)
+                handleClose()
+            })
+            .catch(handleError)
         })
         .catch(handleError)
     }
@@ -138,10 +179,12 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
                                 onChange={(event) => {
                                     const files = (event.target as HTMLInputElement).files
                                     if (files && files.length !== 0) {
+                                        deleteImage = false
                                         currentFile = files[0]
                                         place.imgPath = URL.createObjectURL(currentFile)
                                         setModalPlaceProperties({...modalPlaceProperties, currentValue: place})
                                     } else {
+                                        deleteImage = true
                                         currentFile = null
                                         delete place.imgPath
                                         setModalPlaceProperties({...modalPlaceProperties, currentValue: place})
@@ -149,6 +192,22 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
                                 }}
                                 accept="image/*"
                             />
+
+                            {(place.imgPath) &&
+                                <div style={{paddingTop: '5px'}}>
+                                    <a  style={{textDecoration: 'none'}} 
+                                        href='#' 
+                                        className="link-danger"
+                                        onClick={() => {
+                                            deleteImage = true
+                                            delete place.imgPath
+                                            setModalPlaceProperties({...modalPlaceProperties, currentValue: place})
+                                        }}
+                                    >
+                                        Apagar imagem atual
+                                    </a>
+                                </div>
+                            }
                         </Form.Group>
 
                         <Form.Group className="mb-3">
