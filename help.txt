@@ -1,0 +1,2 @@
+Para colocar o frontend a partir do backend, é preciso fazer o "npm run build" e colocar os codigos gerados no lugar correto
+e corrigir possiveis urls do index.html gerado
