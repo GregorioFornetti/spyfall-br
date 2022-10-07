@@ -4,6 +4,9 @@ import cors from 'cors'
 import { port, address } from './db-api/configs/index.js'
 import redirectIfNotAuth from './db-api/middlewares/redirect.js'
 import session from 'express-session'
+import { createServer } from "http";
+import { Server } from "socket.io";
+
 
 const app = express()
 app.use(session({
@@ -20,6 +23,25 @@ app.use(
 app.use(redirectIfNotAuth)
 app.use('/adm', express.static('src/db-api/views/adm'))
 
-app.listen(port, () => {
+
+
+const server = createServer(app)
+const io = new Server(server, {
+    cors: {
+        origin: "http://localhost:3001"
+    }
+})
+
+io.on('connection', (socket) => {
+    console.log('entrou')
+
+    socket.emit('hello', 'world')
+
+    socket.on("teste", (arg) => {
+        console.log(arg)
+    })
+})
+
+server.listen(port, () => {
     console.log(`Servidor rodando em: http://${address}:${port}`)
 })
