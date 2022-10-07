@@ -23,3 +23,16 @@ export function category2CategoryOption(category: Category) {
 export function role2RoleOption(role: Role) {
     return {value: role.id, label: role.name}
 }
+
+
+export function createEmptyRole(): Role {
+    return {id: -1, name: ''}
+}
+
+export function createEmptyPlace(): Place {
+    return {id: -1, name: '', categoriesIds: [], rolesIds: []}
+}
+
+export function createEmptyCategory(): Category {
+    return {id: -1, name: ''}
+}

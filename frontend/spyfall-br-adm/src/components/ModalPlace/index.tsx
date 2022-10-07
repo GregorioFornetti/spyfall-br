@@ -7,7 +7,7 @@ import ModalProperties from '../../interfaces/ModalProperties'
 import Category from '../../interfaces/CategoryInterface'
 import Role from '../../interfaces/RoleInterface';
 import Spinner from 'react-bootstrap/Spinner'
-import { category2CategoryOption, getCategoryById, getRoleById, getPlaceById, role2RoleOption } from '../../utils/utils';
+import { category2CategoryOption, getCategoryById, getRoleById, getPlaceById, role2RoleOption, createEmptyPlace } from '../../utils/utils';
 import { serverURL } from '../../utils/configs';
 import { useState } from 'react';
 import PlaceCardPreview from '../PlaceCardPreview';
@@ -36,7 +36,7 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
     const {show, type, currentValue} = modalPlaceProperties
     const place = currentValue
     const handleClose = () => {
-        setModalPlaceProperties({...modalPlaceProperties, show: false})
+        setModalPlaceProperties({type: 'create', currentValue: createEmptyPlace(), show: false})
         newRoles = []
         newCategories = []
         deleteImage = false
@@ -143,6 +143,8 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
         update: 'Salvar local',
         delete: 'Deletar local'
     }
+
+    console.log(place)
 
     return (
         <Modal show={show} onHide={handleClose}>

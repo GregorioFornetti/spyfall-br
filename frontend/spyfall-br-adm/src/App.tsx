@@ -19,6 +19,7 @@ import ModalProperties from './interfaces/ModalProperties';
 import {serverURL} from './utils/configs'
 import ModalLoading from './components/ModalLoading';
 import axios from 'axios'
+import { createEmptyCategory, createEmptyPlace, createEmptyRole } from './utils/utils';
 
 const buttonTittleMap = {
   role: "Criar novo cargo",
@@ -30,19 +31,6 @@ var placesGetCalled = false
 var categoriesGetCalled = false
 var rolesGetCalled = false
 var pendingRequests = 3
-
-
-function createEmptyRole(): Role {
-  return {id: -1, name: ''}
-}
-
-function createEmptyPlace(): Place {
-  return {id: -1, name: '', categoriesIds: [], rolesIds: []}
-}
-
-function createEmptyCategory(): Category {
-  return {id: -1, name: ''}
-}
 
 
 function App() {

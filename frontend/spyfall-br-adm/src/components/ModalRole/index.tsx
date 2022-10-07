@@ -62,10 +62,13 @@ export default function ModalRole({modalRoleProperties, roles, setModalRolePrope
     const deleteRole = () => {
         axios.delete(`${serverURL}/roles/${role.id}`)
         .then((response) => {
+            console.log(places)
+            console.log(roles)
             for (let place of places) {
                 place.rolesIds = place.rolesIds.filter((roleId) => (roleId !== role.id))
             }
             setPlaces([...places])
+            console.log(places)
             setRoles(roles.filter((roleParam) => role !== roleParam))
 
             setLoading(false)
