@@ -3,8 +3,9 @@ import { io } from "socket.io-client"
 import { Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import RootContainer from './components/RootContainer';
+
 import UserCard from './components/UserCard';
+import UsersContainer from './components/UsersContainer';
 
 const socket = io("http://192.168.56.1:3000")
 
@@ -17,10 +18,20 @@ socket.emit('teste', 'ola')
 function App() {
   return (
     <Container>
-      <RootContainer title='Jogadores'>
-        <UserCard username='Greg' leader={true} score={10}/>
-        <UserCard username='Felean' leader={false} score={10}/>
-      </RootContainer>
+      <UsersContainer title='Jogadores'>
+        <div className='col'>
+          <UserCard username='AAAAAAAAAAAAAAA' leader={true} score={10} isCurrentUser={true}/>
+        </div>
+        <div className='col'>
+          <UserCard username='AAAAAAAAAAAAAAA' leader={false} score={10} isCurrentUser={false}/>
+        </div>
+        <div className='col'>
+          <UserCard username='AAAAAAAAAAAAAAA' leader={false} score={10} isCurrentUser={false}/>
+        </div>
+        <div className='col'>
+          <UserCard username='AAAAAAAAAAAAAAA' leader={false} score={10} isCurrentUser={false}/>
+        </div>
+      </UsersContainer>
     </Container>
   );
 }
