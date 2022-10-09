@@ -19,9 +19,12 @@ $border-radius: 20px;
 .placeBox {
     position: relative;
     text-align: center;
-    cursor: pointer;
 
     border-radius: $border-radius;
+}
+
+.clickable {
+    cursor: pointer;
 }
 
 .placeTitleBox {

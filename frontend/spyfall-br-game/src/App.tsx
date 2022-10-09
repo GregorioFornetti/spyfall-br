@@ -1,6 +1,6 @@
 import React from 'react';
 import { io } from "socket.io-client"
-import { Container } from 'react-bootstrap';
+import { Card, Container, Row } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -21,27 +21,44 @@ function App() {
   const inGame = true
   return (
     <Container>
+      <Container fluid>
+
+        <Card className='text-center m-auto' style={{width: '340px'}}>
+          <Card.Header className='h4'>Lugar selecionado</Card.Header>
+          <Card.Body>
+            <PlaceCard
+              title='lugar'
+              type='selected'
+            />
+            <p className='h5'>Cargo: cozinheiro</p>
+          </Card.Body>
+        </Card>
+
+
+        <div className="d-grid gap-3 col-10 col-sm-9 col-md-8 col-lg-6 col-xl-4 m-auto mt-5">
+          <button className="btn btn-primary" type="button">Acusar</button>
+          <button className="btn btn-primary" type="button">Questionar</button>
+          <button className="btn btn-primary" type="button">Adivinhar lugar</button>
+        </div>
+      </Container>
+
       <UsersContainer title='Jogadores' containerClassName='mt-5'>
         <div className='col'>
           <UserCard 
             username='AAAAAAAAAAAAAAA' 
-            leader={true} 
+            leader
             score={10} 
-            isCurrentUser={true} 
+            isCurrentUser
             inGame={inGame}
-            asking={true}
-            target={false}
+            asking
           />
         </div>
         <div className='col'>
           <UserCard 
-            username='AAAAAAAAAAAAAAA' 
-            leader={false} 
+            username='AAAAAAAAAAAAAAA'  
             score={10} 
-            isCurrentUser={false} 
             inGame={inGame}
-            asking={false}
-            target={true}
+            target
           />
         </div>
         <div className='col'>

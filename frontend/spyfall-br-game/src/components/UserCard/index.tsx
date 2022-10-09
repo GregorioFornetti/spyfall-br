@@ -9,12 +9,12 @@ import GuessIcon from './GuessIcon'
 
 interface UserCardProps {
     username: string,
-    leader: boolean,
+    leader?: boolean,
     score: number,
-    isCurrentUser: boolean,
-    inGame: boolean,
-    asking: boolean,
-    target: boolean
+    isCurrentUser?: boolean,
+    inGame?: boolean,
+    asking?: boolean,
+    target?: boolean
 }
 
 export default function UserCard({username, leader, score, isCurrentUser, inGame, asking, target}: UserCardProps) {
@@ -45,12 +45,12 @@ export default function UserCard({username, leader, score, isCurrentUser, inGame
                             {leader && <GuessIcon Icon={FaCrown} tooltipText={'criador da sala'} /> }
                         </div>
                     }
-                    {target && 
+                    {(inGame && target) && 
                         <div className='col-2'>
                             <GuessIcon Icon={BiTargetLock} tooltipText={'questionado'} />
                         </div>
                     }
-                    {asking &&
+                    {(inGame && asking) &&
                         <div className='col-2'>
                             <GuessIcon Icon={BsFillMegaphoneFill} tooltipText={'questionando'} />
                         </div>
@@ -64,18 +64,21 @@ export default function UserCard({username, leader, score, isCurrentUser, inGame
                         iconClass={styles['undefined-icon']}
                         tooltipText="indefinido"
                         Icon={BsQuestionLg} 
+                        clickable
                     />
                     <GuessIcon
                         onClick={() => setGuess('safe')}
                         iconClass={styles['safe-icon']}
                         Icon={BsCheckLg}
                         tooltipText="safe"
+                        clickable
                     />
                     <GuessIcon
                         onClick={() => setGuess('suspect')}
                         iconClass={classNames(styles['suspect-icon'], styles.icon)}
                         Icon={BsXLg}
                         tooltipText="suspeito"
+                        clickable
                     />
                 </div>
             }

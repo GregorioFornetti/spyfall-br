@@ -8,10 +8,11 @@ interface GuessIconProps {
     tooltipText: string,
     onClick?: () => void,
     Icon: IconType,
-    iconClass?: string
+    iconClass?: string,
+    clickable?: boolean
 }
 
-export default function GuessIcon({tooltipText, onClick, Icon, iconClass}: GuessIconProps) {
+export default function GuessIcon({tooltipText, onClick, Icon, iconClass, clickable}: GuessIconProps) {
     return (
         <OverlayTrigger
             overlay={<Tooltip>{tooltipText}</Tooltip>}
@@ -20,7 +21,7 @@ export default function GuessIcon({tooltipText, onClick, Icon, iconClass}: Guess
             <div>
                 <Icon
                     onClick={onClick} 
-                    className={classNames(iconClass, styles.icon)} 
+                    className={classNames(iconClass, {[styles.clickable]: clickable})} 
                 />
             </div>
         </OverlayTrigger>

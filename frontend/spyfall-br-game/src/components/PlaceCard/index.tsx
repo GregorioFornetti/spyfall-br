@@ -15,7 +15,10 @@ export default function PlaceCard({title, type, imgURL}: PlaceCardProps) {
 
     return (
         <div 
-            className={styles.placeBox} 
+            className={classNames({
+                [styles.placeBox]: true,
+                [styles.clickable]: type === 'markable' || type === 'option'
+            })} 
             draggable={false}
             onClick={() => {
                 if (type === 'markable') {
