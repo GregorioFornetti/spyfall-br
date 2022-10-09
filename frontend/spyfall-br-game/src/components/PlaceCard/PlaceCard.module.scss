@@ -1,0 +1,41 @@
+
+$border-radius: 20px;
+
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none; 
+}
+
+.placeImg {
+    width: 300px;
+    height: 200px;
+    border-radius: $border-radius;
+}
+
+.placeBox {
+    position: relative;
+    text-align: center;
+    cursor: pointer;
+
+    border-radius: $border-radius;
+}
+
+.placeTitleBox {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.placeTitle {
+    color: white;
+    font-size: 1.5em;
+}
+
+.markedPlace {
+    text-decoration: line-through;
+}

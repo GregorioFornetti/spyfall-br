@@ -6,12 +6,13 @@ import Container from 'react-bootstrap/Container'
 interface RootContainerProps {
     title: string,
     children: JSX.Element[]|JSX.Element,
-    rowClassName: string
+    rowClassName: string,
+    containerClassName?: string
 }
 
-export default function RootContainer({title, children, rowClassName}: RootContainerProps) {
+export default function RootContainer({title, children, rowClassName, containerClassName}: RootContainerProps) {
     return (
-        <Container>
+        <Container className={containerClassName}>
             <Card>
                 <Card.Header as="h3" className={'text-center'}>{title}</Card.Header>
                 <Card.Body>

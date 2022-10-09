@@ -10,16 +10,18 @@ interface UserCardProps {
     username: string,
     leader: boolean,
     score: number,
-    isCurrentUser: boolean
+    isCurrentUser: boolean,
+    inGame: boolean
 }
 
-export default function UserCard({username, leader, score, isCurrentUser}: UserCardProps) {
+export default function UserCard({username, leader, score, isCurrentUser, inGame}: UserCardProps) {
 
     const [guess, setGuess] = useState<"current user"|"undefined"|"suspect"|"safe">((isCurrentUser) ? ('current user') : ('undefined'))
 
     return (
         <div className={classNames({
             [styles['user-card']]: true,
+            [styles['game-user-card']]: inGame,
             [styles['user-card-current-user']]: isCurrentUser,
             [styles['user-card-undefined']]: guess === 'undefined',
             [styles['user-card-suspect']]: guess === 'suspect',
@@ -29,7 +31,7 @@ export default function UserCard({username, leader, score, isCurrentUser}: UserC
         >
             <p className='h4'>{username} {leader && <FaCrown />}</p>
             <p className='h5'>Pontuação: {score}</p>
-            {!isCurrentUser && 
+            {(!isCurrentUser && inGame) && 
                 <div className='d-flex justify-content-around h5 mt-3'>
                     <GuessIcon
                         onClick={() => setGuess('undefined')} 
