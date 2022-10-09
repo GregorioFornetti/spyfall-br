@@ -6,11 +6,11 @@ import { useState } from 'react'
 
 interface PlaceCardProps {
     title: string,
-    inGame: boolean,
+    type: "markable"|"selected"|"option",
     imgURL?: string
 }
 
-export default function PlaceCard({title, inGame, imgURL}: PlaceCardProps) {
+export default function PlaceCard({title, type, imgURL}: PlaceCardProps) {
     const [marked, setMarked] = useState(false)
 
     return (
@@ -18,7 +18,7 @@ export default function PlaceCard({title, inGame, imgURL}: PlaceCardProps) {
             className={styles.placeBox} 
             draggable={false}
             onClick={() => {
-                if (inGame) {
+                if (type === 'markable') {
                     setMarked(!marked)
                 }
             }}

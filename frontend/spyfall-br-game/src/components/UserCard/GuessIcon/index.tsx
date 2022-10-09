@@ -6,9 +6,9 @@ import styles from './GuessIcon.module.scss'
 
 interface GuessIconProps {
     tooltipText: string,
-    onClick: () => void,
+    onClick?: () => void,
     Icon: IconType,
-    iconClass: string
+    iconClass?: string
 }
 
 export default function GuessIcon({tooltipText, onClick, Icon, iconClass}: GuessIconProps) {

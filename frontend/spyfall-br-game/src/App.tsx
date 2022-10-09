@@ -21,33 +21,65 @@ function App() {
   const inGame = true
   return (
     <Container>
-      <UsersContainer title='Jogadores'>
+      <UsersContainer title='Jogadores' containerClassName='mt-5'>
         <div className='col'>
-          <UserCard username='AAAAAAAAAAAAAAA' leader={true} score={10} isCurrentUser={true} inGame={inGame}/>
+          <UserCard 
+            username='AAAAAAAAAAAAAAA' 
+            leader={true} 
+            score={10} 
+            isCurrentUser={true} 
+            inGame={inGame}
+            asking={true}
+            target={false}
+          />
         </div>
         <div className='col'>
-          <UserCard username='AAAAAAAAAAAAAAA' leader={false} score={10} isCurrentUser={false} inGame={inGame}/>
+          <UserCard 
+            username='AAAAAAAAAAAAAAA' 
+            leader={false} 
+            score={10} 
+            isCurrentUser={false} 
+            inGame={inGame}
+            asking={false}
+            target={true}
+          />
         </div>
         <div className='col'>
-          <UserCard username='AAAAAAAAAAAAAAA' leader={false} score={10} isCurrentUser={false} inGame={inGame}/>
+          <UserCard 
+            username='AAAAAAAAAAAAAAA' 
+            leader={false} 
+            score={10} 
+            isCurrentUser={false} 
+            inGame={inGame}
+            asking={false}
+            target={false}
+          />
         </div>
         <div className='col'>
-          <UserCard username='AAAAAAAAAAAAAAA' leader={false} score={10} isCurrentUser={false} inGame={inGame}/>
+          <UserCard 
+            username='AAAAAAAAAAAAAAA' 
+            leader={false} 
+            score={10} 
+            isCurrentUser={false} 
+            inGame={inGame}
+            asking={false}
+            target={false}
+          />
         </div>
       </UsersContainer>
 
       <PlacesContainer title='Lugares' containerClassName='mt-5'>
         <div className='col'>
-          <PlaceCard title='lugar' inGame={inGame} />
+          <PlaceCard title='lugar' type={'markable'} />
         </div>
         <div className='col'>
-          <PlaceCard title='lugar' inGame={inGame} />
+          <PlaceCard title='lugar' type={'markable'} />
         </div>
         <div className='col'>
-          <PlaceCard title='lugar' inGame={inGame} />
+          <PlaceCard title='lugar' type={'markable'} />
         </div>
         <div className='col'>
-          <PlaceCard title='lugar' inGame={inGame} />
+          <PlaceCard title='lugar' type={'markable'} />
         </div>
       </PlacesContainer>
     </Container>

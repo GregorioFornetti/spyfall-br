@@ -1,5 +1,6 @@
 import { FaCrown } from 'react-icons/fa'
-import { BsQuestionLg, BsCheckLg, BsXLg } from 'react-icons/bs'
+import { BiTargetLock } from 'react-icons/bi'
+import { BsQuestionLg, BsCheckLg, BsXLg, BsFillMegaphoneFill } from 'react-icons/bs'
 import styles from './UserCard.module.scss'
 import classNames from 'classnames'
 import { useState } from 'react'
@@ -11,10 +12,12 @@ interface UserCardProps {
     leader: boolean,
     score: number,
     isCurrentUser: boolean,
-    inGame: boolean
+    inGame: boolean,
+    asking: boolean,
+    target: boolean
 }
 
-export default function UserCard({username, leader, score, isCurrentUser, inGame}: UserCardProps) {
+export default function UserCard({username, leader, score, isCurrentUser, inGame, asking, target}: UserCardProps) {
 
     const [guess, setGuess] = useState<"current user"|"undefined"|"suspect"|"safe">((isCurrentUser) ? ('current user') : ('undefined'))
 
@@ -29,8 +32,31 @@ export default function UserCard({username, leader, score, isCurrentUser, inGame
             'm-auto': true
         })}
         >
-            <p className='h4'>{username} {leader && <FaCrown />}</p>
-            <p className='h5'>Pontuação: {score}</p>
+            <p className='h4'>
+                {username}
+            </p>
+            <div className='h5'>
+                <div className='row'>
+                    <div className='col-8'>
+                        <span>Pontuação: {score}</span>
+                    </div>
+                    {leader &&
+                        <div className='col-2'>
+                            {leader && <GuessIcon Icon={FaCrown} tooltipText={'criador da sala'} /> }
+                        </div>
+                    }
+                    {target && 
+                        <div className='col-2'>
+                            <GuessIcon Icon={BiTargetLock} tooltipText={'questionado'} />
+                        </div>
+                    }
+                    {asking &&
+                        <div className='col-2'>
+                            <GuessIcon Icon={BsFillMegaphoneFill} tooltipText={'questionando'} />
+                        </div>
+                    }
+                </div>
+            </div>
             {(!isCurrentUser && inGame) && 
                 <div className='d-flex justify-content-around h5 mt-3'>
                     <GuessIcon
