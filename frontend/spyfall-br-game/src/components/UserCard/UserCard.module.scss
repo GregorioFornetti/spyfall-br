@@ -1,0 +1,35 @@
+
+.user-card {
+    padding: 20px;
+    width: 300px;
+    border-radius: 7px;
+    border: 2px solid black;
+}
+
+.user-card-undefined {
+    background-color: rgb(248, 248, 248);
+}
+
+.user-card-suspect {
+    background-color: rgb(243, 206, 204);;
+}
+
+.user-card-safe {
+    background-color: rgb(206, 243, 204);
+}
+
+.icon {
+    cursor: pointer;
+}
+
+.undefined-icon {
+    color: gray;
+}
+
+.safe-icon {
+    color: green;
+}
+
+.suspect-icon {
+    color: red;
+}
