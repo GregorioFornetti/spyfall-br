@@ -13,7 +13,12 @@ socket.on("hello", (arg) => {
   console.log(arg)
 })
 
+socket.on('failed-join', (arg) => {
+  alert("Não foi possivel entrar na sala ! Verifique se o código está correto")
+})
+
 socket.emit('teste', 'ola')
+socket.emit('create-room1', 'ola')
 
 function App() {
 
@@ -26,7 +31,7 @@ function App() {
       </Navbar>
 
       <main style={{marginTop: '100px'}}>
-        <MainPage show />
+        <MainPage socket={socket} show />
         <GamePage />
       </main>
       

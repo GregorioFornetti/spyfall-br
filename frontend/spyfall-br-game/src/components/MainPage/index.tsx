@@ -4,20 +4,42 @@ import styles from './MainPage.module.scss'
 import { useState } from 'react'
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
+import { Socket } from "socket.io-client";
 
 interface MainPageProps {
-    show?: boolean
+    show?: boolean,
+    socket: Socket
 }
 
-export default function MainPage({show}: MainPageProps) {
+export default function MainPage({show, socket}: MainPageProps) {
     const [showNewMatchModal, setShowNewMatchModal] = useState(false)
     const [showJoinMatchModal, setShowJoinMatchModal] = useState(false)
+
+    const [username, setUsername] = useState("")
+    const [roomCode, setRoomCode] = useState("")
 
     const openNewMatchModal = () => setShowNewMatchModal(true)
     const closeNewMatchModal = () => setShowNewMatchModal(false)
 
     const openJoinMatchModal = () => setShowJoinMatchModal(true)
     const closeJoinMatchModal = () => setShowJoinMatchModal(false)
+
+    const createRoom = () => {
+        if (username.trim().length > 0) {
+            console.log('oi')
+            socket.emit("create-room", 'teste')
+        } else {
+            alert("Digite um nome !")
+        }
+    }
+
+    const joinRoom = () => {
+        if (username.trim().length > 0 && roomCode.trim().length > 0) {
+            socket.emit("join-room", {roomCode: roomCode, username: username})
+        } else {
+            alert("Digite um nome e o código da partida !")
+        }
+    }
 
     return (
         <>
@@ -45,13 +67,13 @@ export default function MainPage({show}: MainPageProps) {
                 </Modal.Header>
                 <Modal.Body>
                     <Form.Label>Nome</Form.Label>
-                    <Form.Control type="text" />
+                    <Form.Control value={username} onChange={(event) => setUsername(event.target.value)} type="text" />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={closeNewMatchModal}>
                         Fechar
                     </Button>
-                    <Button variant="primary">
+                    <Button variant="primary" onClick={createRoom}>
                         Criar
                     </Button>
                 </Modal.Footer>
@@ -68,16 +90,16 @@ export default function MainPage({show}: MainPageProps) {
                 </Modal.Header>
                 <Modal.Body>
                     <Form.Label>Código da partida</Form.Label>
-                    <Form.Control type="text" />
+                    <Form.Control value={roomCode} onChange={(event) => setRoomCode(event.target.value)} type="text" />
                     <br />
                     <Form.Label>Nome</Form.Label>
-                    <Form.Control type="text" />
+                    <Form.Control value={username} onChange={(event) => setUsername(event.target.value)} type="text" />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={closeJoinMatchModal}>
                         Fechar
                     </Button>
-                    <Button variant="primary">
+                    <Button variant="primary" onClick={joinRoom}>
                         Entrar
                     </Button>
                 </Modal.Footer>

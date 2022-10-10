@@ -6,6 +6,7 @@ import redirectIfNotAuth from './db-api/middlewares/redirect.js'
 import session from 'express-session'
 import { createServer } from "http";
 import { Server } from "socket.io";
+import loadRooms from "./game/rooms.js"
 
 
 const app = express()
@@ -34,6 +35,8 @@ const io = new Server(server, {
 
 io.on('connection', (socket) => {
     console.log('entrou')
+
+    loadRooms(io, socket)
 
     socket.emit('hello', 'world')
 
