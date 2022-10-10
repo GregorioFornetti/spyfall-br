@@ -1,13 +1,11 @@
-import React from 'react';
 import { io } from "socket.io-client"
-import { Card, Container, Row } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
-import UserCard from './components/UserCard';
-import UsersContainer from './components/UsersContainer'
-import PlacesContainer from './components/PlacesContainer';
-import PlaceCard from './components/PlaceCard';
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import GamePage from './components/GamePage';
+import MainPage from "./components/MainPage";
 
 const socket = io("http://192.168.56.1:3000")
 
@@ -18,88 +16,22 @@ socket.on("hello", (arg) => {
 socket.emit('teste', 'ola')
 
 function App() {
-  const inGame = true
+
   return (
-    <Container>
-      <Container fluid>
+    <>
+      <Navbar fixed="top" bg="dark" variant="dark">
+        <Container>
+          <Navbar.Brand>Spyfall-br</Navbar.Brand>
+        </Container>
+      </Navbar>
 
-        <Card className='text-center m-auto' style={{width: '340px'}}>
-          <Card.Header className='h4'>Lugar selecionado</Card.Header>
-          <Card.Body>
-            <PlaceCard
-              title='lugar'
-              type='selected'
-            />
-            <p className='h5'>Cargo: cozinheiro</p>
-          </Card.Body>
-        </Card>
+      <main style={{marginTop: '100px'}}>
+        <MainPage show />
+        <GamePage />
+      </main>
+      
 
-
-        <div className="d-grid gap-3 col-10 col-sm-9 col-md-8 col-lg-6 col-xl-4 m-auto mt-5">
-          <button className="btn btn-primary" type="button">Acusar</button>
-          <button className="btn btn-primary" type="button">Questionar</button>
-          <button className="btn btn-primary" type="button">Adivinhar lugar</button>
-        </div>
-      </Container>
-
-      <UsersContainer title='Jogadores' containerClassName='mt-5'>
-        <div className='col'>
-          <UserCard 
-            username='AAAAAAAAAAAAAAA' 
-            leader
-            score={10} 
-            isCurrentUser
-            inGame={inGame}
-            asking
-          />
-        </div>
-        <div className='col'>
-          <UserCard 
-            username='AAAAAAAAAAAAAAA'  
-            score={10} 
-            inGame={inGame}
-            target
-          />
-        </div>
-        <div className='col'>
-          <UserCard 
-            username='AAAAAAAAAAAAAAA' 
-            leader={false} 
-            score={10} 
-            isCurrentUser={false} 
-            inGame={inGame}
-            asking={false}
-            target={false}
-          />
-        </div>
-        <div className='col'>
-          <UserCard 
-            username='AAAAAAAAAAAAAAA' 
-            leader={false} 
-            score={10} 
-            isCurrentUser={false} 
-            inGame={inGame}
-            asking={false}
-            target={false}
-          />
-        </div>
-      </UsersContainer>
-
-      <PlacesContainer title='Lugares' containerClassName='mt-5'>
-        <div className='col'>
-          <PlaceCard title='lugar' type={'markable'} />
-        </div>
-        <div className='col'>
-          <PlaceCard title='lugar' type={'markable'} />
-        </div>
-        <div className='col'>
-          <PlaceCard title='lugar' type={'markable'} />
-        </div>
-        <div className='col'>
-          <PlaceCard title='lugar' type={'markable'} />
-        </div>
-      </PlacesContainer>
-    </Container>
+    </>
   );
 }
 
