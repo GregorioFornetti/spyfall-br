@@ -7,18 +7,31 @@ import Navbar from 'react-bootstrap/Navbar';
 import GamePage from './components/GamePage';
 import MainPage from "./components/MainPage";
 
-const socket = io("http://192.168.56.1:3000")
+const socket = io("http://192.168.56.1:3000", {autoConnect: false})
+var currentUserID
 
-socket.on("hello", (arg) => {
-  console.log(arg)
-})
+const sessionID = localStorage.getItem("sessionID")
+
+if (sessionID) {
+  socket.auth = { sessionID }
+}
+socket.connect()
+
+socket.on("session", ({ sessionID, userID }) => {
+  console.log('alo')
+  // attach the session ID to the next reconnection attempts
+  socket.auth = { sessionID };
+  // store it in the localStorage
+  localStorage.setItem("sessionID", sessionID);
+  // save the ID of the user
+  currentUserID = userID
+  console.log(currentUserID)
+});
 
 socket.on('failed-join', (arg) => {
   alert("Não foi possivel entrar na sala ! Verifique se o código está correto")
 })
 
-socket.emit('teste', 'ola')
-socket.emit('create-room1', 'ola')
 
 function App() {
 
