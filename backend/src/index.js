@@ -7,7 +7,7 @@ import session from 'express-session'
 import { createServer } from "http";
 import { Server } from "socket.io";
 import loadRooms from "./game/rooms.js"
-import crypto from 'crypto'
+import { handleSession, loadSession } from './game/session.js'
 
 
 
@@ -38,35 +38,12 @@ const io = new Server(server, {
 const games = {}
 const users = {}
 
-const randomId = () => crypto.randomBytes(8).toString("hex");
-// https://socket.io/get-started/private-messaging-part-2/
-io.use((socket, next) => {
-    const sessionID = socket.handshake.auth.sessionID;
-    console.log(sessionID)
-    if (sessionID) {
-        const user = users[sessionID]
-        if (user) {
-            console.log('oi')
-            socket.sessionID = sessionID;
-            socket.userID = user.userID;
-            return next();
-        }
-    }
-
-    socket.sessionID = randomId()
-    socket.userID = randomId()
-    users[socket.sessionID] = {}
-    next();
-});
+io.use((socket, next) => handleSession(socket, next, users));
 
 io.on('connection', (socket) => {
-    users[socket.sessionID]['userID'] = socket.userID
-    socket.emit("session", {
-        sessionID: socket.sessionID,
-        userID: socket.userID,
-    });
+    loadSession(socket, users)
 
-    loadRooms(io, socket, games)
+    loadRooms(io, socket, games, users)
 })
 
 server.listen(port, () => {

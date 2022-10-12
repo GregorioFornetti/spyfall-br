@@ -26,8 +26,7 @@ export default function MainPage({show, socket}: MainPageProps) {
 
     const createRoom = () => {
         if (username.trim().length > 0) {
-            console.log('oi')
-            socket.emit("create-room", 'teste')
+            socket.emit("create-room", {username: username})
         } else {
             alert("Digite um nome !")
         }
