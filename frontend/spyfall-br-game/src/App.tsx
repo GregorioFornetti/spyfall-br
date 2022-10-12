@@ -18,7 +18,6 @@ const sessionID = localStorage.getItem("sessionID")
 function App() {
   const [currentUserID, setCurrentUserID] = useState("")
   const [users, setUsers] = useState<User[]>([])
-  console.log(users)
 
   useEffect(() => {
     if (!loaded) {
@@ -28,41 +27,35 @@ function App() {
       }
       socket.connect()
 
-      socket.on("session", ({ sessionID, userID }) => {
-        console.log('alo')
+      socket.on("session", ({ sessionID, userID, gameInfo }) => {
         // attach the session ID to the next reconnection attempts
         socket.auth = { sessionID };
         // store it in the localStorage
         localStorage.setItem("sessionID", sessionID);
         // save the ID of the user
         setCurrentUserID(userID)
-        console.log(currentUserID)
+        if (gameInfo) {
+          setUsers(gameInfo.users)
+        }
       });
 
-      socket.on('failed-join', (arg) => {
-        alert("Não foi possivel entrar na sala ! Verifique se o código está correto")
-      })
-
       socket.on('success-join', (arg) => {
-        console.log('sucesso, entrei')
-        users.concat(arg.users)
         setUsers([...arg.users])
       })
 
-      socket.on('new-user-joined', (arg: any) => {
-        console.log(users)
-        users.push(arg)
-        setUsers([...users])
+      socket.on('failed-join', (arg) => {
+        alert("Não foi possivel entrar na sala ! Verifique se o código está correto")
       })
 
       loaded = true
     }
   }, [])
 
-  socket.on('new-user-joined', (arg: any) => {
-    console.log(users)
+  // É preciso colocar essas funções para fora, pois é preciso ter o users atualizado para ela funcionar corretamente (ou outras variaveis)
+  socket.on('new-user-joined', (arg) => {
     setUsers([...users, arg])
   })
+
 
   return (
     <>

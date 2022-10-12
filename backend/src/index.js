@@ -41,7 +41,7 @@ const users = {}
 io.use((socket, next) => handleSession(socket, next, users));
 
 io.on('connection', (socket) => {
-    loadSession(socket, users)
+    loadSession(socket, users, games)
 
     loadRooms(io, socket, games, users)
 })

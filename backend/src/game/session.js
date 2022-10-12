@@ -27,10 +27,19 @@ export function handleSession(socket, next, users) {
     next();
 }
 
-export function loadSession(socket, users) {
+export function loadSession(socket, users, games) {
     users[socket.sessionID]['userID'] = socket.userID
-    socket.emit("session", {
+
+    var newSession = {
         sessionID: socket.sessionID,
         userID: socket.userID,
-    });
+    }
+
+    var roomCode = users[socket.sessionID]['roomCode']
+    if (roomCode) {
+        newSession['gameInfo'] = games[roomCode]
+        socket.join(roomCode)
+    }
+
+    socket.emit("session", newSession)
 }

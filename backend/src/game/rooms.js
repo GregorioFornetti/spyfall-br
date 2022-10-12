@@ -42,7 +42,6 @@ export default function loadRooms(io, socket, games, users) {
             users[socket.sessionID]['roomCode'] = roomCode
             socket.join(roomCode)
             socket.emit('success-join', games[roomCode])  // Envia as informações do jogo para o novo jogador atual
-            console.log('cheguei aqui')
         } else {
             socket.emit('failed-join')
         }
