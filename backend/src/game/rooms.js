@@ -11,6 +11,10 @@ export default function loadRooms(io, socket, games, users) {
         socket.join(roomCode)
         
         games[roomCode] = {
+            game: {
+                roomCode: roomCode,
+                inGame: false
+            },
             users: [
                 {
                     id: socket.userID,

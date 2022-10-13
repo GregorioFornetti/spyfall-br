@@ -2,7 +2,6 @@ import { io } from "socket.io-client"
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import GamePage from './components/GamePage';
 import MainPage from "./components/MainPage";
@@ -16,8 +15,11 @@ const socket = io("http://192.168.56.1:3000", {autoConnect: false})
 const sessionID = localStorage.getItem("sessionID")
 
 function App() {
+
+  const [roomCode, setRoomCode] = useState("")
   const [currentUserID, setCurrentUserID] = useState("")
   const [users, setUsers] = useState<User[]>([])
+  const [currentPage, setCurrentPage] = useState<"loading"|"main"|"lobby"|"game">("loading")
 
   useEffect(() => {
     if (!loaded) {
@@ -36,11 +38,16 @@ function App() {
         setCurrentUserID(userID)
         if (gameInfo) {
           setUsers(gameInfo.users)
+          setRoomCode(gameInfo.game.roomCode)
+          setCurrentPage('lobby')
+        } else {
+          setCurrentPage('main')
         }
       });
 
       socket.on('success-join', (arg) => {
         setUsers([...arg.users])
+        setCurrentPage('lobby')
       })
 
       socket.on('failed-join', (arg) => {
@@ -66,14 +73,10 @@ function App() {
       </Navbar>
 
       <main style={{marginTop: '100px'}}>
-        <MainPage socket={socket} show />
-        <LobbyPage users={users} currentUserID={currentUserID} />
+        <MainPage socket={socket} show={currentPage === 'main'} />
+        <LobbyPage users={users} currentUserID={currentUserID} show={currentPage === 'lobby'} roomCode={roomCode} />
         <GamePage />
       </main>
-
-      {currentUserID}
-      <br />
-      {JSON.stringify(users)}
     </>
   );
 }

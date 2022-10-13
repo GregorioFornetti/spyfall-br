@@ -27,6 +27,7 @@ export default function MainPage({show, socket}: MainPageProps) {
     const createRoom = () => {
         if (username.trim().length > 0) {
             socket.emit("create-room", {username: username})
+            setShowNewMatchModal(false)
         } else {
             alert("Digite um nome !")
         }
@@ -35,6 +36,7 @@ export default function MainPage({show, socket}: MainPageProps) {
     const joinRoom = () => {
         if (username.trim().length > 0 && roomCode.trim().length > 0) {
             socket.emit("join-room", {roomCode: roomCode, username: username})
+            setShowJoinMatchModal(false)
         } else {
             alert("Digite um nome e o código da partida !")
         }
