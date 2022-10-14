@@ -1,14 +1,9 @@
 import Role from '../models/Role.js'
+import { getRoles, resetRoles } from '../models/getters.js'
 
 export async function getAllRoles(req, res) {
     try {
-        const roles = await Role.findAll({
-            attributes: ['id', 'name']
-        })
-        return res.status(200).json(roles.map((role) => ({
-            id: Number(role.id),
-            name: role.name
-        })))
+        return res.status(200).json(await getRoles())
     } catch(error) {
         return res.status(500).json(error.message)
     }
@@ -38,6 +33,7 @@ export async function createRole(req, res) {
         }
         
         const newRole = await Role.create(req.body)
+        resetRoles()
         return res.status(200).json({
             id: Number(newRole.id), 
             name: newRole.name
@@ -64,6 +60,8 @@ export async function updateRole(req, res) {
             },
             attributes: ['id', 'name']
         })
+
+        resetRoles()
         return res.status(200).json({
             id: Number(updatedRole.id),
             name: updatedRole.name
@@ -80,6 +78,8 @@ export async function deleteRole(req, res) {
                 id: Number(req.params.id)
             }
         })
+
+        resetRoles()
         return res.status(200).json({message: `Role with id ${req.params.id} deleted`})
     } catch(error) {
         return res.status(500).json(error.message)

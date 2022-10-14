@@ -5,35 +5,15 @@ import Place_Category from '../models/Place_Category.js'
 import Place_Role from '../models/Place_Role.js'
 import { placeImgsPath } from '../configs/index.js'
 import fs, { existsSync } from 'fs'
-
-function place2JSON(place) {
-    const placeJSON = {}
-    if (place.imgPath) {
-        placeJSON.imgPath = place.imgPath
-    }
-    placeJSON.id = Number(place.id)
-    placeJSON.name = place.name
-    placeJSON.rolesIds = place.Roles.map((role) => Number(role.id))
-    placeJSON.categoriesIds = place.Categories.map((category) => Number(category.id))
-
-    return placeJSON
-}
+import place2JSON from '../models/place2JSON.js'
+import { getPlaces, resetPlaces } from '../models/getters.js'
 
 
 export async function getAllPlaces(req, res) {
     try {
-        const places = await Place.findAll({
-            include: [
-                {
-                    model: Role
-                },
-                {
-                    model: Category
-                }
-            ]
-        })
-        return res.status(200).json(places.map(place2JSON))
+        return res.status(200).json(await getPlaces())
     } catch(error) {
+        console.log('erro no place')
         return res.status(500).json(error.message)
     }
 }
@@ -79,7 +59,8 @@ export async function createPlace(req, res) {
         await Place_Category.bulkCreate(
             JSON.parse(categoriesIds).map((categoryId) => ({categoryId: categoryId, placeId: newPlace.id}))
         )
-
+        
+        resetPlaces()
         return res.status(200).json({
             id: Number(newPlace.id),
             name: newPlace.name
@@ -147,13 +128,14 @@ export async function updatePlace(req, res) {
                 JSON.parse(categoriesIds).map((categoryId) => ({categoryId: categoryId, placeId: id}))
             )
         }
-
-        if (req.body.deleteImg || req.body.imgPath !== oldPlace.imgPath) {
+        
+        if (req.body.deleteImg || (req.body.imgPath && req.body.imgPath !== oldPlace.imgPath)) {
             if (fs.existsSync(oldPlace.imgPath)) {
                 fs.rmSync(oldPlace.imgPath)
             }
         }
 
+        resetPlaces()
         return res.status(200).json({
             id: id,
             name: name
@@ -187,6 +169,7 @@ export async function deletePlace(req, res) {
             }
         }
         
+        resetPlaces()
         return res.status(200).json({'message': `Place with id ${req.params.id} deleted`})
     } catch(error) {
         return res.status(500).json(error.message)
@@ -220,6 +203,7 @@ export async function deletePlaceImage(req, res) {
                 id: req.params.id
             }
         })
+        resetPlaces()
         return res.status(200).json({message: 'Imagem removida com sucesso'})
     } catch(error) {
         return res.status(400).json(error)

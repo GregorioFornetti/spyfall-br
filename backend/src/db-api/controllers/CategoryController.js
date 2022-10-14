@@ -1,14 +1,9 @@
 import Category from '../models/Category.js'
+import { getCategories, resetCategories } from '../models/getters.js'
 
 export async function getAllCategories(req, res) {
     try {
-        const categories = await Category.findAll({
-            attributes: ['id', 'name']
-        })
-        return res.status(200).json(categories.map((category) => ({
-           id: Number(category.id),
-           name: category.name
-        })))
+        return res.status(200).json(await getCategories())
     } catch(error) {
         return res.status(500).json(error.message)
     }
@@ -38,6 +33,7 @@ export async function createCategory(req, res) {
         }
 
         const newCategory = await Category.create(req.body)
+        resetCategories()
         return res.status(200).json({
             id: Number(newCategory.id), 
             name: newCategory.name
@@ -64,6 +60,8 @@ export async function updateCategory(req, res) {
             },
             attributes: ['id', 'name']
         })
+
+        resetCategories()
         return res.status(200).json({
             id: Number(updatedCategory.id),
             name: updatedCategory.name
@@ -80,6 +78,8 @@ export async function deleteCategory(req, res) {
                 id: Number(req.params.id)
             }
         })
+        
+        resetCategories()
         return res.status(200).json({message: `Category with id ${req.params.id} deleted`})
     } catch(error) {
         return res.status(500).json(error.message)

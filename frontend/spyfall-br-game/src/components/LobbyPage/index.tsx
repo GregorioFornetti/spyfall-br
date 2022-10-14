@@ -15,7 +15,7 @@ interface LobbyPageInterface {
 export default function LobbyPage({users, currentUserID, show, roomCode}: LobbyPageInterface) {
     return (
         <>
-            <div style={{maxWidth: "350px", margin: "auto"}}>
+            <div style={{maxWidth: "350px", margin: "auto"}} className={(show) ? ('') : ('d-none')}>
                 <Form.Group>
                     <Form.Label as='h6'>Código da partida</Form.Label>
                     <InputGroup className="mb-3">

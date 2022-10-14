@@ -45,8 +45,9 @@ function App() {
         }
       });
 
-      socket.on('success-join', (arg) => {
-        setUsers([...arg.users])
+      socket.on('success-join', (gameInfo) => {
+        setUsers([...gameInfo.users])
+        setRoomCode(gameInfo.game.roomCode)
         setCurrentPage('lobby')
       })
 
@@ -59,8 +60,9 @@ function App() {
   }, [])
 
   // É preciso colocar essas funções para fora, pois é preciso ter o users atualizado para ela funcionar corretamente (ou outras variaveis)
-  socket.on('new-user-joined', (arg) => {
-    setUsers([...users, arg])
+  socket.on('new-user-joined', (gameInfo) => {
+    setRoomCode(gameInfo.game.roomCode)
+    setUsers([...users, gameInfo])
   })
 
 
