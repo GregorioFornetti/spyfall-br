@@ -27,6 +27,7 @@ function App() {
 
   const [roomCode, setRoomCode] = useState("")
   const [currentUserID, setCurrentUserID] = useState("")
+  const [leaderUserID, setLeaderUserID] = useState("")
   const [users, setUsers] = useState<User[]>([])
   const [currentPage, setCurrentPage] = useState<"loading"|"main"|"lobby"|"game">("loading")
 
@@ -41,10 +42,6 @@ function App() {
         places = responses[0]
         categories = responses[1]
         roles = responses[2]
-
-        console.log(places)
-        console.log(categories)
-        console.log(roles)
 
         if (sessionID) {
           socket.auth = { sessionID }
@@ -63,6 +60,7 @@ function App() {
           setUsers(gameInfo.users)
           setRoomCode(gameInfo.game.roomCode)
           setCurrentPage('lobby')
+          setLeaderUserID(gameInfo.game.leaderUserID)
         } else {
           setCurrentPage('main')
         }
@@ -71,6 +69,7 @@ function App() {
       socket.on('success-join', (gameInfo) => {
         setUsers([...gameInfo.users])
         setRoomCode(gameInfo.game.roomCode)
+        setLeaderUserID(gameInfo.game.leaderUserID)
         setCurrentPage('lobby')
       })
 
@@ -85,9 +84,13 @@ function App() {
   // É preciso colocar essas funções para fora, pois é preciso ter o users atualizado para ela funcionar corretamente (ou outras variaveis)
   socket.on('new-user-joined', (gameInfo) => {
     setRoomCode(gameInfo.game.roomCode)
+    setLeaderUserID(gameInfo.game.leaderUserID)
     setUsers([...users, gameInfo])
   })
 
+
+  console.log(currentUserID)
+  console.log(leaderUserID)
 
   return (
     <>
@@ -98,9 +101,23 @@ function App() {
       </Navbar>
 
       <main style={{marginTop: '100px'}}>
-        <LoadingModal show={currentPage === 'loading'} />
-        <MainPage socket={socket} show={currentPage === 'main'} />
-        <LobbyPage users={users} currentUserID={currentUserID} show={currentPage === 'lobby'} roomCode={roomCode} />
+        <LoadingModal 
+          show={currentPage === 'loading'} 
+        />
+
+        <MainPage 
+          socket={socket} 
+          show={currentPage === 'main'} 
+        />
+
+        <LobbyPage 
+          users={users} 
+          currentUserID={currentUserID} 
+          leaderUserID={leaderUserID}
+          show={currentPage === 'lobby'} 
+          roomCode={roomCode} 
+        />
+
         <GamePage />
       </main>
     </>

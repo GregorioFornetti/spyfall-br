@@ -9,10 +9,11 @@ interface LobbyPageInterface {
     currentUserID: string,
     users: User[],
     show?: boolean,
-    roomCode: string
+    roomCode: string,
+    leaderUserID: string
 }
 
-export default function LobbyPage({users, currentUserID, show, roomCode}: LobbyPageInterface) {
+export default function LobbyPage({users, currentUserID, show, roomCode, leaderUserID}: LobbyPageInterface) {
     return (
         <>
             <div style={{maxWidth: "350px", margin: "auto"}} className={(show) ? ('') : ('d-none')}>
@@ -35,7 +36,7 @@ export default function LobbyPage({users, currentUserID, show, roomCode}: LobbyP
                     <div className='col' key={user.id}>
                         <UserCard 
                             username={user.username}
-                            leader={user.leader}
+                            leader={leaderUserID === user.id}
                             score={user.score} 
                             isCurrentUser={currentUserID === user.id}
                         />

@@ -14,6 +14,8 @@ export async function getAllPlaces(req, res) {
         return res.status(200).json(await getPlaces())
     } catch(error) {
         console.log('erro no place')
+        console.log(res)
+        console.log(req)
         return res.status(500).json(error.message)
     }
 }

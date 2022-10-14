@@ -32,7 +32,7 @@ export default function UserCard({username, leader, score, isCurrentUser, inGame
             'm-auto': true
         })}
         >
-            <p className='h4'>
+            <p className='h4'> 
                 {username}
             </p>
             <div className='h5'>

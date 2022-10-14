@@ -1,26 +1,33 @@
 import crypto from 'crypto'
+import { getPlaces } from '../db-api/models/getters.js'
 
 export default function loadRooms(io, socket, games, users) {
 
-    socket.on('create-room', (arg) => {
+    socket.on('create-room', async (arg) => {
         var {username} = arg
         do {
             var roomCode = crypto.randomUUID()
         } while(io.sockets.adapter.rooms.has(roomCode))
 
         socket.join(roomCode)
+        console.log("USER ID:")
+        console.log(users[socket.sessionID].userID)
         
         games[roomCode] = {
             game: {
                 roomCode: roomCode,
-                inGame: false
+                inGame: false,
+                leaderUserID: socket.userID, 
+                options: {
+                    possiblePlaces: [(await getPlaces()).map((place) => (place.id))],
+                    possiblePlacesNumber: 20
+                }
             },
             users: [
                 {
                     id: socket.userID,
                     username: username,
-                    score: 0,
-                    leader: true
+                    score: 0
                 }
             ]
         }
@@ -36,8 +43,7 @@ export default function loadRooms(io, socket, games, users) {
             let newPlayer = {
                 id: socket.userID,
                 username: username,
-                score: 0,
-                leader: false
+                score: 0
             }
             games[roomCode].users.push(newPlayer)
 

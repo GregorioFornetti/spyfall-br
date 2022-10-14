@@ -50,6 +50,23 @@ export async function getPlaces() {
     return places
 }
 
+export async function getPlaceRoles(placeID) {
+    const place = await Place.findOne({
+        where: {
+            id: Number(req.params.id)
+        },
+        include: [
+            {
+                model: Role
+            },
+            {
+                model: Category
+            }
+        ]
+    })
+    return place2JSON(placeID).rolesIds
+}
+
 
 export function resetCategories() {
     categories = null
