@@ -47,7 +47,6 @@ export async function getPlaces() {
         })
         places = places.map(place2JSON)
     }
-    console.log(places)
     return places
 }
 
