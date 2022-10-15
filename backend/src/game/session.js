@@ -1,11 +1,7 @@
-import crypto from 'crypto'
 
-// https://socket.io/get-started/private-messaging-part-2/
+import User from './classes/User.js';
+import randomID from './randomID.js';
 
-
-function randomId() {
-    return crypto.randomBytes(8).toString("hex")
-}
 
 export function handleSession(socket, next, users) {
     const sessionID = socket.handshake.auth.sessionID;
@@ -15,31 +11,30 @@ export function handleSession(socket, next, users) {
         if (user) {
             socket.sessionID = sessionID;
             socket.userID = user.userID;
+            user.socketID = socket.id
             return next();
         }
     }
 
     // Usuário novo, criar nova conexão
-    socket.sessionID = randomId()
-    socket.userID = randomId()
-    users[socket.sessionID] = {}
+    var user = new User(socket.id)
+    var newSessionID = randomID()
+    users[newSessionID] = user
 
-    next();
+    socket.sessionID = newSessionID
+    socket.userID = user.userID
+
+    return next();
 }
 
-export function loadSession(socket, users, games) {
-    users[socket.sessionID]['userID'] = socket.userID
-    users[socket.sessionID]['socketID'] = socket.id
-
+export function loadSession(socket, users) {
+    var user = users[socket.sessionID]
     var newSession = {
         sessionID: socket.sessionID,
         userID: socket.userID,
     }
-
-    var roomCode = users[socket.sessionID]['roomCode']
-    if (roomCode) {
-        newSession['gameInfo'] = games[roomCode]
-        socket.join(roomCode)
+    if (user.game) {
+        newSession.gameInfo = user.game.toJSON(user.userID)
     }
 
     socket.emit("session", newSession)

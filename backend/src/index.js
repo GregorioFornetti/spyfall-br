@@ -6,7 +6,7 @@ import redirectIfNotAuth from './db-api/middlewares/redirect.js'
 import session from 'express-session'
 import { createServer } from "http";
 import { Server } from "socket.io";
-import loadRooms from "./game/rooms.js"
+import gameEventsHandler from "./game/eventsHandlers/gameEventsHandler.js"
 import { handleSession, loadSession } from './game/session.js'
 
 
@@ -41,9 +41,9 @@ const users = {}
 io.use((socket, next) => handleSession(socket, next, users));
 
 io.on('connection', (socket) => {
-    loadSession(socket, users, games)
+    loadSession(socket, users)
 
-    loadRooms(io, socket, games, users)
+    gameEventsHandler(io, socket, games, users)
 })
 
 server.listen(port, () => {

@@ -3,22 +3,22 @@ import { io } from "socket.io-client"
 import { Card, Container, Row } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import UserCard from '../UserCard';
-import UsersContainer from '../UsersContainer'
+import PlayerCard from '../PlayerCard';
+import UsersContainer from '../PlayersContainer'
 import PlacesContainer from '../PlacesContainer';
 import PlaceCard from '../PlaceCard';
 
 import Place from '../../interfaces/PlaceInterface'
-import User from '../../interfaces/UserInterface'
+import Player from '../../interfaces/PlayerInterface'
 import Role from '../../interfaces/RoleInterface'
 
 
 interface GamePageProps {
     isSpy?: boolean,
     selectedPlace?: Place,
-    userRole: Role,
+    playerRole: Role,
     possiblePlaces: Place[],
-    users: User[]
+    players: Player[]
 }
 
 
@@ -50,7 +50,7 @@ export default function GamePage() {
     
           <UsersContainer title='Jogadores' containerClassName='mt-5'>
             <div className='col'>
-              <UserCard 
+              <PlayerCard 
                 username='AAAAAAAAAAAAAAA' 
                 leader
                 score={10} 
@@ -60,7 +60,7 @@ export default function GamePage() {
               />
             </div>
             <div className='col'>
-              <UserCard 
+              <PlayerCard 
                 username='AAAAAAAAAAAAAAA'  
                 score={10} 
                 inGame={inGame}
@@ -68,7 +68,7 @@ export default function GamePage() {
               />
             </div>
             <div className='col'>
-              <UserCard 
+              <PlayerCard 
                 username='AAAAAAAAAAAAAAA' 
                 leader={false} 
                 score={10} 
@@ -79,7 +79,7 @@ export default function GamePage() {
               />
             </div>
             <div className='col'>
-              <UserCard 
+              <PlayerCard 
                 username='AAAAAAAAAAAAAAA' 
                 leader={false} 
                 score={10} 

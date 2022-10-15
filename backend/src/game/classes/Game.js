@@ -8,7 +8,7 @@ export default class Game {
         const newGame = new this(user, username)
         newGame.options = await Options.build()
 
-        socket.emit('sucess-join', newGame.toJSON())
+        socket.emit('success-join', newGame.toJSON())
 
         return newGame
     }
@@ -44,7 +44,7 @@ export default class Game {
         var gameJSON = {
             code: this.code,
             inMatch: this.code,
-            leader: this.leader.userID,
+            leaderUserID: this.leader.userID,
             players: this.players.map((player) => (player.toJSON())),
             options: this.options.toJSON(),
             match: null

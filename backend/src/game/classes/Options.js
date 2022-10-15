@@ -1,4 +1,4 @@
-
+import { getPlaces } from "../../db-api/models/getters.js"
 
 export default class Options {
     static async build() {

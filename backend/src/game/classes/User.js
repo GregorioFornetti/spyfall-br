@@ -1,13 +1,10 @@
 import crypto from 'crypto'
-
-function randomId() {
-    return crypto.randomBytes(8).toString("hex")
-}
+import randomID from '../randomID.js'
 
 export default class User {
-    constructor() {
-        this.userID = randomId()
-        this.socketID = null
+    constructor(socketID) {
+        this.userID = randomID()
+        this.socketID = socketID
         this.game = null
     }
 }

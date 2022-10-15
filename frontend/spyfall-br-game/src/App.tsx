@@ -6,7 +6,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import GamePage from './components/GamePage';
 import MainPage from "./components/MainPage";
 import { useState, useEffect } from "react";
-import User from './interfaces/UserInterface'
+import Player from './interfaces/PlayerInterface'
 import LobbyPage from "./components/LobbyPage";
 
 import Place from './interfaces/PlaceInterface'
@@ -25,10 +25,10 @@ var categories: Category[] = []
 
 function App() {
 
-  const [roomCode, setRoomCode] = useState("")
+  const [gameCode, setGameCode] = useState("")
   const [currentUserID, setCurrentUserID] = useState("")
   const [leaderUserID, setLeaderUserID] = useState("")
-  const [users, setUsers] = useState<User[]>([])
+  const [players, setPlayers] = useState<Player[]>([])
   const [currentPage, setCurrentPage] = useState<"loading"|"main"|"lobby"|"game">("loading")
 
   useEffect(() => {
@@ -50,26 +50,26 @@ function App() {
       })
 
       socket.on("session", ({ sessionID, userID, gameInfo }) => {
-        // attach the session ID to the next reconnection attempts
+
         socket.auth = { sessionID };
-        // store it in the localStorage
         localStorage.setItem("sessionID", sessionID);
-        // save the ID of the user
         setCurrentUserID(userID)
+
         if (gameInfo) {
-          setUsers(gameInfo.users)
-          setRoomCode(gameInfo.game.roomCode)
+          setPlayers(gameInfo.players)
+          setGameCode(gameInfo.code)
           setCurrentPage('lobby')
-          setLeaderUserID(gameInfo.game.leaderUserID)
+          setLeaderUserID(gameInfo.leaderUserID)
         } else {
           setCurrentPage('main')
         }
       });
 
       socket.on('success-join', (gameInfo) => {
-        setUsers([...gameInfo.users])
-        setRoomCode(gameInfo.game.roomCode)
-        setLeaderUserID(gameInfo.game.leaderUserID)
+        console.log(gameInfo)
+        setPlayers([...gameInfo.players])
+        setGameCode(gameInfo.code)
+        setLeaderUserID(gameInfo.leaderUserID)
         setCurrentPage('lobby')
       })
 
@@ -82,15 +82,9 @@ function App() {
   }, [])
 
   // É preciso colocar essas funções para fora, pois é preciso ter o users atualizado para ela funcionar corretamente (ou outras variaveis)
-  socket.on('new-user-joined', (gameInfo) => {
-    setRoomCode(gameInfo.game.roomCode)
-    setLeaderUserID(gameInfo.game.leaderUserID)
-    setUsers([...users, gameInfo])
+  socket.on('new-player-joined', (gameInfo) => {
+    setPlayers([...players, gameInfo])
   })
-
-
-  console.log(currentUserID)
-  console.log(leaderUserID)
 
   return (
     <>
@@ -111,11 +105,11 @@ function App() {
         />
 
         <LobbyPage 
-          users={users} 
+          players={players} 
           currentUserID={currentUserID} 
           leaderUserID={leaderUserID}
           show={currentPage === 'lobby'} 
-          roomCode={roomCode} 
+          gameCode={gameCode} 
         />
 
         <GamePage />

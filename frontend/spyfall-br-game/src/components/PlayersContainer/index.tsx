@@ -1,14 +1,14 @@
 import RootContainer from "../RootContainer"
 
 
-interface UserContainerProps {
+interface PlayersContainerProps {
     title: string,
     children: JSX.Element[]|JSX.Element,
     containerClassName?: string
 }
 
 
-export default function UsersContainer({title, children, containerClassName}: UserContainerProps) {
+export default function PlayersContainer({title, children, containerClassName}: PlayersContainerProps) {
     return (
         <RootContainer 
             title={title} 

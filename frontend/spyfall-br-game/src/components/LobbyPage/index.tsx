@@ -1,19 +1,19 @@
-import UserCard from "../UserCard";
-import UsersContainer from "../UsersContainer";
-import User from '../../interfaces/UserInterface'
+import PlayerCard from "../PlayerCard";
+import PlayersContainer from "../PlayersContainer";
+import Player from '../../interfaces/PlayerInterface'
 import classNames from "classnames";
 import { Button, Form, InputGroup } from "react-bootstrap";
 import { FaRegCopy } from 'react-icons/fa'
 
 interface LobbyPageInterface {
     currentUserID: string,
-    users: User[],
+    players: Player[],
     show?: boolean,
-    roomCode: string,
+    gameCode: string,
     leaderUserID: string
 }
 
-export default function LobbyPage({users, currentUserID, show, roomCode, leaderUserID}: LobbyPageInterface) {
+export default function LobbyPage({players, currentUserID, show, gameCode, leaderUserID}: LobbyPageInterface) {
     return (
         <>
             <div style={{maxWidth: "350px", margin: "auto"}} className={(show) ? ('') : ('d-none')}>
@@ -22,19 +22,19 @@ export default function LobbyPage({users, currentUserID, show, roomCode, leaderU
                     <InputGroup className="mb-3">
                         <Form.Control
                             readOnly={true}
-                            value={roomCode}
+                            value={gameCode}
                         />
-                        <Button variant="outline-secondary" onClick={() => {navigator.clipboard.writeText(roomCode)}}>
+                        <Button variant="outline-secondary" onClick={() => {navigator.clipboard.writeText(gameCode)}}>
                             <FaRegCopy />
                         </Button>
                     </InputGroup>
                 </Form.Group>
             </div>
 
-            <UsersContainer title='Jogadores' containerClassName={classNames('mt-5', {'d-none': !show})}>
-                {users.map((user) => (
+            <PlayersContainer title='Jogadores' containerClassName={classNames('mt-5', {'d-none': !show})}>
+                {players.map((user) => (
                     <div className='col' key={user.id}>
-                        <UserCard 
+                        <PlayerCard 
                             username={user.username}
                             leader={leaderUserID === user.id}
                             score={user.score} 
@@ -42,7 +42,7 @@ export default function LobbyPage({users, currentUserID, show, roomCode, leaderU
                         />
                     </div>
                 ))}
-            </UsersContainer>
+            </PlayersContainer>
         </>
     )
 }

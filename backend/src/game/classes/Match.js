@@ -1,5 +1,5 @@
 import { sample, random, shuffle } from 'underscore'
-import { getPlaceRoles } from '../db-api/models/getters.js'
+import { getPlaceRoles } from '../../db-api/models/getters.js'
 
 function selectRandomElement(listOfElements) {
     return listOfElements[random(listOfElements.length - 1)]
