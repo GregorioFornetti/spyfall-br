@@ -61,6 +61,7 @@ export function loadMatches(io, socket, games, users) {
         var matchJSON = createMatchJSON(gameOptions, users)
         games[roomCode]['match'] = matchJSON
         
+        
     })
 }
 

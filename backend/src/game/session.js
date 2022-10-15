@@ -29,6 +29,7 @@ export function handleSession(socket, next, users) {
 
 export function loadSession(socket, users, games) {
     users[socket.sessionID]['userID'] = socket.userID
+    users[socket.sessionID]['socketID'] = socket.id
 
     var newSession = {
         sessionID: socket.sessionID,

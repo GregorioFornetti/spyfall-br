@@ -10,8 +10,6 @@ export default function loadRooms(io, socket, games, users) {
         } while(io.sockets.adapter.rooms.has(roomCode))
 
         socket.join(roomCode)
-        console.log("USER ID:")
-        console.log(users[socket.sessionID].userID)
         
         games[roomCode] = {
             game: {
@@ -19,7 +17,7 @@ export default function loadRooms(io, socket, games, users) {
                 inGame: false,
                 leaderUserID: socket.userID, 
                 options: {
-                    possiblePlaces: [(await getPlaces()).map((place) => (place.id))],
+                    possiblePlaces: (await getPlaces()).map((place) => (place.id)),
                     possiblePlacesNumber: 20
                 }
             },
