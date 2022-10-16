@@ -31,6 +31,13 @@ function App() {
   const [players, setPlayers] = useState<Player[]>([])
   const [currentPage, setCurrentPage] = useState<"loading"|"main"|"lobby"|"game">("loading")
 
+  const [isSpy, setIsSpy] = useState(false)
+  const [possiblePlaces, setPossiblePlaces] = useState<Place[]>([])
+  const [selectedPlace, setSelectedPlace] = useState<Place|undefined>()
+  const [playerRole, setPlayerRole] = useState<Role|undefined>()
+  const [askingUserID, setAskingUserID] = useState('')
+  const [targetUserID, setTargetUserID] = useState<string|undefined>()
+
   useEffect(() => {
     if (!loaded) {
 
@@ -58,8 +65,20 @@ function App() {
         if (gameInfo) {
           setPlayers(gameInfo.players)
           setGameCode(gameInfo.code)
-          setCurrentPage('lobby')
           setLeaderUserID(gameInfo.leaderUserID)
+          if (gameInfo.inMatch) {
+            var match = gameInfo.match
+            console.log(match)
+            setAskingUserID(match.askingUserID)
+            setTargetUserID(match.targetUserID)
+            setPossiblePlaces(places.filter((place) => (match.possiblePlacesIDs.includes(place.id))))
+            setIsSpy(match.isSpy)
+            setSelectedPlace(places.find((place) => (place.id === match.selectedPlaceID)))
+            setPlayerRole(roles.find((role) => (role.id === match.userRoleID)))
+            setCurrentPage('game')
+          } else {
+            setCurrentPage('lobby')
+          }
         } else {
           setCurrentPage('main')
         }
@@ -77,12 +96,24 @@ function App() {
         alert("Não foi possivel entrar na sala ! Verifique se o código está correto")
       })
 
+      socket.on('match-start', (match) => {
+        setCurrentPage('game')
+        setAskingUserID(match.askingUserID)
+        setTargetUserID(match.targetUserID)
+        setPossiblePlaces(places.filter((place) => (match.possiblePlacesIds.includes(place.id))))
+
+        setIsSpy(match.isSpy)
+        setSelectedPlace(places.find(match.selectedPlaceID))
+        setPlayerRole(roles.find(match.userRoleID))
+      })
+
       loaded = true
     }
   }, [])
 
   // É preciso colocar essas funções para fora, pois é preciso ter o users atualizado para ela funcionar corretamente (ou outras variaveis)
   socket.on('new-player-joined', (gameInfo) => {
+    console.log(gameInfo)
     setPlayers([...players, gameInfo])
   })
 
@@ -100,19 +131,31 @@ function App() {
         />
 
         <MainPage 
-          socket={socket} 
           show={currentPage === 'main'} 
+          socket={socket} 
         />
 
-        <LobbyPage 
+        <LobbyPage
+          show={currentPage === 'lobby'} 
+          socket={socket}
           players={players} 
           currentUserID={currentUserID} 
           leaderUserID={leaderUserID}
-          show={currentPage === 'lobby'} 
           gameCode={gameCode} 
         />
 
-        <GamePage />
+        <GamePage
+          show={currentPage === 'game'}
+          players={players}
+          currentUserID={currentUserID}
+          leaderUserID={leaderUserID}
+          possiblePlaces={possiblePlaces}
+          isSpy={isSpy}
+          selectedPlace={selectedPlace}
+          askingUserID={askingUserID}
+          targetUserID={targetUserID}
+          playerRole={playerRole}
+        />
       </main>
     </>
   );

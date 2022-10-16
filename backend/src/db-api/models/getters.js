@@ -53,7 +53,7 @@ export async function getPlaces() {
 export async function getPlaceRoles(placeID) {
     const place = await Place.findOne({
         where: {
-            id: Number(req.params.id)
+            id: Number(placeID)
         },
         include: [
             {
@@ -64,7 +64,7 @@ export async function getPlaceRoles(placeID) {
             }
         ]
     })
-    return place2JSON(placeID).rolesIds
+    return place2JSON(place).rolesIds
 }
 
 

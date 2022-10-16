@@ -38,6 +38,7 @@ export default class Game {
 
     async startMatch(io) {
         this.match = await Match.build(this.options, this.players.map((player) => (player.user)), io)
+        this.inMatch = true
     }
 
     toJSON(userID) {

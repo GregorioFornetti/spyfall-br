@@ -8,6 +8,7 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import gameEventsHandler from "./game/eventsHandlers/gameEventsHandler.js"
 import { handleSession, loadSession } from './game/session.js'
+import matchEventsHandler from './game/eventsHandlers/matchEventsHandler.js'
 
 
 
@@ -44,6 +45,8 @@ io.on('connection', (socket) => {
     loadSession(socket, users)
 
     gameEventsHandler(io, socket, games, users)
+
+    matchEventsHandler(io, socket, users)
 })
 
 server.listen(port, () => {

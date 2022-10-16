@@ -9,7 +9,7 @@ export default class Options {
 
     constructor() {
         this.possiblePlaces = null
-        this.possiblePlacesNumber = 20
+        this.possiblePlacesNumber = 10
     }
 
     toJSON() {

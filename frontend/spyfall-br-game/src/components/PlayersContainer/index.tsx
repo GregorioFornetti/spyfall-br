@@ -1,9 +1,10 @@
+import { ReactElement } from "react"
 import RootContainer from "../RootContainer"
 
 
 interface PlayersContainerProps {
     title: string,
-    children: JSX.Element[]|JSX.Element,
+    children: JSX.Element[]|JSX.Element
     containerClassName?: string
 }
 

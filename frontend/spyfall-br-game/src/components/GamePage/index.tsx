@@ -14,29 +14,36 @@ import Role from '../../interfaces/RoleInterface'
 
 
 interface GamePageProps {
+    show?: boolean,
     isSpy?: boolean,
     selectedPlace?: Place,
-    playerRole: Role,
+    playerRole?: Role,
     possiblePlaces: Place[],
-    players: Player[]
+    players: Player[],
+    currentUserID: string,
+    leaderUserID: string,
+    askingUserID: string,
+    targetUserID?: string
 }
 
 
-export default function GamePage() {
-    const inGame = true
+export default function GamePage({show, isSpy, selectedPlace, playerRole, possiblePlaces, players, currentUserID, leaderUserID, askingUserID, targetUserID}: GamePageProps) {
 
     return (
-        <Container className={'d-none'}>
+        <Container className={(!show) ? ('d-none') : ('')}>
           <Container fluid>
     
             <Card className='text-center m-auto' style={{width: '340px'}}>
-              <Card.Header className='h4'>Lugar selecionado</Card.Header>
+              <Card.Header className='h4'>{(!isSpy) ? ('Lugar selecionado') : ('Você é o espião')}</Card.Header>
               <Card.Body>
                 <PlaceCard
-                  title='lugar'
+                  title={(selectedPlace) ? (selectedPlace.name) : ('Espião')}
                   type='selected'
+                  imgURL={(selectedPlace) ? (selectedPlace.imgPath) : (undefined)}
                 />
-                <p className='h5'>Cargo: cozinheiro</p>
+                {playerRole &&
+                  <p className='h5'>Cargo: {playerRole.name}</p>
+                }
               </Card.Body>
             </Card>
     
@@ -49,61 +56,27 @@ export default function GamePage() {
           </Container>
     
           <UsersContainer title='Jogadores' containerClassName='mt-5'>
-            <div className='col'>
-              <PlayerCard 
-                username='AAAAAAAAAAAAAAA' 
-                leader
-                score={10} 
-                isCurrentUser
-                inGame={inGame}
-                asking
-              />
-            </div>
-            <div className='col'>
-              <PlayerCard 
-                username='AAAAAAAAAAAAAAA'  
-                score={10} 
-                inGame={inGame}
-                target
-              />
-            </div>
-            <div className='col'>
-              <PlayerCard 
-                username='AAAAAAAAAAAAAAA' 
-                leader={false} 
-                score={10} 
-                isCurrentUser={false} 
-                inGame={inGame}
-                asking={false}
-                target={false}
-              />
-            </div>
-            <div className='col'>
-              <PlayerCard 
-                username='AAAAAAAAAAAAAAA' 
-                leader={false} 
-                score={10} 
-                isCurrentUser={false} 
-                inGame={inGame}
-                asking={false}
-                target={false}
-              />
-            </div>
+            {players.map((player) => (
+              <div className='col' key={player.id}>
+                <PlayerCard 
+                  username={player.username}
+                  leader={player.id === leaderUserID}
+                  score={player.score} 
+                  isCurrentUser={player.id === currentUserID}
+                  asking={player.id === askingUserID}
+                  target={player.id === targetUserID}
+                  inGame
+                />
+              </div>
+            ))}
           </UsersContainer>
     
           <PlacesContainer title='Lugares' containerClassName='mt-5'>
-            <div className='col'>
-              <PlaceCard title='lugar' type={'markable'} />
-            </div>
-            <div className='col'>
-              <PlaceCard title='lugar' type={'markable'} />
-            </div>
-            <div className='col'>
-              <PlaceCard title='lugar' type={'markable'} />
-            </div>
-            <div className='col'>
-              <PlaceCard title='lugar' type={'markable'} />
-            </div>
+            {possiblePlaces.map((place) => (
+              <div className='col' key={place.id}>
+                <PlaceCard title={place.name} imgURL={place.imgPath} type={'markable'} />
+              </div>
+            ))}
           </PlacesContainer>
         </Container>
       );
