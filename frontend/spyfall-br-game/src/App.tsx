@@ -16,7 +16,9 @@ import LoadingModal from "./components/LoadingModal";
 
 var loaded = false
 
-const socket = io("http://192.168.56.1:3000", {autoConnect: false})
+const serverURL = 'http://localhost:3000'
+
+const socket = io(serverURL, {autoConnect: false})
 const sessionID = localStorage.getItem("sessionID")
 
 var places: Place[] = []
@@ -42,11 +44,16 @@ function App() {
     if (!loaded) {
 
       Promise.all([
-        fetch('http://192.168.56.1:3000/places', {method: 'GET'}).then((response) => (response.json())),
-        fetch('http://192.168.56.1:3000/categories', {method: 'GET'}).then((response) => (response.json())),
-        fetch('http://192.168.56.1:3000/roles', {method: 'GET'}).then((response) => (response.json()))
+        fetch(`${serverURL}/places`, {method: 'GET'}).then((response) => (response.json())),
+        fetch(`${serverURL}/categories`, {method: 'GET'}).then((response) => (response.json())),
+        fetch(`${serverURL}/roles`, {method: 'GET'}).then((response) => (response.json()))
       ]).then((responses) => {
-        places = responses[0]
+        places = responses[0].map((place: any) => {
+          if (place.imgPath) {
+            return {...place, imgPath: `${serverURL}/${place.imgPath}`}
+          }
+          return place
+        })
         categories = responses[1]
         roles = responses[2]
 

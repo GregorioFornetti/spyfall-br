@@ -44,7 +44,7 @@ export default class Game {
     toJSON(userID) {
         var gameJSON = {
             code: this.code,
-            inMatch: this.code,
+            inMatch: this.inMatch,
             leaderUserID: this.leader.userID,
             players: this.players.map((player) => (player.toJSON())),
             options: this.options.toJSON(),

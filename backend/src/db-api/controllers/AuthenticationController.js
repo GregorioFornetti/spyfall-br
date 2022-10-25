@@ -1,7 +1,7 @@
 
 
 export function getAuthPage(req, res) {
-    return res.sendFile('src/db-api/views/auth.html', {root: '.'})
+    return res.sendFile('src/views/auth.html', {root: '.'})
 }
 
 export function login(req, res) {
