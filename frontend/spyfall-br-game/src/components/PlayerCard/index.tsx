@@ -15,10 +15,13 @@ interface PlayerCardProps {
     inGame?: boolean,
     asking?: boolean,
     target?: boolean,
-    onClick?: () => void
+    onClick?: () => void,
+    agreed?: boolean,
+    desagreed?: boolean,
+    accused?: boolean
 }
 
-export default function PlayerCard({username, leader, score, isCurrentUser, inGame, asking, target, onClick}: PlayerCardProps) {
+export default function PlayerCard({username, leader, score, isCurrentUser, inGame, asking, target, agreed, desagreed, accused, onClick}: PlayerCardProps) {
 
     const [guess, setGuess] = useState<"current user"|"undefined"|"suspect"|"safe">((isCurrentUser) ? ('current user') : ('undefined'))
 
@@ -26,10 +29,10 @@ export default function PlayerCard({username, leader, score, isCurrentUser, inGa
         <div onClick={onClick} className={classNames({
             [styles['user-card']]: true,
             [styles['game-user-card']]: inGame,
-            [styles['user-card-current-user']]: isCurrentUser,
+            [styles['user-card-current-user']]: isCurrentUser || accused,
             [styles['user-card-undefined']]: guess === 'undefined',
-            [styles['user-card-suspect']]: guess === 'suspect',
-            [styles['user-card-safe']]: guess === 'safe',
+            [styles['user-card-suspect']]: guess === 'suspect' || desagreed,
+            [styles['user-card-safe']]: guess === 'safe' || agreed,
             [styles['user-card-clickable']]: onClick !== undefined,
             'm-auto': true
         })}

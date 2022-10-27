@@ -29,8 +29,8 @@ export default function AccuseModal({show, setShow, players, currentUserID}: Acc
                         {players
                         .filter((player) => player.id !== currentUserID)
                         .map((player) => (
-                            <div className='col-sm-12 col-lg-6 col-xl-4'>
-                                <PlayerCard key={player.id}
+                            <div className='col-sm-12 col-lg-6 col-xl-4' key={player.id}>
+                                <PlayerCard
                                     username={player.username}
                                     score={player.score}
                                     onClick={() => console.log('clicou')}

@@ -37,7 +37,13 @@ export default function GamePage({show, isSpy, selectedPlace, playerRole, possib
     const [showVoteModal, setShowVoteModal] = useState(false)
     const [showGuessModal, setShowGuessModal] = useState(false)
     const [showQuestionModal, setShowQuestionModal] = useState(false)
+
     const [previousAskingUserID, setPreviousAskingUserID] = useState<string|undefined>()
+
+    const [accusedUserID, setAccusedUserID] = useState<string|undefined>()
+    const [accuserUserID, setAccuserUserID] = useState<string|undefined>()
+    const [agreedUsersIds, setAgreedUsersIds] = useState<string[]>([])
+    const [desagreedUsersIds, setDesagreedsUsersIds] = useState<string[]>([])
 
     return (
         <>
@@ -120,6 +126,12 @@ export default function GamePage({show, isSpy, selectedPlace, playerRole, possib
           <VoteModal
             show={showVoteModal}
             setShow={setShowVoteModal}
+
+            players={players}
+            accusedUserID={accusedUserID}
+            accuserUserID={accuserUserID}
+            agreedUsersIds={agreedUsersIds}
+            desagreedUsersIds={desagreedUsersIds}
           />
 
           <GuessModal
