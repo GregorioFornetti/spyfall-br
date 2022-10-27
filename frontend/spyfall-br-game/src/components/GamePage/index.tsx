@@ -124,6 +124,8 @@ export default function GamePage({show, isSpy, selectedPlace, playerRole, possib
           <GuessModal
             show={showGuessModal}
             setShow={setShowGuessModal}
+
+            places={possiblePlaces}
           />
 
           <QuestionModal

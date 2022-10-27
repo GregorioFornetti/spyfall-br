@@ -7,11 +7,17 @@ import { useState } from 'react'
 interface PlaceCardProps {
     title: string,
     type: "markable"|"selected"|"option",
-    imgURL?: string
+    imgURL?: string,
+    onClick?: () => void
 }
 
-export default function PlaceCard({title, type, imgURL}: PlaceCardProps) {
+export default function PlaceCard({title, type, imgURL, onClick}: PlaceCardProps) {
     const [marked, setMarked] = useState(false)
+    const onClickFinal = (onClick) ? (onClick) : (() => {
+        if (type === 'markable') {
+            setMarked(!marked)
+        }
+    })
 
     return (
         <div 
@@ -20,11 +26,7 @@ export default function PlaceCard({title, type, imgURL}: PlaceCardProps) {
                 [styles.clickable]: type === 'markable' || type === 'option'
             })} 
             draggable={false}
-            onClick={() => {
-                if (type === 'markable') {
-                    setMarked(!marked)
-                }
-            }}
+            onClick={onClickFinal}
         >
             <img
                 className={classNames(styles.placeImg, styles.noselect)}

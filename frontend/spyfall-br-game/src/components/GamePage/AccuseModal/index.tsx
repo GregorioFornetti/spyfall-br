@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 
 import Player from '../../../interfaces/PlayerInterface'
 import PlayerCard from '../../PlayerCard';
-import PlayersContainer from '../../PlayersContainer';
+
 
 interface AccuseModalProps {
     show: boolean,
