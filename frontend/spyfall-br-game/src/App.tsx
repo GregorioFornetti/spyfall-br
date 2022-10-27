@@ -13,7 +13,7 @@ import Place from './interfaces/PlaceInterface'
 import Role from './interfaces/RoleInterface'
 import Category from './interfaces/CategoryInterface'
 import LoadingModal from "./components/LoadingModal";
-import { Nav } from "react-bootstrap";
+import { Nav, Row } from "react-bootstrap";
 
 var loaded = false
 
@@ -136,11 +136,20 @@ function App() {
       <Navbar fixed="top" bg="dark" variant="dark">
         <Container>
           <Navbar.Brand>Spyfall-br</Navbar.Brand>
-          <Nav className="me-auto">
-            {(currentPage === 'lobby' || currentPage === 'game') && 
-            <Nav.Link href="#" onClick={() => socket.emit('logout')}>Sair do jogo</Nav.Link>
-            }
-          </Nav>
+          <Container>
+            <Row>
+              <Nav className="col-6 me-auto">
+                {(currentPage === 'game') &&
+                  <Nav.Link href="#">Sua vez de questionar</Nav.Link>  
+                }
+              </Nav>
+              <Nav className="col-6 me-auto justify-content-end">
+                {(currentPage === 'lobby' || currentPage === 'game') && 
+                  <Nav.Link href="#" className='link-danger' onClick={() => socket.emit('logout')}>Sair do jogo</Nav.Link>
+                }
+              </Nav>
+            </Row>
+          </Container>
         </Container>
       </Navbar>
 
