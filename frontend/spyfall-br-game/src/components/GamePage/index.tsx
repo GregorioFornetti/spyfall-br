@@ -37,6 +37,7 @@ export default function GamePage({show, isSpy, selectedPlace, playerRole, possib
     const [showVoteModal, setShowVoteModal] = useState(false)
     const [showGuessModal, setShowGuessModal] = useState(false)
     const [showQuestionModal, setShowQuestionModal] = useState(false)
+    const [previousAskingUserID, setPreviousAskingUserID] = useState<string|undefined>()
 
     return (
         <>
@@ -131,6 +132,10 @@ export default function GamePage({show, isSpy, selectedPlace, playerRole, possib
           <QuestionModal
             show={showQuestionModal}
             setShow={setShowQuestionModal}
+
+            players={players}
+            currentUserID={currentUserID}
+            previousAskingUserID={previousAskingUserID}
           />
         </>
       );
