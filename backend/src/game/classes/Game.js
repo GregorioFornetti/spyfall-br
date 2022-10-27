@@ -36,6 +36,16 @@ export default class Game {
         }
     }
 
+    removePlayer(user, socket, io) {
+        this.players = this.players.filter((player) => player.getSocketID() !== user.socketID)
+
+        for (let player of this.players) {
+            io.to(player.getSocketID()).emit('player-disconnect', user.userID)
+        }
+
+        socket.emit('logout')
+    }
+
     async startMatch(io) {
         this.match = await Match.build(this.options, this.players.map((player) => (player.user)), io)
         this.inMatch = true

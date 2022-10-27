@@ -13,10 +13,11 @@ import Place from './interfaces/PlaceInterface'
 import Role from './interfaces/RoleInterface'
 import Category from './interfaces/CategoryInterface'
 import LoadingModal from "./components/LoadingModal";
+import { Nav } from "react-bootstrap";
 
 var loaded = false
 
-const serverURL = 'http://191.101.235.230:3000'
+const serverURL = 'http://localhost:3000'  // http://191.101.235.230:3000
 
 const socket = io(serverURL, {autoConnect: false})
 const sessionID = localStorage.getItem("sessionID")
@@ -75,7 +76,6 @@ function App() {
           setLeaderUserID(gameInfo.leaderUserID)
           if (gameInfo.inMatch) {
             var match = gameInfo.match
-            console.log(match)
             setAskingUserID(match.askingUserID)
             setTargetUserID(match.targetUserID)
             setPossiblePlaces(places.filter((place) => (match.possiblePlacesIDs.includes(place.id))))
@@ -92,7 +92,6 @@ function App() {
       });
 
       socket.on('success-join', (gameInfo) => {
-        console.log(gameInfo)
         setPlayers([...gameInfo.players])
         setGameCode(gameInfo.code)
         setLeaderUserID(gameInfo.leaderUserID)
@@ -114,14 +113,22 @@ function App() {
         setPlayerRole(roles.find(match.userRoleID))
       })
 
+      socket.on('logout', () => {
+        setCurrentPage('main')
+      })
+
       loaded = true
     }
   }, [])
 
   // É preciso colocar essas funções para fora, pois é preciso ter o users atualizado para ela funcionar corretamente (ou outras variaveis)
   socket.on('new-player-joined', (gameInfo) => {
-    console.log(gameInfo)
     setPlayers([...players, gameInfo])
+  })
+
+  socket.on('player-disconnect', (playerID) => {
+    console.log('hey')
+    setPlayers(players.filter((player) => (player.id !== playerID)))
   })
 
   return (
@@ -129,6 +136,11 @@ function App() {
       <Navbar fixed="top" bg="dark" variant="dark">
         <Container>
           <Navbar.Brand>Spyfall-br</Navbar.Brand>
+          <Nav className="me-auto">
+            {(currentPage === 'lobby' || currentPage === 'game') && 
+            <Nav.Link href="#" onClick={() => socket.emit('logout')}>Sair do jogo</Nav.Link>
+            }
+          </Nav>
         </Container>
       </Navbar>
 

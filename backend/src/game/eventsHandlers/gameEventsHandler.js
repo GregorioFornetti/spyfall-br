@@ -23,4 +23,14 @@ export default function gameEventsHandler(io, socket, games, users) {
             socket.emit('failed-join', 'Não foi possível encontrar um jogo com esse código !')
         }
     })
+
+    socket.on('logout', () => {
+        var user = users[socket.sessionID]
+        var game = user.game
+        
+        if (game) {
+            game.removePlayer(user, socket, io)
+            user.game = null
+        }
+    })
 }
