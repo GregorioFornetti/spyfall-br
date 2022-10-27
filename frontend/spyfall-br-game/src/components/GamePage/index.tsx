@@ -111,6 +111,9 @@ export default function GamePage({show, isSpy, selectedPlace, playerRole, possib
           <AccuseModal
             show={showAccuseModal}
             setShow={setShowAccuseModal}
+
+            players={players}
+            currentUserID={currentUserID}
           />
 
           <VoteModal
