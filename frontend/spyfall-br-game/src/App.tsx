@@ -124,8 +124,6 @@ function App() {
         setTargetUserID(targetUserID)
       })
 
-
-
       socket.on('logout', () => {
         setCurrentPage('main')
       })
@@ -151,6 +149,16 @@ function App() {
     setPreviousAskingUserID(askingUserID)
     setAskingUserID(targetUserID as string)
     setTargetUserID(undefined)
+  })
+
+  socket.on('match-end', (matchResults) => {
+    setWinner(matchResults.winner)
+    setWinDescription(matchResults.winDescription)
+    setSelectedPlace(places.find((place) => (place.id === matchResults.selectedPlaceID)))
+    setSpy(players.find((player) => (player.id === matchResults.spyUserID)))
+
+    setShowResultsModal(true)
+    setCurrentPage('lobby')
   })
 
   return (

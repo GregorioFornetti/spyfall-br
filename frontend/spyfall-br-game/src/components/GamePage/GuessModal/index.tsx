@@ -33,6 +33,10 @@ export default function GuessModal({show, setShow, socket, places}: GuessModalPr
                                     imgURL={place.imgPath}
                                     title={place.name}
                                     type='option'
+                                    onClick={() => {
+                                        socket.emit('guess-place', place.id)
+                                        handleClose()
+                                    }}
                                 />
                             </div>
                         ))}
