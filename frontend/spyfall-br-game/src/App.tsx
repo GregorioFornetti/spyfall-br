@@ -43,6 +43,12 @@ function App() {
   const [targetUserID, setTargetUserID] = useState<string|undefined>()
   const [previousAskingUserID, setPreviousAskingUserID] = useState<string|undefined>()
 
+  const [inVotation, setInVotation] = useState<boolean>(false)
+  const [accusedUserID, setAccusedUserID] = useState<string|undefined>()
+  const [accuserUserID, setAccuserUserID] = useState<string|undefined>()
+  const [agreedUsersIds, setAgreedUsersIds] = useState<string[]>([])
+  const [desagreedUsersIds, setDesagreedsUsersIds] = useState<string[]>([])
+
   const [showResultsModal, setShowResultsModal] = useState(false)
   const [winner, setWinner] = useState<"spy"|"agents"|undefined>()
   const [winDescription, setWinDescription] = useState<string|undefined>()
@@ -90,6 +96,13 @@ function App() {
             setSelectedPlace(places.find((place) => (place.id === match.selectedPlaceID)))
             setPlayerRole(roles.find((role) => (role.id === match.userRoleID)))
             setPreviousAskingUserID(match.previousAskingUserID)
+            if (match.inVotation) {
+              setInVotation(true)
+              setAccusedUserID(match.accusedUserID)
+              setAccuserUserID(match.accuserUserID)
+              setAgreedUsersIds(match.agreedUsersIds)
+              setDesagreedsUsersIds(match.desagreedUsersIds)
+            }
             setCurrentPage('game')
           } else {
             setCurrentPage('lobby')
@@ -118,6 +131,12 @@ function App() {
         setSelectedPlace(places.find((place) => (place.id === match.selectedPlaceID)))
         setPlayerRole(roles.find((role) => (role.id === match.userRoleID)))
         setCurrentPage('game')
+      })
+
+      socket.on('votation-start', ([newAccuserID, newAccusedID]) => {
+        setInVotation(true)
+        setAccuserUserID(newAccuserID)
+        setAccusedUserID(newAccusedID)
       })
 
       socket.on('new-questioning', (targetUserID) => {
@@ -209,6 +228,11 @@ function App() {
           targetUserID={targetUserID}
           playerRole={playerRole}
           previousAskingUserID={previousAskingUserID}
+          inVotation={inVotation}
+          agreedUsersIds={agreedUsersIds}
+          desagreedUsersIds={desagreedUsersIds}
+          accusedUserID={accusedUserID}
+          accuserUserID={accuserUserID}
           socket={socket}
         />
 

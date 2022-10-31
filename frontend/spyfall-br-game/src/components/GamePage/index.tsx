@@ -31,22 +31,21 @@ interface GamePageProps {
     leaderUserID: string,
     askingUserID: string,
     targetUserID?: string,
-    previousAskingUserID?:string,
+    previousAskingUserID?: string,
+    inVotation: boolean,
+    accusedUserID?: string,
+    accuserUserID?: string,
+    agreedUsersIds: string[],
+    desagreedUsersIds: string[],
     socket: Socket
 }
 
 
-export default function GamePage({show, isSpy, selectedPlace, playerRole, possiblePlaces, players, currentUserID, leaderUserID, askingUserID, targetUserID, previousAskingUserID, socket}: GamePageProps) {
+export default function GamePage({show, isSpy, selectedPlace, playerRole, possiblePlaces, players, currentUserID, leaderUserID, askingUserID, targetUserID, inVotation, previousAskingUserID, accusedUserID, accuserUserID, agreedUsersIds, desagreedUsersIds, socket}: GamePageProps) {
 
     const [showAccuseModal, setShowAccuseModal] = useState(false)
-    const [showVoteModal, setShowVoteModal] = useState(false)
     const [showGuessModal, setShowGuessModal] = useState(false)
     const [showQuestionModal, setShowQuestionModal] = useState(false)
-
-    const [accusedUserID, setAccusedUserID] = useState<string|undefined>()
-    const [accuserUserID, setAccuserUserID] = useState<string|undefined>()
-    const [agreedUsersIds, setAgreedUsersIds] = useState<string[]>([])
-    const [desagreedUsersIds, setDesagreedsUsersIds] = useState<string[]>([])
 
     return (
         <>
@@ -144,8 +143,7 @@ export default function GamePage({show, isSpy, selectedPlace, playerRole, possib
           />
 
           <VoteModal
-            show={showVoteModal}
-            setShow={setShowVoteModal}
+            show={inVotation}
             socket={socket}
 
             players={players}

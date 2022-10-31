@@ -35,7 +35,10 @@ export default function AccuseModal({show, setShow, socket, players, currentUser
                                 <PlayerCard
                                     username={player.username}
                                     score={player.score}
-                                    onClick={() => console.log('clicou')}
+                                    onClick={() => {
+                                        socket.emit('accuse', player.id)
+                                        handleClose()
+                                    }}
                                 />
                             </div>
                         ))}

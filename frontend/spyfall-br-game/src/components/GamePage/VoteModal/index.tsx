@@ -9,7 +9,6 @@ import PlayerCard from '../../PlayerCard'
 
 interface VoteModalProps {
     show: boolean,
-    setShow: React.Dispatch<React.SetStateAction<boolean>>,
     socket: Socket,
     players: Player[],
     accusedUserID?: string,
@@ -18,9 +17,7 @@ interface VoteModalProps {
     desagreedUsersIds: string[]
 }
 
-export default function VoteModal({show, setShow, socket, players, accusedUserID, accuserUserID, agreedUsersIds, desagreedUsersIds}: VoteModalProps) {
-
-    const handleClose = () => setShow(false);
+export default function VoteModal({show, socket, players, accusedUserID, accuserUserID, agreedUsersIds, desagreedUsersIds}: VoteModalProps) {
 
     var accusedUsername = ''
     if (accusedUserID) {
@@ -33,7 +30,7 @@ export default function VoteModal({show, setShow, socket, players, accusedUserID
 
 
     return (
-        <Modal show={show} onHide={handleClose} size='xl' centered>
+        <Modal show={show} size='xl' centered>
             <Modal.Header className='d-block text-center'>
                 <Modal.Title>Votação</Modal.Title>
                 <span>
@@ -41,19 +38,23 @@ export default function VoteModal({show, setShow, socket, players, accusedUserID
                 </span>
             </Modal.Header>
             <Modal.Body>
-                {players.map((player) => (
-                    <div className='col-sm-12 col-lg-6 col-xl-4' key={player.id}>
-                        <PlayerCard
-                            username={player.username}
-                            score={player.score}
-                            onClick={() => console.log('clicou')}
+                <Container>
+                    <Row className='gy-4'>
+                        {players.map((player) => (
+                            <div className='col-sm-12 col-lg-6 col-xl-4' key={player.id}>
+                                <PlayerCard
+                                    username={player.username}
+                                    score={player.score}
+                                    onClick={() => console.log('clicou')}
 
-                            agreed={agreedUsersIds.includes(player.id) || player.id === accuserUserID}
-                            desagreed={desagreedUsersIds.includes(player.id)}
-                            accused={player.id === accusedUserID}
-                        />
-                    </div>
-                ))}
+                                    agreed={agreedUsersIds.includes(player.id) || player.id === accuserUserID}
+                                    desagreed={desagreedUsersIds.includes(player.id)}
+                                    accused={player.id === accusedUserID}
+                                />
+                            </div>
+                        ))}
+                    </Row>
+                </Container>
             </Modal.Body>
             <Modal.Footer>
                 <Container>

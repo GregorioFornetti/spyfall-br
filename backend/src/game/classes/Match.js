@@ -65,7 +65,8 @@ export default class Match {
         this.previousAskingUserID = null
 
         this.inVotation = false
-        this.votation = null
+        this.agreedUsersIds = []
+        this.desagreedUsersIds = []
         this.accuserUserID = null
         this.accusedUserID = null
     }
@@ -155,10 +156,10 @@ export default class Match {
         }
 
         this.inVotation = true
-        this.votation = {}
         this.accuserUserID = accuserUserID
         this.accusedUserID = accusedUserID
-    
+        this.agreedUsersIds = []
+        this.desagreedUsersIds = []
         
         for (let user of this.users) {
             io.to(user.socketID).emit('votation-start', [accuserUserID, accusedUserID])
@@ -177,7 +178,12 @@ export default class Match {
             askingUserID: this.askingUserID,
             targetUserID: this.targetUserID,
             possiblePlacesIDs: this.possiblePlacesIDs,
-            previousAskingUserID: this.previousAskingUserID
+            previousAskingUserID: this.previousAskingUserID,
+            inVotation: this.inVotation,
+            accusedUserID: this.accusedUserID,
+            accuserUserID: this.accuserUserID,
+            agreedUsersIds: this.agreedUsersIds,
+            desagreedUsersIds: this.desagreedUsersIds
         }
     
         if (userID === this.spyUserID) {
