@@ -142,12 +142,7 @@ function App() {
           <Navbar.Brand>Spyfall-br</Navbar.Brand>
           <Container>
             <Row>
-              <Nav className="col-6 me-auto">
-                {(currentPage === 'game') &&
-                  <Nav.Link href="#">Sua vez de questionar</Nav.Link>  
-                }
-              </Nav>
-              <Nav className="col-6 me-auto justify-content-end">
+              <Nav className="me-auto justify-content-end">
                 {(currentPage === 'lobby' || currentPage === 'game') && 
                   <Nav.Link href="#" className='link-danger' onClick={() => socket.emit('logout')}>Sair do jogo</Nav.Link>
                 }

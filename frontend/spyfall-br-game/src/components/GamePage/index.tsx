@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { io } from "socket.io-client"
-import { Card, Container, Row } from 'react-bootstrap';
+import { useState } from 'react';
+import { Card, Container, Nav} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import PlayerCard from '../PlayerCard';
 import UsersContainer from '../PlayersContainer'
 import PlacesContainer from '../PlacesContainer';
 import PlaceCard from '../PlaceCard';
+import styles from './GamePage.module.scss'
 
 import Place from '../../interfaces/PlaceInterface'
 import Player from '../../interfaces/PlayerInterface'
@@ -15,6 +15,7 @@ import AccuseModal from './AccuseModal';
 import VoteModal from './VoteModal';
 import GuessModal from './GuessModal';
 import QuestionModal from './QuestionModal';
+import classNames from 'classnames';
 
 
 
@@ -48,7 +49,7 @@ export default function GamePage({show, isSpy, selectedPlace, playerRole, possib
 
     return (
         <>
-          <Container className={(!show) ? ('d-none') : ('')}>
+          <Container className={classNames({'d-none': !show}, styles['container-margin'])}>
             <Container fluid>
       
               <Card className='text-center m-auto' style={{width: '340px'}}>
@@ -78,6 +79,7 @@ export default function GamePage({show, isSpy, selectedPlace, playerRole, possib
                   className="btn btn-primary" 
                   type="button"
                   onClick={() => setShowQuestionModal(true)}
+                  disabled={!(currentUserID === askingUserID)}
                 >
                   Questionar
                 </button>
@@ -85,6 +87,7 @@ export default function GamePage({show, isSpy, selectedPlace, playerRole, possib
                   className="btn btn-primary" 
                   type="button"
                   onClick={() => setShowGuessModal(true)}
+                  disabled={!isSpy}
                 >
                   Adivinhar lugar
                 </button>
@@ -115,6 +118,20 @@ export default function GamePage({show, isSpy, selectedPlace, playerRole, possib
               ))}
             </PlacesContainer>
           </Container>
+
+          <footer className={classNames(styles['game-footer'], 'bg-dark')}>
+            {(askingUserID === currentUserID && !targetUserID) &&
+              <a className={styles['footer-link']} href="#" onClick={() => setShowQuestionModal(true)}>
+                Sua vez de questionar
+              </a>
+            }
+
+            {(askingUserID === currentUserID && targetUserID) &&
+              <a className={styles['footer-link']} href="#" onClick={() => setShowQuestionModal(true)}>
+                Finalizar questionamento
+              </a>
+            }
+          </footer>
 
           <AccuseModal
             show={showAccuseModal}
