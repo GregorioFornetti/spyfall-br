@@ -21,22 +21,22 @@ function selectSpy(users) {
     return selectRandomElement(users)
 }
 
-function selectUserRoles(possibleRolesIDs, users, spyID) {
+function selectUserRoles(possibleRolesIDs, usersIDs, spyID) {
     // Retorna um JSON onde cada chave é um id de usuário e o valor é o ID do cargo sorteado (se o usuário for espião, o valor é null)
     // <key = userID> : <value = randomRoleID>
-
     var currentAvailableRoles
     var usersRolesJSON = {}
-    for (let user of users) {
-        if (user.id === spyID) {
-            usersRolesJSON[user.id] = null
+    
+    for (let userID of usersIDs) {
+        if (userID === spyID) {
+            usersRolesJSON[userID] = null
             continue
         }
 
         if (!currentAvailableRoles) {
             currentAvailableRoles = shuffle(possibleRolesIDs)
         }
-        usersRolesJSON[user.id] = currentAvailableRoles[0]
+        usersRolesJSON[userID] = currentAvailableRoles[0]
         currentAvailableRoles.shift()
     }
     return usersRolesJSON
@@ -48,7 +48,8 @@ export default class Match {
         const usersIDs = users.map((user) => (user.userID))
         const newMatch = new this(options, usersIDs)
 
-        newMatch.usersRolesIDs = selectUserRoles(await getPlaceRoles(newMatch.selectedPlaceID), usersIDs)
+        newMatch.usersRolesIDs = selectUserRoles(await getPlaceRoles(newMatch.selectedPlaceID), usersIDs, newMatch.spyUserID)
+        console.log(newMatch.usersRolesIDs)
         newMatch.emitMatchStart(users, io)
 
         return newMatch
@@ -70,6 +71,7 @@ export default class Match {
     }
 
     toJSON(userID) {
+        console.log('oi')
         // Criar um JSON especifico da partida para o usuário com userID passado no parâmetro
 
         // Informações em comum entre espiões e não espiões
@@ -86,8 +88,11 @@ export default class Match {
             // O usuário atual não é o espião, então deve saber qual é o lugar selecionado e seu cargo
             userMatch['isSpy'] = false
             userMatch['selectedPlaceID'] = this.selectedPlaceID
+            console.log('morri AQUI')
             userMatch['userRoleID'] = this.usersRolesIDs[userID]
         }
+        console.log('AQUI:')
+        console.log(userMatch['userRoleID'])
 
         return userMatch
     }

@@ -109,14 +109,13 @@ function App() {
       })
 
       socket.on('match-start', (match) => {
-        setCurrentPage('game')
         setAskingUserID(match.askingUserID)
         setTargetUserID(match.targetUserID)
-        setPossiblePlaces(places.filter((place) => (match.possiblePlacesIds.includes(place.id))))
-
+        setPossiblePlaces(places.filter((place) => (match.possiblePlacesIDs.includes(place.id))))
         setIsSpy(match.isSpy)
-        setSelectedPlace(places.find(match.selectedPlaceID))
-        setPlayerRole(roles.find(match.userRoleID))
+        setSelectedPlace(places.find((place) => (place.id === match.selectedPlaceID)))
+        setPlayerRole(roles.find((role) => (role.id === match.userRoleID)))
+        setCurrentPage('game')
       })
 
       socket.on('logout', () => {
@@ -133,7 +132,6 @@ function App() {
   })
 
   socket.on('player-disconnect', (playerID) => {
-    console.log('hey')
     setPlayers(players.filter((player) => (player.id !== playerID)))
   })
 
