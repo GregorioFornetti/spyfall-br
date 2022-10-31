@@ -48,4 +48,16 @@ export default function matchEventsHandler(io, socket, users) {
             game.endMatch()
         }
     })
+
+    socket.on('accuse', (arg) => {
+        var accusedUserID = arg
+        var user = users[socket.sessionID]
+        var game = user.game
+
+        if (!game || !game.inMatch) {
+            return
+        }
+
+        game.match.makeAccusation(io, socket, user.userID, accusedUserID)
+    })
 }

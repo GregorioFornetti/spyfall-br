@@ -63,6 +63,11 @@ export default class Match {
         this.targetUserID = null
         this.usersRolesIDs = null
         this.previousAskingUserID = null
+
+        this.inVotation = false
+        this.votation = null
+        this.accuserUserID = null
+        this.accusedUserID = null
     }
 
     emitMatchStart(io) {
@@ -143,15 +148,24 @@ export default class Match {
         return true
     }
 
-    makeAccusation() {
+    makeAccusation(io, socket, accuserUserID, accusedUserID) {
+        if (accuserUserID === accusedUserID) {
+            socket.emit('error', 'Não é possível se acusar')
+            return
+        }
 
+        this.inVotation = true
+        this.votation = {}
+        this.accuserUserID = accuserUserID
+        this.accusedUserID = accusedUserID
+    
+        
+        for (let user of this.users) {
+            io.to(user.socketID).emit('votation-start', [accuserUserID, accusedUserID])
+        }
     }
 
     receiveVote() {
-
-    }
-
-    emitMatchResults() {
 
     }
 
