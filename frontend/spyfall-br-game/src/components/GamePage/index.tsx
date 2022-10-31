@@ -119,7 +119,7 @@ export default function GamePage({show, isSpy, selectedPlace, playerRole, possib
             </PlacesContainer>
           </Container>
 
-          <footer className={classNames(styles['game-footer'], 'bg-dark')}>
+          <footer className={classNames({'d-none': !show}, styles['game-footer'], 'bg-dark')}>
             {(askingUserID === currentUserID && !targetUserID) &&
               <a className={styles['footer-link']} href="#" onClick={() => setShowQuestionModal(true)}>
                 Sua vez de questionar

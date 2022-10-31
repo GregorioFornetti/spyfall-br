@@ -46,32 +46,88 @@ function selectUserRoles(possibleRolesIDs, usersIDs, spyID) {
 export default class Match {
     static async build(options, users, io) {
         const usersIDs = users.map((user) => (user.userID))
-        const newMatch = new this(options, usersIDs)
+        const newMatch = new this(options, users, usersIDs)
 
         newMatch.usersRolesIDs = selectUserRoles(await getPlaceRoles(newMatch.selectedPlaceID), usersIDs, newMatch.spyUserID)
-        console.log(newMatch.usersRolesIDs)
         newMatch.emitMatchStart(users, io)
 
         return newMatch
     }
 
-    constructor(options, usersIDs) {
+    constructor(options, users, usersIDs) {
+        this.users = users
         this.possiblePlacesIDs = selectMatchPossiblePlaces(options.possiblePlaces, options.possiblePlacesNumber)
         this.selectedPlaceID = selectMatchPlace(this.possiblePlacesIDs)
         this.spyUserID = selectSpy(usersIDs)
         this.askingUserID = selectAskingUser(usersIDs)
         this.targetUserID = null
         this.usersRolesIDs = null
+        this.previousAskingUserID = null
     }
 
-    emitMatchStart(users, io) {
-        for (let user of users) {
+    emitMatchStart(io) {
+        for (let user of this.users) {
             io.to(user.socketID).emit('match-start', this.toJSON(user.userID))
         }
     }
 
+    removeUser() {
+
+    }
+
+    makeNewQuestioning(io, socket, userID, targetUserID) {
+        if (userID !== this.askingUserID) {
+            socket.emit('error', 'É preciso ser o questionador para poder questionar')
+            return
+        }
+        if (userID === targetUserID) {
+            socket.emit('error', 'Você não pode se questionar')
+            return
+        }
+        if (targetUserID === this.previousAskingUserID) {
+            socket.emit('error', 'Você não pode questionar o questionador anterior')
+            return
+        }
+        
+        this.targetUserID = targetUserID
+
+        for (let user of this.users) {
+            io.to(user.socketID).emit('new-questioning', targetUserID)
+        }
+    }
+
+    endQuestioning(io, socket, userID) {
+        if (userID !== this.askingUserID) {
+            socket.emit('error', 'Apenas quem está questionando pode finalizar o questionamento')
+            return
+        }
+
+        this.previousAskingUserID = this.askingUserID
+        this.askingUserID = this.targetUserID
+        this.targetUserID = null
+
+        for (let user of this.users) {
+            io.to(user.socketID).emit('end-questioning')
+        }
+    }
+
+    guessPlace() {
+
+    }
+
+    makeAccusation() {
+
+    }
+
+    receiveVote() {
+
+    }
+
+    emitMatchResults() {
+
+    }
+
     toJSON(userID) {
-        console.log('oi')
         // Criar um JSON especifico da partida para o usuário com userID passado no parâmetro
 
         // Informações em comum entre espiões e não espiões

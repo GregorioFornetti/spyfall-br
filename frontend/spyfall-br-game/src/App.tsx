@@ -42,7 +42,7 @@ function App() {
   const [askingUserID, setAskingUserID] = useState('')
   const [targetUserID, setTargetUserID] = useState<string|undefined>()
 
-  const [showResultsModal, setShowResultsModal] = useState(true)
+  const [showResultsModal, setShowResultsModal] = useState(false)
   const [winner, setWinner] = useState<"spy"|"agents"|undefined>()
   const [winDescription, setWinDescription] = useState<string|undefined>()
   const [spy, setSpy] = useState<Player|undefined>()
