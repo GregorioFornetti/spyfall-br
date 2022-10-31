@@ -34,4 +34,18 @@ export default function matchEventsHandler(io, socket, users) {
 
         game.match.endQuestioning(io, socket, user.userID)
     })
+
+    socket.on('guess-place', (arg) => {
+        var placeID = arg
+        var user = users[socket.sessionID]
+        var game = user.game
+
+        if (!game || !game.inMatch) {
+            return
+        }
+
+        if (game.match.guessPlace(io, socket, user.userID, placeID)) {
+            game.endMatch()
+        }
+    })
 }

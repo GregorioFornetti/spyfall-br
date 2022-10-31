@@ -115,8 +115,32 @@ export default class Match {
         }
     }
 
-    guessPlace() {
+    guessPlace(io, socket, userID, placeID) {
+        // Retorna true se a partida acabou ou false se ainda não acabou
+        
+        if (userID !== this.spyUserID) {
+            socket.emit('error', 'Apenas o espião pode advinhar um lugar')
+            return false
+        }
 
+        let matchResult = {
+            spyUserID: this.spyUserID,
+            selectedPlaceID: this.selectedPlaceID
+        }
+        if (placeID === this.selectedPlaceID) {
+            // Espião ganhou
+            matchResult['winner'] = 'spy'
+            matchResult['winDescription'] = 'O espião advinhou corretamente o local'
+        } else {
+            // Espião perdeu (agentes ganharam)
+            matchResult['winner'] = 'agents'
+            matchResult['winDescription'] = 'O espião errou o local'
+        }
+
+        for (let user of this.users) {
+            io.to(user.socketID).emit('match-end', matchResult)
+        }
+        return true
     }
 
     makeAccusation() {

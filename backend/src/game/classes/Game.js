@@ -51,6 +51,11 @@ export default class Game {
         this.inMatch = true
     }
 
+    endMatch() {
+        this.match = null
+        this.inMatch = false
+    }
+
     toJSON(userID) {
         var gameJSON = {
             code: this.code,
