@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { Socket } from "socket.io-client";
 
 import Player from '../../../interfaces/PlayerInterface'
 import PlayerCard from '../../PlayerCard'
@@ -8,12 +9,13 @@ import PlayerCard from '../../PlayerCard'
 interface QuestionModalProps {
     show: boolean,
     setShow: React.Dispatch<React.SetStateAction<boolean>>,
+    socket: Socket,
     players: Player[],
     currentUserID: string,
     previousAskingUserID: string|undefined
 }
 
-export default function QuestionModal({show, setShow, players, previousAskingUserID, currentUserID}: QuestionModalProps) {
+export default function QuestionModal({show, setShow, socket, players, previousAskingUserID, currentUserID}: QuestionModalProps) {
 
     const handleClose = () => setShow(false);
 
@@ -30,7 +32,10 @@ export default function QuestionModal({show, setShow, players, previousAskingUse
                         <PlayerCard
                             username={player.username}
                             score={player.score}
-                            onClick={() => console.log('clicou')}
+                            onClick={() => {
+                                socket.emit('new-questioning', player.id)
+                                handleClose()
+                            }}
                         />
                     </div>
                 ))}

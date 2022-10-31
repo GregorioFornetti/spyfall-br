@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Container, Row } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { Socket } from "socket.io-client";
 
 import Player from '../../../interfaces/PlayerInterface'
 import PlayerCard from '../../PlayerCard'
@@ -9,6 +10,7 @@ import PlayerCard from '../../PlayerCard'
 interface VoteModalProps {
     show: boolean,
     setShow: React.Dispatch<React.SetStateAction<boolean>>,
+    socket: Socket,
     players: Player[],
     accusedUserID?: string,
     accuserUserID?: string,
@@ -16,7 +18,7 @@ interface VoteModalProps {
     desagreedUsersIds: string[]
 }
 
-export default function VoteModal({show, setShow, players, accusedUserID, accuserUserID, agreedUsersIds, desagreedUsersIds}: VoteModalProps) {
+export default function VoteModal({show, setShow, socket, players, accusedUserID, accuserUserID, agreedUsersIds, desagreedUsersIds}: VoteModalProps) {
 
     const handleClose = () => setShow(false);
 

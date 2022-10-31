@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Container, Row } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { Socket } from "socket.io-client";
 
 import Player from '../../../interfaces/PlayerInterface'
 import PlayerCard from '../../PlayerCard';
@@ -10,11 +11,12 @@ import PlayerCard from '../../PlayerCard';
 interface AccuseModalProps {
     show: boolean,
     setShow: React.Dispatch<React.SetStateAction<boolean>>,
+    socket: Socket,
     players: Player[],
     currentUserID: string
 }
 
-export default function AccuseModal({show, setShow, players, currentUserID}: AccuseModalProps) {
+export default function AccuseModal({show, setShow, socket, players, currentUserID}: AccuseModalProps) {
 
     const handleClose = () => setShow(false);
 

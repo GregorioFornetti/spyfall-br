@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Card, Container, Nav} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Socket } from "socket.io-client";
 
 import PlayerCard from '../PlayerCard';
 import UsersContainer from '../PlayersContainer'
@@ -29,18 +30,18 @@ interface GamePageProps {
     currentUserID: string,
     leaderUserID: string,
     askingUserID: string,
-    targetUserID?: string
+    targetUserID?: string,
+    previousAskingUserID?:string,
+    socket: Socket
 }
 
 
-export default function GamePage({show, isSpy, selectedPlace, playerRole, possiblePlaces, players, currentUserID, leaderUserID, askingUserID, targetUserID}: GamePageProps) {
+export default function GamePage({show, isSpy, selectedPlace, playerRole, possiblePlaces, players, currentUserID, leaderUserID, askingUserID, targetUserID, previousAskingUserID, socket}: GamePageProps) {
 
     const [showAccuseModal, setShowAccuseModal] = useState(false)
     const [showVoteModal, setShowVoteModal] = useState(false)
     const [showGuessModal, setShowGuessModal] = useState(false)
     const [showQuestionModal, setShowQuestionModal] = useState(false)
-
-    const [previousAskingUserID, setPreviousAskingUserID] = useState<string|undefined>()
 
     const [accusedUserID, setAccusedUserID] = useState<string|undefined>()
     const [accuserUserID, setAccuserUserID] = useState<string|undefined>()
@@ -79,7 +80,7 @@ export default function GamePage({show, isSpy, selectedPlace, playerRole, possib
                   className="btn btn-primary" 
                   type="button"
                   onClick={() => setShowQuestionModal(true)}
-                  disabled={!(currentUserID === askingUserID)}
+                  disabled={!(currentUserID === askingUserID && !targetUserID)}
                 >
                   Questionar
                 </button>
@@ -127,7 +128,7 @@ export default function GamePage({show, isSpy, selectedPlace, playerRole, possib
             }
 
             {(askingUserID === currentUserID && targetUserID) &&
-              <a className={styles['footer-link']} href="#" onClick={() => setShowQuestionModal(true)}>
+              <a className={styles['footer-link']} href="#" onClick={() => socket.emit('end-questioning')}>
                 Finalizar questionamento
               </a>
             }
@@ -136,6 +137,7 @@ export default function GamePage({show, isSpy, selectedPlace, playerRole, possib
           <AccuseModal
             show={showAccuseModal}
             setShow={setShowAccuseModal}
+            socket={socket}
 
             players={players}
             currentUserID={currentUserID}
@@ -144,6 +146,7 @@ export default function GamePage({show, isSpy, selectedPlace, playerRole, possib
           <VoteModal
             show={showVoteModal}
             setShow={setShowVoteModal}
+            socket={socket}
 
             players={players}
             accusedUserID={accusedUserID}
@@ -155,6 +158,7 @@ export default function GamePage({show, isSpy, selectedPlace, playerRole, possib
           <GuessModal
             show={showGuessModal}
             setShow={setShowGuessModal}
+            socket={socket}
 
             places={possiblePlaces}
           />
@@ -162,6 +166,7 @@ export default function GamePage({show, isSpy, selectedPlace, playerRole, possib
           <QuestionModal
             show={showQuestionModal}
             setShow={setShowQuestionModal}
+            socket={socket}
 
             players={players}
             currentUserID={currentUserID}

@@ -49,7 +49,7 @@ export default class Match {
         const newMatch = new this(options, users, usersIDs)
 
         newMatch.usersRolesIDs = selectUserRoles(await getPlaceRoles(newMatch.selectedPlaceID), usersIDs, newMatch.spyUserID)
-        newMatch.emitMatchStart(users, io)
+        newMatch.emitMatchStart(io)
 
         return newMatch
     }
@@ -76,6 +76,10 @@ export default class Match {
     }
 
     makeNewQuestioning(io, socket, userID, targetUserID) {
+        if (this.targetUserID) {
+            socket.emit('error', 'Não é possível questionar outra pessoa, apenas a que você escolheu agora')
+            return
+        }
         if (userID !== this.askingUserID) {
             socket.emit('error', 'É preciso ser o questionador para poder questionar')
             return
@@ -134,7 +138,8 @@ export default class Match {
         const userMatch = {
             askingUserID: this.askingUserID,
             targetUserID: this.targetUserID,
-            possiblePlacesIDs: this.possiblePlacesIDs
+            possiblePlacesIDs: this.possiblePlacesIDs,
+            previousAskingUserID: this.previousAskingUserID
         }
     
         if (userID === this.spyUserID) {
@@ -144,11 +149,8 @@ export default class Match {
             // O usuário atual não é o espião, então deve saber qual é o lugar selecionado e seu cargo
             userMatch['isSpy'] = false
             userMatch['selectedPlaceID'] = this.selectedPlaceID
-            console.log('morri AQUI')
             userMatch['userRoleID'] = this.usersRolesIDs[userID]
         }
-        console.log('AQUI:')
-        console.log(userMatch['userRoleID'])
 
         return userMatch
     }

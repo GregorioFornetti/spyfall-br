@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Container, Row } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { Socket } from "socket.io-client";
 
 import PlaceCard from '../../PlaceCard';
 import Place from '../../../interfaces/PlaceInterface'
@@ -9,10 +10,11 @@ import Place from '../../../interfaces/PlaceInterface'
 interface GuessModalProps {
     show: boolean,
     setShow: React.Dispatch<React.SetStateAction<boolean>>,
+    socket: Socket,
     places: Place[]
 }
 
-export default function GuessModal({show, setShow, places}: GuessModalProps) {
+export default function GuessModal({show, setShow, socket, places}: GuessModalProps) {
 
     const handleClose = () => setShow(false);
 

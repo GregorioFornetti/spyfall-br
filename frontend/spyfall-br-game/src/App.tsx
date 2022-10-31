@@ -41,6 +41,7 @@ function App() {
   const [playerRole, setPlayerRole] = useState<Role|undefined>()
   const [askingUserID, setAskingUserID] = useState('')
   const [targetUserID, setTargetUserID] = useState<string|undefined>()
+  const [previousAskingUserID, setPreviousAskingUserID] = useState<string|undefined>()
 
   const [showResultsModal, setShowResultsModal] = useState(false)
   const [winner, setWinner] = useState<"spy"|"agents"|undefined>()
@@ -88,6 +89,7 @@ function App() {
             setIsSpy(match.isSpy)
             setSelectedPlace(places.find((place) => (place.id === match.selectedPlaceID)))
             setPlayerRole(roles.find((role) => (role.id === match.userRoleID)))
+            setPreviousAskingUserID(match.previousAskingUserID)
             setCurrentPage('game')
           } else {
             setCurrentPage('lobby')
@@ -118,8 +120,18 @@ function App() {
         setCurrentPage('game')
       })
 
+      socket.on('new-questioning', (targetUserID) => {
+        setTargetUserID(targetUserID)
+      })
+
+
+
       socket.on('logout', () => {
         setCurrentPage('main')
+      })
+
+      socket.on('error', (message) => {
+        alert(message)
       })
 
       loaded = true
@@ -133,6 +145,12 @@ function App() {
 
   socket.on('player-disconnect', (playerID) => {
     setPlayers(players.filter((player) => (player.id !== playerID)))
+  })
+
+  socket.on('end-questioning', () => {
+    setPreviousAskingUserID(askingUserID)
+    setAskingUserID(targetUserID as string)
+    setTargetUserID(undefined)
   })
 
   return (
@@ -182,6 +200,8 @@ function App() {
           askingUserID={askingUserID}
           targetUserID={targetUserID}
           playerRole={playerRole}
+          previousAskingUserID={previousAskingUserID}
+          socket={socket}
         />
 
         <ResultsModal
