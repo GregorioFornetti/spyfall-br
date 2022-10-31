@@ -34,7 +34,8 @@ export default function PlayerCard({username, leader, score, isCurrentUser, inGa
             [styles['user-card-suspect']]: guess === 'suspect' || desagreed,
             [styles['user-card-safe']]: guess === 'safe' || agreed,
             [styles['user-card-clickable']]: onClick !== undefined,
-            'm-auto': true
+            'm-auto': true,
+            'text-left': true
         })}
         >
             <p className='h4'> 

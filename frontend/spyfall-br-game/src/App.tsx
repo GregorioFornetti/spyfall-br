@@ -14,6 +14,7 @@ import Role from './interfaces/RoleInterface'
 import Category from './interfaces/CategoryInterface'
 import LoadingModal from "./components/LoadingModal";
 import { Nav, Row } from "react-bootstrap";
+import ResultsModal from "./components/ResultsModal";
 
 var loaded = false
 
@@ -40,6 +41,11 @@ function App() {
   const [playerRole, setPlayerRole] = useState<Role|undefined>()
   const [askingUserID, setAskingUserID] = useState('')
   const [targetUserID, setTargetUserID] = useState<string|undefined>()
+
+  const [showResultsModal, setShowResultsModal] = useState(true)
+  const [winner, setWinner] = useState<"spy"|"agents"|undefined>()
+  const [winDescription, setWinDescription] = useState<string|undefined>()
+  const [spy, setSpy] = useState<Player|undefined>()
 
   useEffect(() => {
     if (!loaded) {
@@ -183,6 +189,16 @@ function App() {
           askingUserID={askingUserID}
           targetUserID={targetUserID}
           playerRole={playerRole}
+        />
+
+        <ResultsModal
+          show={showResultsModal}
+          setShow={setShowResultsModal}
+
+          spy={spy}
+          selectedPlace={selectedPlace}
+          winDescripton={winDescription}
+          winner={winner}
         />
       </main>
     </>
