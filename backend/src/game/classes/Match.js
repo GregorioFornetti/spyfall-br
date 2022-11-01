@@ -135,17 +135,12 @@ export default class Match {
         }
         if (placeID === this.selectedPlaceID) {
             // Espião ganhou
-            matchResult['winner'] = 'spy'
-            matchResult['winDescription'] = 'O espião advinhou corretamente o local'
+            this.endMatch(io, 'spy', 'O espião adivinhou corretamente o local')
         } else {
             // Espião perdeu (agentes ganharam)
-            matchResult['winner'] = 'agents'
-            matchResult['winDescription'] = 'O espião errou o local'
+            this.endMatch(io, 'agents', 'O espião errou o local')
         }
 
-        for (let user of this.users) {
-            io.to(user.socketID).emit('match-end', matchResult)
-        }
         return true
     }
 
@@ -166,8 +161,90 @@ export default class Match {
         }
     }
 
-    receiveVote() {
+    async receiveVote(io, socket, userID, agree) {
+        if (!this.inVotation) {
+            socket.emit('error', 'Não há uma votação em andamento para votar')
+            return false
+        }
+        if (userID === this.accusedUserID || userID === this.accuserUserID) {
+            socket.emit('error', 'Não é possível votar se você é o acusador ou o acusado')
+            return false
+        }
+        if (this.agreedUsersIds.includes(userID) || this.desagreedUsersIds.includes(userID)) {
+            socket.emit('error', 'Não é possível votar novamente')
+            return false
+        }
 
+        if (agree) {
+            // Usuário votou a favor da votação
+            this.agreedUsersIds.push(userID)
+
+            for (let user of this.users) {
+                io.to(user.socketID).emit('agreed-vote', userID)
+            }
+
+            if (this.agreedUsersIds.length === this.users.length - 2) {
+                // Todos que podem votar votaram a favor, então a partida deve ser finalizada
+                let secsToEnd = 5
+                let interval = setInterval(() => {
+                    secsToEnd--
+                    if (secsToEnd === 0) {
+                        clearInterval(interval)
+
+                        if (this.accusedUserID === this.spyUserID) {
+                            this.endMatch(io, 'agents', 'O espião foi descoberto')
+                        } else {
+                            this.endMatch(io, 'spy', 'Um agente foi julgado incorretamente')
+                        }
+                    }
+                }, 1000)
+                await new Promise(resolve => setTimeout(resolve, 1000 * secsToEnd));
+                return true
+            }
+        } else {
+            // Usuário votou contra a votação
+            if (this.desagreedUsersIds.length === 0) {
+                // A primeira pessoa discordou, iniciar timer para fim de votação
+                let secsToEnd = 5
+                let interval = setInterval(() => {
+                    secsToEnd--
+                    if (secsToEnd === 0) {
+                        clearInterval(interval)
+
+                        this.inVotation = false
+                        this.accusedUserID = null
+                        this.accuserUserID = null
+                        this.agreedUsersIds = []
+                        this.desagreedUsersIds = []
+
+                        for (let user of this.users) {
+                            io.to(user.socketID).emit('vote-failed')
+                        }
+                    }
+                }, 1000)
+                
+            }
+
+            this.desagreedUsersIds.push(userID)
+
+            for (let user of this.users) {
+                io.to(user.socketID).emit('desagreed-vote', userID)
+            }
+        }
+        return false
+    }
+
+    endMatch(io, winner, winDescription) {
+        let matchResult = {
+            spyUserID: this.spyUserID,
+            selectedPlaceID: this.selectedPlaceID,
+            winner: winner,
+            winDescription: winDescription
+        }
+
+        for (let user of this.users) {
+            io.to(user.socketID).emit('end-match', matchResult)
+        }
     }
 
     toJSON(userID) {
