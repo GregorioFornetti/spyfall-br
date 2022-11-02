@@ -236,7 +236,6 @@ export default class Match {
     }
 
     endMatch(io, winner, winDescription) {
-        console.log('oi')
         let matchResult = {
             spyUserID: this.spyUserID,
             selectedPlaceID: this.selectedPlaceID,
