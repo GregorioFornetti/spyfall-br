@@ -176,8 +176,32 @@ function App() {
     setSelectedPlace(places.find((place) => (place.id === matchResults.selectedPlaceID)))
     setSpy(players.find((player) => (player.id === matchResults.spyUserID)))
 
+    setAccusedUserID(undefined)
+    setAccusedUserID(undefined)
+    setAgreedUsersIds([])
+    setDesagreedsUsersIds([])
+    setInVotation(false)
+
     setShowResultsModal(true)
     setCurrentPage('lobby')
+  })
+
+  socket.on('agreed-vote', (arg) => {
+    let newAgreedUserID: string = arg
+    setAgreedUsersIds([...agreedUsersIds, newAgreedUserID])
+  })
+
+  socket.on('desagreed-vote', (arg) => {
+    let newDesagreedUserID: string = arg
+    setDesagreedsUsersIds([...desagreedUsersIds, newDesagreedUserID])
+  })
+
+  socket.on('vote-failed', () => {
+    setAccusedUserID(undefined)
+    setAccusedUserID(undefined)
+    setAgreedUsersIds([])
+    setDesagreedsUsersIds([])
+    setInVotation(false)
   })
 
   return (

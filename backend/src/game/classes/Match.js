@@ -192,6 +192,7 @@ export default class Match {
                         clearInterval(interval)
 
                         if (this.accusedUserID === this.spyUserID) {
+                            console.log(this.endMatch)
                             this.endMatch(io, 'agents', 'O espião foi descoberto')
                         } else {
                             this.endMatch(io, 'spy', 'Um agente foi julgado incorretamente')
@@ -235,6 +236,7 @@ export default class Match {
     }
 
     endMatch(io, winner, winDescription) {
+        console.log('oi')
         let matchResult = {
             spyUserID: this.spyUserID,
             selectedPlaceID: this.selectedPlaceID,
@@ -243,7 +245,7 @@ export default class Match {
         }
 
         for (let user of this.users) {
-            io.to(user.socketID).emit('end-match', matchResult)
+            io.to(user.socketID).emit('match-end', matchResult)
         }
     }
 

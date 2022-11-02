@@ -45,7 +45,6 @@ export default function VoteModal({show, socket, players, accusedUserID, accuser
                                 <PlayerCard
                                     username={player.username}
                                     score={player.score}
-                                    onClick={() => console.log('clicou')}
 
                                     agreed={agreedUsersIds.includes(player.id) || player.id === accuserUserID}
                                     desagreed={desagreedUsersIds.includes(player.id)}
@@ -60,10 +59,20 @@ export default function VoteModal({show, socket, players, accusedUserID, accuser
                 <Container>
                     <Row className='justify-content-between'>
                         <div className='d-grid col-5 col-lg-4 col-xl-3 m-auto'>
-                            <Button variant="success">Concordar</Button>
+                            <Button 
+                                variant="success"
+                                onClick={() => socket.emit('vote', true)}
+                            >
+                                Concordar
+                            </Button>
                         </div>
                         <div className='d-grid col-5 col-lg-4 col-xl-3 m-auto'>
-                            <Button variant="danger">Discordar</Button>
+                            <Button 
+                                variant="danger"
+                                onClick={() => socket.emit('vote', false)}
+                            >
+                                Discordar
+                            </Button>
                         </div>
                     </Row>
                 </Container>
