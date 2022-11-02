@@ -60,7 +60,7 @@ export default function matchEventsHandler(io, socket, users) {
 
         game.match.makeAccusation(io, socket, user.userID, accusedUserID)
     })
-
+    
     socket.on('vote', async (arg) => {
         var agree = arg
         var user = users[socket.sessionID]
