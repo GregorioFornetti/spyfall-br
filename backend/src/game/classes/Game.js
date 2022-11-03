@@ -2,6 +2,7 @@ import crypto from 'crypto'
 import Options from './Options.js'
 import Player from './Player.js'
 import Match from './Match.js'
+import { all } from 'underscore'
 
 export default class Game {
     static async build(user, username, socket) {
@@ -46,8 +47,31 @@ export default class Game {
         socket.emit('logout')
     }
 
+    playerReady(user, io) {
+        user.ready = true
+
+        for (let player of this.players) {
+            io.to(player.getSocketID()).emit('player-ready', user.userID)
+        }
+    }
+
+    playerUnready(user, io) {
+        user.ready = false
+        
+        for (let player of this.players) {
+            io.to(player.getSocketID()).emit('player-unready', user.userID)
+        }
+    }
+
+    allPlayersReady() {
+        return all(this.players((player) => player.ready || player.user === this.leader))
+    }
+
     async startMatch(io) {
         this.match = await Match.build(this.options, this.players.map((player) => (player.user)), io)
+        for (let player of this.players) {
+            player.ready = false
+        }
         this.inMatch = true
     }
 

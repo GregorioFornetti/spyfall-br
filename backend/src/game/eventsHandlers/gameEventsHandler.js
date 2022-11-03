@@ -24,6 +24,24 @@ export default function gameEventsHandler(io, socket, games, users) {
         }
     })
 
+    socket.on('ready', () => {
+        var user = users[socket.sessionID]
+        var game = user.game
+
+        if (game) {
+            game.playerReady(user, io)
+        }
+    })
+
+    socket.on('unready', () => {
+        var user = users[socket.sessionID]
+        var game = user.game
+
+        if (game) {
+            game.playerUnready(user, io)
+        }
+    })
+
     socket.on('logout', () => {
         var user = users[socket.sessionID]
         var game = user.game

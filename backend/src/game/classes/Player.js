@@ -5,6 +5,7 @@ export default class Player {
         this.user = user
         this.username = username
         this.score = 0
+        this.ready = false
     }
 
     increaseScore(value) {
