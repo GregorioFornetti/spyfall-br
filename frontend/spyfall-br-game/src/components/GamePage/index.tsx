@@ -146,6 +146,7 @@ export default function GamePage({show, isSpy, selectedPlace, playerRole, possib
             show={inVotation}
             socket={socket}
 
+            currentUserID={currentUserID}
             players={players}
             accusedUserID={accusedUserID}
             accuserUserID={accuserUserID}

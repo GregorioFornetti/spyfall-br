@@ -10,6 +10,7 @@ import PlayerCard from '../../PlayerCard'
 interface VoteModalProps {
     show: boolean,
     socket: Socket,
+    currentUserID: string,
     players: Player[],
     accusedUserID?: string,
     accuserUserID?: string,
@@ -17,7 +18,7 @@ interface VoteModalProps {
     desagreedUsersIds: string[]
 }
 
-export default function VoteModal({show, socket, players, accusedUserID, accuserUserID, agreedUsersIds, desagreedUsersIds}: VoteModalProps) {
+export default function VoteModal({show, socket, currentUserID, players, accusedUserID, accuserUserID, agreedUsersIds, desagreedUsersIds}: VoteModalProps) {
 
     var accusedUsername = ''
     if (accusedUserID) {
@@ -27,6 +28,11 @@ export default function VoteModal({show, socket, players, accusedUserID, accuser
     if (accuserUserID) {
         accuserUsername = (players.find((player) => player.id == accuserUserID) as Player).username
     }
+
+    const disabled = (currentUserID === accusedUserID || 
+                      currentUserID === accuserUserID || 
+                      agreedUsersIds.includes(currentUserID) ||
+                      desagreedUsersIds.includes(currentUserID))
 
 
     return (
@@ -62,6 +68,7 @@ export default function VoteModal({show, socket, players, accusedUserID, accuser
                             <Button 
                                 variant="success"
                                 onClick={() => socket.emit('vote', true)}
+                                disabled={disabled}
                             >
                                 Concordar
                             </Button>
@@ -70,6 +77,7 @@ export default function VoteModal({show, socket, players, accusedUserID, accuser
                             <Button 
                                 variant="danger"
                                 onClick={() => socket.emit('vote', false)}
+                                disabled={disabled}
                             >
                                 Discordar
                             </Button>
