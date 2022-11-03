@@ -18,7 +18,7 @@ import ResultsModal from "./components/ResultsModal";
 
 var loaded = false
 
-const serverURL = 'http://191.101.235.230:3000'  // http://191.101.235.230:3000
+const serverURL = 'http://localhost:3000'  // http://191.101.235.230:3000
 
 const socket = io(serverURL, {autoConnect: false})
 const sessionID = localStorage.getItem("sessionID")

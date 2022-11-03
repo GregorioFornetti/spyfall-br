@@ -52,7 +52,7 @@ export default function GamePage({show, isSpy, selectedPlace, playerRole, possib
           <Container className={classNames({'d-none': !show}, styles['container-margin'])}>
             <Container fluid>
       
-              <Card className='text-center m-auto' style={{width: '340px'}}>
+              <Card className='text-center m-auto' style={{maxWidth: '340px'}}>
                 <Card.Header className='h4'>{(!isSpy) ? ('Lugar selecionado') : ('Você é o espião')}</Card.Header>
                 <Card.Body>
                   <PlaceCard
