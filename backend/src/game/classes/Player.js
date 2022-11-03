@@ -16,6 +16,7 @@ export default class Player {
         return {
             id: this.user.userID,
             username: this.username,
+            ready: this.ready,
             score: this.score
         }
     }

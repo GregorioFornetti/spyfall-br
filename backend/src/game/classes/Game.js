@@ -48,7 +48,7 @@ export default class Game {
     }
 
     playerReady(user, io) {
-        user.ready = true
+        this.players.find((player) => player.user === user).ready = true
 
         for (let player of this.players) {
             io.to(player.getSocketID()).emit('player-ready', user.userID)
@@ -56,7 +56,7 @@ export default class Game {
     }
 
     playerUnready(user, io) {
-        user.ready = false
+        this.players.find((player) => player.user === user).ready = false
         
         for (let player of this.players) {
             io.to(player.getSocketID()).emit('player-unready', user.userID)
@@ -64,7 +64,7 @@ export default class Game {
     }
 
     allPlayersReady() {
-        return all(this.players((player) => player.ready || player.user === this.leader))
+        return this.players.every((player) => player.ready || player.user === this.leader)
     }
 
     async startMatch(io) {

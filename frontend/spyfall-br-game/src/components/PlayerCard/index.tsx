@@ -1,6 +1,6 @@
 import { FaCrown } from 'react-icons/fa'
 import { BiTargetLock } from 'react-icons/bi'
-import { BsQuestionLg, BsCheckLg, BsXLg, BsFillMegaphoneFill } from 'react-icons/bs'
+import { BsCheck, BsQuestionLg, BsCheckLg, BsXLg, BsFillMegaphoneFill } from 'react-icons/bs'
 import styles from './PlayerCard.module.scss'
 import classNames from 'classnames'
 import { useState } from 'react'
@@ -13,6 +13,7 @@ interface PlayerCardProps {
     score: number,
     isCurrentUser?: boolean,
     inGame?: boolean,
+    ready?: boolean,
     asking?: boolean,
     target?: boolean,
     onClick?: () => void,
@@ -21,7 +22,7 @@ interface PlayerCardProps {
     accused?: boolean
 }
 
-export default function PlayerCard({username, leader, score, isCurrentUser, inGame, asking, target, agreed, desagreed, accused, onClick}: PlayerCardProps) {
+export default function PlayerCard({username, leader, score, isCurrentUser, inGame, ready, asking, target, agreed, desagreed, accused, onClick}: PlayerCardProps) {
 
     const [guess, setGuess] = useState<"current user"|"undefined"|"suspect"|"safe">((isCurrentUser) ? ('current user') : ('undefined'))
 
@@ -48,7 +49,12 @@ export default function PlayerCard({username, leader, score, isCurrentUser, inGa
                     </div>
                     {leader &&
                         <div className='col-2'>
-                            {leader && <GuessIcon Icon={FaCrown} tooltipText={'criador da sala'} /> }
+                            <GuessIcon Icon={FaCrown} tooltipText={'criador da sala'} />
+                        </div>
+                    }
+                    {ready && 
+                        <div className='col-2'>
+                            <GuessIcon Icon={BsCheck} tooltipText={'pronto'} />
                         </div>
                     }
                     {(inGame && target) && 

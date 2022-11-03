@@ -123,16 +123,6 @@ function App() {
         alert("Não foi possivel entrar na sala ! Verifique se o código está correto")
       })
 
-      socket.on('match-start', (match) => {
-        setAskingUserID(match.askingUserID)
-        setTargetUserID(match.targetUserID)
-        setPossiblePlaces(places.filter((place) => (match.possiblePlacesIDs.includes(place.id))))
-        setIsSpy(match.isSpy)
-        setSelectedPlace(places.find((place) => (place.id === match.selectedPlaceID)))
-        setPlayerRole(roles.find((role) => (role.id === match.userRoleID)))
-        setCurrentPage('game')
-      })
-
       socket.on('votation-start', ([newAccuserID, newAccusedID]) => {
         setInVotation(true)
         setAccuserUserID(newAccuserID)
@@ -186,13 +176,11 @@ function App() {
     setCurrentPage('lobby')
   })
 
-  socket.on('agreed-vote', (arg) => {
-    let newAgreedUserID: string = arg
+  socket.on('agreed-vote', (newAgreedUserID) => {
     setAgreedUsersIds([...agreedUsersIds, newAgreedUserID])
   })
 
-  socket.on('desagreed-vote', (arg) => {
-    let newDesagreedUserID: string = arg
+  socket.on('desagreed-vote', (newDesagreedUserID) => {
     setDesagreedsUsersIds([...desagreedUsersIds, newDesagreedUserID])
   })
 
@@ -202,6 +190,28 @@ function App() {
     setAgreedUsersIds([])
     setDesagreedsUsersIds([])
     setInVotation(false)
+  })
+
+  socket.on('match-start', (match) => {
+    setPlayers(players.map((player) => ({...player, ready: false})))
+    setAskingUserID(match.askingUserID)
+    setTargetUserID(match.targetUserID)
+    setPossiblePlaces(places.filter((place) => (match.possiblePlacesIDs.includes(place.id))))
+    setIsSpy(match.isSpy)
+    setSelectedPlace(places.find((place) => (place.id === match.selectedPlaceID)))
+    setPlayerRole(roles.find((role) => (role.id === match.userRoleID)))
+    setCurrentPage('game')
+  })
+
+
+  socket.on('player-ready', (playerID) => {
+    (players.find((player) => player.id === playerID) as Player).ready = true
+    setPlayers([...players])
+  })
+
+  socket.on('player-unready', (playerID) => {
+    (players.find((player) => player.id === playerID) as Player).ready = false
+    setPlayers([...players])
   })
 
   return (

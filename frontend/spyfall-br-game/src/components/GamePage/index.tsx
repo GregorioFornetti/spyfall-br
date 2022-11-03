@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Card, Container, Nav} from 'react-bootstrap';
+import { Button, Card, Container, Nav} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Socket } from "socket.io-client";
 
@@ -68,29 +68,23 @@ export default function GamePage({show, isSpy, selectedPlace, playerRole, possib
       
       
               <div className="d-grid gap-3 col-10 col-sm-9 col-md-8 col-lg-6 col-xl-4 m-auto mt-5">
-                <button 
-                  className="btn btn-primary" 
-                  type="button"
+                <Button 
                   onClick={() => setShowAccuseModal(true)}
                 >
                   Acusar
-                </button>
-                <button 
-                  className="btn btn-primary" 
-                  type="button"
+                </Button>
+                <Button 
                   onClick={() => setShowQuestionModal(true)}
                   disabled={!(currentUserID === askingUserID && !targetUserID)}
                 >
                   Questionar
-                </button>
-                <button 
-                  className="btn btn-primary" 
-                  type="button"
+                </Button>
+                <Button 
                   onClick={() => setShowGuessModal(true)}
                   disabled={!isSpy}
                 >
                   Adivinhar lugar
-                </button>
+                </Button>
               </div>
             </Container>
       
