@@ -18,7 +18,7 @@ import ResultsModal from "./components/ResultsModal";
 
 var loaded = false
 
-const serverURL = 'http://localhost:3000'  // http://191.101.235.230:3000
+const serverURL = 'http://191.101.235.230:3000'  // http://191.101.235.230:3000
 
 function getURLGameCode() {
   var url =  window.location.href
