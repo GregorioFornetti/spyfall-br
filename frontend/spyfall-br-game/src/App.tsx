@@ -21,6 +21,10 @@ var loaded = false
 const serverURL = 'http://191.101.235.230:3000'  // http://191.101.235.230:3000
 
 function getURLGameCode() {
+  var url =  window.location.href
+  if (url.endsWith('/')) {
+    url = url.substring(0, url.length - 1)
+  }
   var URLSplit = window.location.href.split('/')
   return URLSplit[URLSplit.length - 1]
 }
