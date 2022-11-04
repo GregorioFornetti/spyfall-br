@@ -24,7 +24,7 @@ app.use(
     ...dbRouters
 )
 
-app.use('/game', express.static('src/views/game'))
+app.use('', express.static('src/views/game'))
 app.use(redirectIfNotAuth)
 app.use('/adm', express.static('src/views/adm'))
 

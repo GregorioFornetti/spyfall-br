@@ -8,10 +8,12 @@ import { Socket } from "socket.io-client";
 
 interface MainPageProps {
     show?: boolean,
-    socket: Socket
+    socket: Socket,
+    URLGameCode: string,
+    setURLGameCode: React.Dispatch<React.SetStateAction<string>>
 }
 
-export default function MainPage({show, socket}: MainPageProps) {
+export default function MainPage({show, socket, URLGameCode, setURLGameCode}: MainPageProps) {
     const [showNewMatchModal, setShowNewMatchModal] = useState(false)
     const [showJoinMatchModal, setShowJoinMatchModal] = useState(false)
 
@@ -22,7 +24,10 @@ export default function MainPage({show, socket}: MainPageProps) {
     const closeNewMatchModal = () => setShowNewMatchModal(false)
 
     const openJoinMatchModal = () => setShowJoinMatchModal(true)
-    const closeJoinMatchModal = () => setShowJoinMatchModal(false)
+    const closeJoinMatchModal = () => {
+        setURLGameCode('')
+        setShowJoinMatchModal(false)
+    }
 
     const createRoom = () => {
         if (username.trim().length > 0) {
@@ -34,8 +39,9 @@ export default function MainPage({show, socket}: MainPageProps) {
     }
 
     const joinRoom = () => {
-        if (username.trim().length > 0 && roomCode.trim().length > 0) {
-            socket.emit("join-room", {roomCode: roomCode, username: username})
+        if (username.trim().length > 0 && (roomCode.trim().length > 0 || URLGameCode.trim().length > 0)) {
+            socket.emit("join-room", {roomCode: (URLGameCode) ? URLGameCode : roomCode, username: username})
+            setURLGameCode('')
             setShowJoinMatchModal(false)
         } else {
             alert("Digite um nome e o código da partida !")
@@ -81,7 +87,7 @@ export default function MainPage({show, socket}: MainPageProps) {
             </Modal>
 
             <Modal
-                show={showJoinMatchModal}
+                show={showJoinMatchModal || URLGameCode.length !== 0}
                 onHide={closeJoinMatchModal}
                 backdrop="static"
                 keyboard={false}
@@ -90,9 +96,15 @@ export default function MainPage({show, socket}: MainPageProps) {
                     <Modal.Title>Entrar em uma partida</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form.Label>Código da partida</Form.Label>
-                    <Form.Control value={roomCode} onChange={(event) => setRoomCode(event.target.value)} type="text" />
-                    <br />
+                    {(!URLGameCode) &&
+                        <>
+                            <Form.Label>Código da partida</Form.Label>
+                            <Form.Control 
+                                value={roomCode} 
+                                onChange={(event) => setRoomCode(event.target.value)} type="text" />
+                            <br />
+                        </>
+                    }
                     <Form.Label>Nome</Form.Label>
                     <Form.Control value={username} onChange={(event) => setUsername(event.target.value)} type="text" />
                 </Modal.Body>

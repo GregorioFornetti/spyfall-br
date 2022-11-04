@@ -20,6 +20,11 @@ var loaded = false
 
 const serverURL = 'http://localhost:3000'  // http://191.101.235.230:3000
 
+function getURLGameCode() {
+  var URLSplit = window.location.href.split('/')
+  return URLSplit[URLSplit.length - 1]
+}
+
 const socket = io(serverURL, {autoConnect: false})
 const sessionID = localStorage.getItem("sessionID")
 
@@ -29,6 +34,7 @@ var categories: Category[] = []
 
 function App() {
 
+  const [URLGameCode, setURLGameCode] = useState("")
   const [gameCode, setGameCode] = useState("")
   const [currentUserID, setCurrentUserID] = useState("")
   const [leaderUserID, setLeaderUserID] = useState("")
@@ -108,6 +114,7 @@ function App() {
             setCurrentPage('lobby')
           }
         } else {
+          setURLGameCode(getURLGameCode())
           setCurrentPage('main')
         }
       });
@@ -237,6 +244,8 @@ function App() {
         />
 
         <MainPage 
+          URLGameCode={URLGameCode}
+          setURLGameCode={setURLGameCode}
           show={currentPage === 'main'} 
           socket={socket} 
         />
