@@ -18,14 +18,15 @@ import ResultsModal from "./components/ResultsModal";
 
 var loaded = false
 
-const serverURL = 'http://191.101.235.230:3000'  // http://191.101.235.230:3000
+const serverURL = 'http://localhost:3000'  // http://191.101.235.230:3000
 
 function getURLGameCode() {
   var url =  window.location.href
   if (url.endsWith('/')) {
     url = url.substring(0, url.length - 1)
   }
-  var URLSplit = window.location.href.split('/')
+  var URLSplit = url.split('/')
+
   return URLSplit[URLSplit.length - 1]
 }
 
