@@ -8,17 +8,9 @@ export default function matchEventsHandler(io, socket, users) {
         if (!game || game.inMatch) {
             return
         }
-        if (user !== game.leader) {
-            socket.emit('error', 'Apenas o lider da sala pode começar a partida')
-            return
-        }
-        if (!game.allPlayersReady()) {
-            socket.emit('error', 'Só é possível começar a partida se todos estiverem prontos')
-            return
-        }
 
 
-        await game.startMatch(io)
+        await game.startMatch(io, user, socket)
     })
 
     socket.on('new-questioning', (arg) => {

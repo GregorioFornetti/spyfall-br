@@ -67,7 +67,21 @@ export default class Game {
         return this.players.every((player) => player.ready || player.user === this.leader)
     }
 
-    async startMatch(io) {
+    async startMatch(io, user, socket) {
+        if (user !== this.leader) {
+            socket.emit('error', 'Apenas o lider da sala pode começar a partida')
+            return
+        }
+        if (!this.allPlayersReady()) {
+            socket.emit('error', 'Só é possível começar a partida se todos estiverem prontos')
+            return
+        }
+        if (this.players.length < 3) {
+            socket.emit('error', 'Só é possível começar uma partida com 3 ou mais jogadores')
+            return
+        }
+
+
         this.match = await Match.build(this.options, this.players.map((player) => (player.user)), io)
         for (let player of this.players) {
             player.ready = false
