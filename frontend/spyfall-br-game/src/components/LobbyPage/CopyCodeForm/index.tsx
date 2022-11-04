@@ -1,5 +1,6 @@
 import { Button, Form, InputGroup } from "react-bootstrap"
 import { FaRegCopy } from "react-icons/fa"
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 interface CopyCodeFormInterface {
     title: string,
@@ -16,9 +17,11 @@ export default function CopyCodeForm({title, copyValue}: CopyCodeFormInterface) 
                         readOnly={true}
                         value={copyValue}
                     />
-                    <Button variant="outline-secondary" onClick={() => {window.navigator.clipboard.writeText(copyValue)}}>
-                        <FaRegCopy />
-                    </Button>
+                    <CopyToClipboard text={copyValue}>
+                        <Button variant="outline-secondary">
+                            <FaRegCopy />
+                        </Button>
+                    </CopyToClipboard>
                 </InputGroup>
             </Form.Group>
         </div>
