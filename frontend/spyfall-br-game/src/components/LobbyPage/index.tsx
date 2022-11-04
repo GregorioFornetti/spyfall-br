@@ -6,16 +6,19 @@ import { Button, Container, Form, InputGroup, Row } from "react-bootstrap";
 import { FaRegCopy } from 'react-icons/fa'
 import { Socket } from "socket.io-client";
 
+import CopyCodeForm from './CopyCodeForm'
+
 interface LobbyPageInterface {
     currentUserID: string,
     players: Player[],
     show?: boolean,
     gameCode: string,
     leaderUserID: string,
-    socket: Socket
+    socket: Socket,
+    serverURL: string
 }
 
-export default function LobbyPage({players, currentUserID, show, gameCode, leaderUserID, socket}: LobbyPageInterface) {
+export default function LobbyPage({players, currentUserID, show, gameCode, leaderUserID, socket, serverURL}: LobbyPageInterface) {
 
     const isCurrentPlayerReady = players.find((player) => player.id === currentUserID)?.ready
     const isAllPlayersReady = players.every((player) => (player.ready || player.id === leaderUserID))
@@ -43,20 +46,9 @@ export default function LobbyPage({players, currentUserID, show, gameCode, leade
 
     return (
         <div className={(show) ? ('') : ('d-none')}>
-            <div style={{maxWidth: "350px", margin: "auto"}}>
-                <Form.Group>
-                    <Form.Label as='h6'>Código da partida</Form.Label>
-                    <InputGroup className="mb-3">
-                        <Form.Control
-                            readOnly={true}
-                            value={gameCode}
-                        />
-                        <Button variant="outline-secondary" onClick={() => {navigator.clipboard.writeText(gameCode)}}>
-                            <FaRegCopy />
-                        </Button>
-                    </InputGroup>
-                </Form.Group>
-            </div>
+            <CopyCodeForm title='Código da partida' copyValue={gameCode} />
+
+            <CopyCodeForm title='Link da partida' copyValue={`${serverURL}/${gameCode}`} />
 
             <PlayersContainer title='Jogadores' containerClassName={'mt-5'}>
                 {players.map((player) => (

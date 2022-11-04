@@ -251,6 +251,7 @@ function App() {
         />
 
         <LobbyPage
+          serverURL={serverURL}
           show={currentPage === 'lobby'} 
           socket={socket}
           players={players} 
