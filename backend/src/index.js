@@ -27,9 +27,7 @@ app.use(
 app.use(redirectIfNotAuth)
 app.use('/adm', express.static('src/views/adm'))
 
-app.use('/gameCode', (req, res) => res.status(200).send(''))
 app.use('/', express.static('src/views/game'))
-app.use('/:URLGameCode/gameCode', (req, res) => res.status(200).send(req.params.URLGameCode))
 app.use('/:URLGameCode', express.static('src/views/game'))
 
 

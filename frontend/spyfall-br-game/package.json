@@ -10,6 +10,7 @@
     "@types/node": "^16.11.64",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
+    "@types/uuid-validate": "^0.0.1",
     "classnames": "^2.3.2",
     "react": "^18.2.0",
     "react-bootstrap": "^2.5.0",
@@ -19,6 +20,7 @@
     "react-scripts": "5.0.1",
     "socket.io-client": "^4.5.2",
     "typescript": "^4.8.4",
+    "uuid-validate": "^0.0.3",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

@@ -1,7 +1,6 @@
 import { io } from "socket.io-client"
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import GamePage from './components/GamePage';
@@ -20,6 +19,20 @@ import ResultsModal from "./components/ResultsModal";
 var loaded = false
 
 const serverURL = 'http://191.101.235.230:3000'  // http://191.101.235.230:3000
+
+function getURLGameCode() {
+  var url =  window.location.href
+  if (url.endsWith('/')) {
+    url = url.substring(0, url.length - 1)
+  }
+  if (url.length <= 36) {
+    return ''
+  }
+  var gameCode = url.substring(url.length - 36)
+
+  return gameCode
+
+}
 
 const socket = io(serverURL, {autoConnect: false})
 const sessionID = localStorage.getItem("sessionID")
@@ -110,13 +123,9 @@ function App() {
             setCurrentPage('lobby')
           }
         } else {
-          fetch('/gameCode')
-            .then((res) => res.text())
-            .then((gameCode) => {
-              console.log(gameCode)
-              setURLGameCode(gameCode)
-              setCurrentPage('main')
-            })
+          console.log(getURLGameCode())
+          setURLGameCode(getURLGameCode())
+          setCurrentPage('main')
         }
       });
 
