@@ -4,8 +4,17 @@ import Player from './Player.js'
 import Match from './Match.js'
 import { all } from 'underscore'
 
+function isValidUsername(username) {
+    return username.trim().length > 0 && username.trim().length <= 15
+}
+
 export default class Game {
     static async build(user, username, socket) {
+        if (!isValidUsername(username)) {
+            socket.emit('error', 'Nome inválido (precisa ter algum caractere e ser menor que 16 caracteres')
+            return false
+        }
+
         const newGame = new this(user, username)
         newGame.options = await Options.build()
 
@@ -24,17 +33,23 @@ export default class Game {
     }
 
     addNewPlayer(user, username, socket, io) {
-        if (!this.inMatch) {
-            var newPlayer = new Player(user, username)
-            for (let player of this.players) {
-                io.to(player.getSocketID()).emit('new-player-joined', newPlayer.toJSON())
-            }
-
-            this.players.push(new Player(user, username))
-            socket.emit('success-join', this.toJSON())
-        } else {
-            socket.emit('error', 'A jogo está em andamento. Espere acabar para poder entrar')
+        if (!isValidUsername(username)) {
+            socket.emit('error', 'Nome inválido (precisa ter algum caractere e ser menor que 16 caracteres')
+            return false
         }
+        if (this.inMatch) {
+            socket.emit('error', 'A jogo está em andamento. Espere acabar para poder entrar')
+            return false
+        }
+
+        var newPlayer = new Player(user, username)
+        for (let player of this.players) {
+            io.to(player.getSocketID()).emit('new-player-joined', newPlayer.toJSON())
+        }
+
+        this.players.push(new Player(user, username))
+        socket.emit('success-join', this.toJSON())
+        return true
     }
 
     removePlayer(user, socket, io) {
@@ -109,5 +124,9 @@ export default class Game {
         }
 
         return gameJSON
+    }
+
+    static validUsername(username) {
+        return username.trim().length > 0 && username.trim().length <= 15
     }
 }

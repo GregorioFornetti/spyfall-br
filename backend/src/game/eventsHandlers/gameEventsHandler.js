@@ -8,8 +8,10 @@ export default function gameEventsHandler(io, socket, games, users) {
         var user = users[socket.sessionID]
 
         var game = await Game.build(user, username, socket)
-        user.game = game
-        games[game.code] = game
+        if (game) {
+            user.game = game
+            games[game.code] = game
+        }
     })
 
     socket.on('join-room', (arg) => {
@@ -17,8 +19,10 @@ export default function gameEventsHandler(io, socket, games, users) {
         var user = users[socket.sessionID]
 
         if (games.hasOwnProperty(roomCode)) {
-            games[roomCode].addNewPlayer(user, username, socket, io)
-            user.game = games[roomCode]
+            var playerAdded = games[roomCode].addNewPlayer(user, username, socket, io)
+            if (playerAdded) {
+                user.game = games[roomCode]
+            }
         } else {
             socket.emit('error', 'Não foi possível encontrar um jogo com esse código !')
         }
