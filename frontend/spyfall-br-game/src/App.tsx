@@ -18,7 +18,7 @@ import ResultsModal from "./components/ResultsModal";
 
 var loaded = false
 
-const serverURL = 'http://191.101.235.230:3000'  // http://191.101.235.230:3000
+const serverURL = 'http://localhost:3000'  // http://191.101.235.230:3000
 
 function getURLGameCode() {
   var url =  window.location.href
@@ -134,10 +134,6 @@ function App() {
         setGameCode(gameInfo.code)
         setLeaderUserID(gameInfo.leaderUserID)
         setCurrentPage('lobby')
-      })
-
-      socket.on('failed-join', (arg) => {
-        alert("Não foi possivel entrar na sala ! Verifique se o código está correto")
       })
 
       socket.on('votation-start', ([newAccuserID, newAccusedID]) => {

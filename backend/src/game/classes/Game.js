@@ -33,7 +33,7 @@ export default class Game {
             this.players.push(new Player(user, username))
             socket.emit('success-join', this.toJSON())
         } else {
-            socket.emit('failed-join', 'A jogo está em andamento. Espere acabar para poder entrar')
+            socket.emit('error', 'A jogo está em andamento. Espere acabar para poder entrar')
         }
     }
 

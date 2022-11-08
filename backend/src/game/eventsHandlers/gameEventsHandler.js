@@ -20,7 +20,7 @@ export default function gameEventsHandler(io, socket, games, users) {
             games[roomCode].addNewPlayer(user, username, socket, io)
             user.game = games[roomCode]
         } else {
-            socket.emit('failed-join', 'Não foi possível encontrar um jogo com esse código !')
+            socket.emit('error', 'Não foi possível encontrar um jogo com esse código !')
         }
     })
 
