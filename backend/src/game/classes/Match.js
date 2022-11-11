@@ -1,5 +1,6 @@
 import { sample, random, shuffle } from 'underscore'
 import { getPlaceRoles } from '../../db-api/models/getters.js'
+import { EventEmitter } from 'node:events';
 
 function selectRandomElement(listOfElements) {
     return listOfElements[random(listOfElements.length - 1)]
@@ -43,7 +44,7 @@ function selectUserRoles(possibleRolesIDs, usersIDs, spyID) {
 }
 
 
-export default class Match {
+export default class Match extends EventEmitter {
     static async build(options, users, io) {
         const usersIDs = users.map((user) => (user.userID))
         const newMatch = new this(options, users, usersIDs)
@@ -55,6 +56,7 @@ export default class Match {
     }
 
     constructor(options, users, usersIDs) {
+        super()
         this.users = users
         this.possiblePlacesIDs = selectMatchPossiblePlaces(options.possiblePlaces, options.possiblePlacesNumber)
         this.selectedPlaceID = selectMatchPlace(this.possiblePlacesIDs)
@@ -126,13 +128,9 @@ export default class Match {
         
         if (userID !== this.spyUserID) {
             socket.emit('error', 'Apenas o espião pode advinhar um lugar')
-            return false
+            return
         }
 
-        let matchResult = {
-            spyUserID: this.spyUserID,
-            selectedPlaceID: this.selectedPlaceID
-        }
         if (placeID === this.selectedPlaceID) {
             // Espião ganhou
             this.endMatch(io, 'spy', 'O espião adivinhou corretamente o local')
@@ -140,8 +138,6 @@ export default class Match {
             // Espião perdeu (agentes ganharam)
             this.endMatch(io, 'agents', 'O espião errou o local')
         }
-
-        return true
     }
 
     makeAccusation(io, socket, accuserUserID, accusedUserID) {
@@ -161,18 +157,18 @@ export default class Match {
         }
     }
 
-    async receiveVote(io, socket, userID, agree) {
+    receiveVote(io, socket, userID, agree) {
         if (!this.inVotation) {
             socket.emit('error', 'Não há uma votação em andamento para votar')
-            return false
+            return
         }
         if (userID === this.accusedUserID || userID === this.accuserUserID) {
             socket.emit('error', 'Não é possível votar se você é o acusador ou o acusado')
-            return false
+            return
         }
         if (this.agreedUsersIds.includes(userID) || this.desagreedUsersIds.includes(userID)) {
             socket.emit('error', 'Não é possível votar novamente')
-            return false
+            return
         }
 
         if (agree) {
@@ -199,8 +195,6 @@ export default class Match {
                         }
                     }
                 }, 1000)
-                await new Promise(resolve => setTimeout(resolve, 1000 * secsToEnd));
-                return true
             }
         } else {
             // Usuário votou contra a votação
@@ -232,7 +226,6 @@ export default class Match {
                 io.to(user.socketID).emit('desagreed-vote', userID)
             }
         }
-        return false
     }
 
     endMatch(io, winner, winDescription) {
@@ -246,6 +239,7 @@ export default class Match {
         for (let user of this.users) {
             io.to(user.socketID).emit('match-end', matchResult)
         }
+        this.emit('match-end')
     }
 
     toJSON(userID) {

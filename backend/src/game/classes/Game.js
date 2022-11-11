@@ -2,7 +2,6 @@ import crypto from 'crypto'
 import Options from './Options.js'
 import Player from './Player.js'
 import Match from './Match.js'
-import { all } from 'underscore'
 
 function isValidUsername(username) {
     return username.trim().length > 0 && username.trim().length <= 15
@@ -98,6 +97,7 @@ export default class Game {
 
 
         this.match = await Match.build(this.options, this.players.map((player) => (player.user)), io)
+        this.match.on('match-end', () => this.endMatch())
         for (let player of this.players) {
             player.ready = false
         }

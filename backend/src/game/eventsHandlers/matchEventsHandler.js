@@ -45,9 +45,7 @@ export default function matchEventsHandler(io, socket, users) {
             return
         }
 
-        if (game.match.guessPlace(io, socket, user.userID, placeID)) {
-            game.endMatch()
-        }
+        game.match.guessPlace(io, socket, user.userID, placeID)
     })
 
     socket.on('accuse', (arg) => {
@@ -71,8 +69,6 @@ export default function matchEventsHandler(io, socket, users) {
             return
         }
 
-        if (await game.match.receiveVote(io, socket, user.userID, agree)) {
-            game.endMatch()
-        }
+        game.match.receiveVote(io, socket, user.userID, agree)
     }) 
 }
