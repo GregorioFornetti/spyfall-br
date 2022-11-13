@@ -17,6 +17,7 @@ import VoteModal from './VoteModal';
 import GuessModal from './GuessModal';
 import QuestionModal from './QuestionModal';
 import classNames from 'classnames';
+import Timer from './Timer';
 
 
 
@@ -25,6 +26,7 @@ interface GamePageProps {
     isSpy?: boolean,
     selectedPlace?: Place,
     playerRole?: Role,
+    time: number,
     possiblePlaces: Place[],
     players: Player[],
     currentUserID: string,
@@ -41,7 +43,7 @@ interface GamePageProps {
 }
 
 
-export default function GamePage({show, isSpy, selectedPlace, playerRole, possiblePlaces, players, currentUserID, leaderUserID, askingUserID, targetUserID, inVotation, previousAskingUserID, accusedUserID, accuserUserID, agreedUsersIds, desagreedUsersIds, socket}: GamePageProps) {
+export default function GamePage({show, isSpy, selectedPlace, playerRole, possiblePlaces, players, currentUserID, leaderUserID, askingUserID, targetUserID, inVotation, previousAskingUserID, accusedUserID, accuserUserID, agreedUsersIds, desagreedUsersIds, socket, time}: GamePageProps) {
 
     const [showAccuseModal, setShowAccuseModal] = useState(false)
     const [showGuessModal, setShowGuessModal] = useState(false)
@@ -50,6 +52,10 @@ export default function GamePage({show, isSpy, selectedPlace, playerRole, possib
     return (
         <>
           <Container className={classNames({'d-none': !show}, styles['container-margin'])}>
+            <div className="d-flex justify-content-center mb-5">
+              <Timer time={time} />
+            </div>
+
             <Container fluid>
       
               <Card className='text-center m-auto' style={{maxWidth: '340px'}}>

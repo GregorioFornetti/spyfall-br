@@ -1,0 +1,20 @@
+.timer-box {
+    width: 120px;
+    background-color: rgb(50, 50, 50);
+    color: white;
+    padding: 5px 10px;
+    border: solid rgb(100, 100, 100) 5px;
+    border-radius: 10px;
+}
+
+.normal {
+    color: white;
+}
+
+.alert {
+    color: yellow;
+}
+
+.danger {
+    color: red;
+}

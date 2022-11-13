@@ -49,6 +49,7 @@ function App() {
   const [leaderUserID, setLeaderUserID] = useState("")
   const [players, setPlayers] = useState<Player[]>([])
   const [currentPage, setCurrentPage] = useState<"loading"|"main"|"lobby"|"game">("loading")
+  const [time, setTime] = useState(100)
 
   const [isSpy, setIsSpy] = useState(false)
   const [possiblePlaces, setPossiblePlaces] = useState<Place[]>([])
@@ -68,6 +69,12 @@ function App() {
   const [winner, setWinner] = useState<"spy"|"agents"|undefined>()
   const [winDescription, setWinDescription] = useState<string|undefined>()
   const [spy, setSpy] = useState<Player|undefined>()
+
+  useEffect(() => {
+    if (time > 0) {
+      setTimeout(() => {setTime(time - 1)}, 1000)
+    }
+  }, [time])
 
   useEffect(() => {
     if (!loaded) {
@@ -216,7 +223,6 @@ function App() {
     setCurrentPage('game')
   })
 
-
   socket.on('player-ready', (playerID) => {
     (players.find((player) => player.id === playerID) as Player).ready = true
     setPlayers([...players])
@@ -273,6 +279,7 @@ function App() {
           leaderUserID={leaderUserID}
           possiblePlaces={possiblePlaces}
           isSpy={isSpy}
+          time={time}
           selectedPlace={selectedPlace}
           askingUserID={askingUserID}
           targetUserID={targetUserID}
