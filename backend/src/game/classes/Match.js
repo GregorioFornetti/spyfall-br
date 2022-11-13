@@ -65,12 +65,23 @@ export default class Match extends EventEmitter {
         this.targetUserID = null
         this.usersRolesIDs = null
         this.previousAskingUserID = null
+        this.matchTimeLeft = options.matchTime
+        this.matchInterval = setInterval(() => {
+            if (this.matchTimeLeft <= 0) {
+                this.matchTimeLeft = 0
+                clearInterval(this.matchInterval)
+                return
+            }
+            this.matchTimeLeft--
+        }, 1000)
 
         this.inVotation = false
         this.agreedUsersIds = []
         this.desagreedUsersIds = []
         this.accuserUserID = null
         this.accusedUserID = null
+        this.votationTime = options.votationTime
+        this.votationTimeLeft = null
     }
 
     emitMatchStart(io) {
@@ -151,10 +162,43 @@ export default class Match extends EventEmitter {
         this.accusedUserID = accusedUserID
         this.agreedUsersIds = []
         this.desagreedUsersIds = []
+        this.votationTimeLeft = this.votationTime
+
+        this.votationInterval = setInterval(() => {
+            if (this.votationTimeLeft <= 0) {
+                this.endVotation()
+                return
+            }
+            this.votationTimeLeft--
+        }, 1000)
         
         for (let user of this.users) {
             io.to(user.socketID).emit('votation-start', [accuserUserID, accusedUserID])
         }
+    }
+
+    endVotation() {
+        clearInterval(this.votationInterval)
+
+        if (this.agreedUsersIds.length === this.users.length - 2) {
+            if (this.accusedUserID === this.spyUserID) {
+                this.endMatch(io, 'agents', 'O espião foi descoberto')
+            } else {
+                this.endMatch(io, 'spy', 'Um agente foi julgado incorretamente')
+            }
+        } else {
+            for (let user of this.users) {
+                io.to(user.socketID).emit('vote-failed')
+            }
+        }
+
+        this.inVotation = false
+        this.accusedUserID = null
+        this.accuserUserID = null
+        this.agreedUsersIds = []
+        this.desagreedUsersIds = []
+        this.votationTimeLeft = null
+        this.votationInterval = null
     }
 
     receiveVote(io, socket, userID, agree) {
@@ -200,24 +244,7 @@ export default class Match extends EventEmitter {
             // Usuário votou contra a votação
             if (this.desagreedUsersIds.length === 0) {
                 // A primeira pessoa discordou, iniciar timer para fim de votação
-                let secsToEnd = 5
-                let interval = setInterval(() => {
-                    secsToEnd--
-                    if (secsToEnd === 0) {
-                        clearInterval(interval)
-
-                        this.inVotation = false
-                        this.accusedUserID = null
-                        this.accuserUserID = null
-                        this.agreedUsersIds = []
-                        this.desagreedUsersIds = []
-
-                        for (let user of this.users) {
-                            io.to(user.socketID).emit('vote-failed')
-                        }
-                    }
-                }, 1000)
-                
+                this.votationTimeLeft = 5
             }
 
             this.desagreedUsersIds.push(userID)
@@ -251,11 +278,14 @@ export default class Match extends EventEmitter {
             targetUserID: this.targetUserID,
             possiblePlacesIDs: this.possiblePlacesIDs,
             previousAskingUserID: this.previousAskingUserID,
+            matchTimeLeft: this.matchTimeLeft,
+
             inVotation: this.inVotation,
             accusedUserID: this.accusedUserID,
             accuserUserID: this.accuserUserID,
             agreedUsersIds: this.agreedUsersIds,
-            desagreedUsersIds: this.desagreedUsersIds
+            desagreedUsersIds: this.desagreedUsersIds,
+            votationTimeLeft: this.votationTimeLeft
         }
     
         if (userID === this.spyUserID) {

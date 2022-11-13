@@ -41,6 +41,8 @@ var places: Place[] = []
 var roles: Role[] = []
 var categories: Category[] = []
 
+var timeoutObject: undefined|NodeJS.Timeout
+
 function App() {
 
   const [URLGameCode, setURLGameCode] = useState("")
@@ -71,8 +73,9 @@ function App() {
   const [spy, setSpy] = useState<Player|undefined>()
 
   useEffect(() => {
+    clearTimeout(timeoutObject)
     if (time > 0) {
-      setTimeout(() => {setTime(time - 1)}, 1000)
+      timeoutObject = setTimeout(() => {setTime(time - 1)}, 1000)
     }
   }, [time])
 

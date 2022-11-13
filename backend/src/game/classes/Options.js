@@ -10,6 +10,8 @@ export default class Options {
     constructor() {
         this.possiblePlaces = null
         this.possiblePlacesNumber = 20
+        this.matchTime = 10 * 60
+        this.votationTime = 1 * 60 + 30
     }
 
     toJSON() {
