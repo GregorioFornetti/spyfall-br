@@ -6,11 +6,13 @@ import { Socket } from "socket.io-client";
 
 import Player from '../../../interfaces/PlayerInterface'
 import PlayerCard from '../../PlayerCard'
+import Timer from '../Timer';
 
 interface VoteModalProps {
     show: boolean,
     socket: Socket,
     currentUserID: string,
+    votationTime: number,
     players: Player[],
     accusedUserID?: string,
     accuserUserID?: string,
@@ -18,7 +20,7 @@ interface VoteModalProps {
     desagreedUsersIds: string[]
 }
 
-export default function VoteModal({show, socket, currentUserID, players, accusedUserID, accuserUserID, agreedUsersIds, desagreedUsersIds}: VoteModalProps) {
+export default function VoteModal({show, socket, currentUserID, players, accusedUserID, accuserUserID, agreedUsersIds, desagreedUsersIds, votationTime}: VoteModalProps) {
 
     var accusedUsername = ''
     if (accusedUserID) {
@@ -42,6 +44,9 @@ export default function VoteModal({show, socket, currentUserID, players, accused
                 <span>
                     <strong>{accuserUsername}</strong> está acusando <strong>{accusedUsername}</strong>
                 </span>
+                <div className='d-flex justify-content-center mt-3'>
+                    <Timer time={votationTime} />
+                </div>
             </Modal.Header>
             <Modal.Body>
                 <Container>

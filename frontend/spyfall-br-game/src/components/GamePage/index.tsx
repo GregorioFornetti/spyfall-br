@@ -26,7 +26,8 @@ interface GamePageProps {
     isSpy?: boolean,
     selectedPlace?: Place,
     playerRole?: Role,
-    time: number,
+    matchTime: number,
+    votationTime: number,
     possiblePlaces: Place[],
     players: Player[],
     currentUserID: string,
@@ -43,7 +44,7 @@ interface GamePageProps {
 }
 
 
-export default function GamePage({show, isSpy, selectedPlace, playerRole, possiblePlaces, players, currentUserID, leaderUserID, askingUserID, targetUserID, inVotation, previousAskingUserID, accusedUserID, accuserUserID, agreedUsersIds, desagreedUsersIds, socket, time}: GamePageProps) {
+export default function GamePage({show, isSpy, selectedPlace, playerRole, possiblePlaces, players, currentUserID, leaderUserID, askingUserID, targetUserID, inVotation, previousAskingUserID, accusedUserID, accuserUserID, agreedUsersIds, desagreedUsersIds, socket, matchTime, votationTime}: GamePageProps) {
 
     const [showAccuseModal, setShowAccuseModal] = useState(false)
     const [showGuessModal, setShowGuessModal] = useState(false)
@@ -53,7 +54,7 @@ export default function GamePage({show, isSpy, selectedPlace, playerRole, possib
         <>
           <Container className={classNames({'d-none': !show}, styles['container-margin'])}>
             <div className="d-flex justify-content-center mb-5">
-              <Timer time={time} />
+              <Timer time={matchTime} />
             </div>
 
             <Container fluid>
@@ -146,6 +147,7 @@ export default function GamePage({show, isSpy, selectedPlace, playerRole, possib
             show={inVotation}
             socket={socket}
 
+            votationTime={votationTime}
             currentUserID={currentUserID}
             players={players}
             accusedUserID={accusedUserID}

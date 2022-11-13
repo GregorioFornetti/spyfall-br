@@ -41,7 +41,8 @@ var places: Place[] = []
 var roles: Role[] = []
 var categories: Category[] = []
 
-var timeoutObject: undefined|NodeJS.Timeout
+var matchTimeoutObject: undefined|NodeJS.Timeout
+var votationTimeoutObject: undefined|NodeJS.Timeout
 
 function App() {
 
@@ -51,7 +52,8 @@ function App() {
   const [leaderUserID, setLeaderUserID] = useState("")
   const [players, setPlayers] = useState<Player[]>([])
   const [currentPage, setCurrentPage] = useState<"loading"|"main"|"lobby"|"game">("loading")
-  const [time, setTime] = useState(100)
+  const [matchTime, setMatchTime] = useState(0)
+  const [votationTime, setVotationTime] = useState(10)
 
   const [isSpy, setIsSpy] = useState(false)
   const [possiblePlaces, setPossiblePlaces] = useState<Place[]>([])
@@ -73,11 +75,18 @@ function App() {
   const [spy, setSpy] = useState<Player|undefined>()
 
   useEffect(() => {
-    clearTimeout(timeoutObject)
-    if (time > 0) {
-      timeoutObject = setTimeout(() => {setTime(time - 1)}, 1000)
+    clearTimeout(matchTimeoutObject)
+    if (matchTime > 0) {
+      matchTimeoutObject = setTimeout(() => {setMatchTime(matchTime - 1)}, 1000)
     }
-  }, [time])
+  }, [matchTime])
+
+  useEffect(() => {
+    clearTimeout(votationTimeoutObject)
+    if (votationTime > 0) {
+      votationTimeoutObject = setTimeout(() => {setVotationTime(votationTime - 1)}, 1000)
+    }
+  }, [votationTime])
 
   useEffect(() => {
     if (!loaded) {
@@ -121,19 +130,20 @@ function App() {
             setSelectedPlace(places.find((place) => (place.id === match.selectedPlaceID)))
             setPlayerRole(roles.find((role) => (role.id === match.userRoleID)))
             setPreviousAskingUserID(match.previousAskingUserID)
+            setMatchTime(match.matchTimeLeft)
             if (match.inVotation) {
               setInVotation(true)
               setAccusedUserID(match.accusedUserID)
               setAccuserUserID(match.accuserUserID)
               setAgreedUsersIds(match.agreedUsersIds)
               setDesagreedsUsersIds(match.desagreedUsersIds)
+              setVotationTime(match.votationTimeLeft)
             }
             setCurrentPage('game')
           } else {
             setCurrentPage('lobby')
           }
         } else {
-          console.log(getURLGameCode())
           setURLGameCode(getURLGameCode())
           setCurrentPage('main')
         }
@@ -146,10 +156,11 @@ function App() {
         setCurrentPage('lobby')
       })
 
-      socket.on('votation-start', ([newAccuserID, newAccusedID]) => {
+      socket.on('votation-start', ([newAccuserID, newAccusedID, votationTime]) => {
         setInVotation(true)
         setAccuserUserID(newAccuserID)
         setAccusedUserID(newAccusedID)
+        setVotationTime(votationTime)
       })
 
       socket.on('new-questioning', (targetUserID) => {
@@ -200,11 +211,18 @@ function App() {
   })
 
   socket.on('agreed-vote', (newAgreedUserID) => {
-    setAgreedUsersIds([...agreedUsersIds, newAgreedUserID])
+    let newAgreedUsersIds = [...agreedUsersIds, newAgreedUserID]
+    setAgreedUsersIds(newAgreedUsersIds)
+    if (newAgreedUsersIds.length === players.length - 2 && votationTime > 5) {
+      setVotationTime(5)
+    }
   })
 
   socket.on('desagreed-vote', (newDesagreedUserID) => {
     setDesagreedsUsersIds([...desagreedUsersIds, newDesagreedUserID])
+    if (votationTime > 5) {
+      setVotationTime(5)
+    }
   })
 
   socket.on('vote-failed', () => {
@@ -223,6 +241,7 @@ function App() {
     setIsSpy(match.isSpy)
     setSelectedPlace(places.find((place) => (place.id === match.selectedPlaceID)))
     setPlayerRole(roles.find((role) => (role.id === match.userRoleID)))
+    setMatchTime(match.matchTimeLeft)
     setCurrentPage('game')
   })
 
@@ -282,7 +301,8 @@ function App() {
           leaderUserID={leaderUserID}
           possiblePlaces={possiblePlaces}
           isSpy={isSpy}
-          time={time}
+          matchTime={matchTime}
+          votationTime={votationTime}
           selectedPlace={selectedPlace}
           askingUserID={askingUserID}
           targetUserID={targetUserID}

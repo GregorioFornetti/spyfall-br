@@ -166,18 +166,18 @@ export default class Match extends EventEmitter {
 
         this.votationInterval = setInterval(() => {
             if (this.votationTimeLeft <= 0) {
-                this.endVotation()
+                this.endVotation(io)
                 return
             }
             this.votationTimeLeft--
         }, 1000)
         
         for (let user of this.users) {
-            io.to(user.socketID).emit('votation-start', [accuserUserID, accusedUserID])
+            io.to(user.socketID).emit('votation-start', [accuserUserID, accusedUserID, this.votationTimeLeft])
         }
     }
 
-    endVotation() {
+    endVotation(io) {
         clearInterval(this.votationInterval)
 
         if (this.agreedUsersIds.length === this.users.length - 2) {
@@ -225,26 +225,17 @@ export default class Match extends EventEmitter {
 
             if (this.agreedUsersIds.length === this.users.length - 2) {
                 // Todos que podem votar votaram a favor, então a partida deve ser finalizada
-                let secsToEnd = 5
-                let interval = setInterval(() => {
-                    secsToEnd--
-                    if (secsToEnd === 0) {
-                        clearInterval(interval)
-
-                        if (this.accusedUserID === this.spyUserID) {
-                            console.log(this.endMatch)
-                            this.endMatch(io, 'agents', 'O espião foi descoberto')
-                        } else {
-                            this.endMatch(io, 'spy', 'Um agente foi julgado incorretamente')
-                        }
-                    }
-                }, 1000)
+                if (this.votationTimeLeft > 5) {
+                    this.votationTimeLeft = 5
+                }
             }
         } else {
             // Usuário votou contra a votação
             if (this.desagreedUsersIds.length === 0) {
                 // A primeira pessoa discordou, iniciar timer para fim de votação
-                this.votationTimeLeft = 5
+                if (this.votationTimeLeft > 5) {
+                    this.votationTimeLeft = 5
+                }
             }
 
             this.desagreedUsersIds.push(userID)
