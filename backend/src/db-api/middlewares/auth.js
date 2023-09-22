@@ -1,5 +1,5 @@
 
-import { password } from "../configs/index.js";
+import { password } from "../../configs/index.js";
 
 export default function checkAuthentication(req, res, next){
    if(req.session.password === password){

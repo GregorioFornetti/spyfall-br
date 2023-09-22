@@ -1,7 +1,6 @@
 import express from 'express'
-import dbRouters from './db-api/routes/index.js'
 import cors from 'cors'
-import { port, address } from './db-api/configs/index.js'
+import { port, gamePath, admPath, dbPath } from './configs/index.js'
 import redirectIfNotAuth from './db-api/middlewares/redirect.js'
 import session from 'express-session'
 import { createServer } from "http";
@@ -9,12 +8,19 @@ import { Server } from "socket.io";
 import gameEventsHandler from "./game/eventsHandlers/gameEventsHandler.js"
 import { handleSession, loadSession } from './game/session.js'
 import matchEventsHandler from './game/eventsHandlers/matchEventsHandler.js'
+import authenticationRouter from './db-api/routes/AuthenticationRoutes.js'
+import categoryRouter from './db-api/routes/CategoryRoutes.js'
+import placeRouter from './db-api/routes/PlaceRoutes.js'
+import roleRouter from './db-api/routes/RoleRoutes.js'
+import { gamePath, admPath, dbPath } from './config.js'
+
 
 const frontendPath = '../frontend'
 const frontendAdmBuildPath = `${frontendPath}/spyfall-br-adm/build`
 const frontendGameBuildPath = `${frontendPath}/spyfall-br-game/build`
 
 const app = express()
+
 app.use(session({
     secret: 'segredo123',
     resave: false,
@@ -22,15 +28,18 @@ app.use(session({
 }))
 app.use(
     express.json(),
-    cors(), // AVISO: Remover isso quando for colocar em produção. É para parar de bloquear o frontend de acessar o backend no localhost
-    ...dbRouters
+    cors() // AVISO: Remover isso quando for colocar em produção. É para parar de bloquear o frontend de acessar o backend no localhost
 )
+app.use(admPath, authenticationRouter)
+app.use(dbPath, categoryRouter)
+app.use(dbPath, placeRouter)
+app.use(dbPath, roleRouter)
 
 app.use(redirectIfNotAuth)
-app.use('/adm', express.static(frontendAdmBuildPath))
+app.use(admPath, express.static(frontendAdmBuildPath))
 
-app.use('/', express.static(frontendGameBuildPath))
-app.use('/:URLGameCode', express.static(frontendGameBuildPath))
+app.use(gamePath, express.static(frontendGameBuildPath))
+app.use(`${gamePath}/:URLGameCode`, express.static(frontendGameBuildPath))
 
 
 const server = createServer(app)
@@ -54,5 +63,5 @@ io.on('connection', (socket) => {
 })
 
 server.listen(port, () => {
-    console.log(`Servidor rodando em: http://${address}:${port}`)
+    console.log(`Servidor spyfall online na porta ${port}`)
 })

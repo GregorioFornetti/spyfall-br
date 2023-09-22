@@ -6,8 +6,9 @@ services:
       context: .
       dockerfile: ./Dockerfiles/server.Dockerfile
       args:
-        adm_path: /spyfall/adm
-        game_path: /spyfall
+        adm_path: ${ADM_PATH}
+        game_path: ${GAME_PATH}
+        db_path: ${DB_PATH}
     command: "npm run server"
     working_dir: /home/node/app/backend
     networks:
@@ -15,6 +16,11 @@ services:
         ipv4_address: 172.16.10.2
     environment:
       - NODE_ENV=production
+      - PORT=${PORT}
+      - PASSWORD=${PASSWORD}
+      - ADM_PATH=${ADM_PATH}
+      - GAME_PATH=${GAME_PATH}
+      - DB_PATH=${DB_PATH}
     expose:
       - "3000"
     ports:

@@ -1,6 +1,7 @@
 FROM node:18-alpine
 ARG adm_path
 ARG game_path
+ARG db_path
 RUN mkdir -p /home/node/app && chown -R node:node /home/node/app
 WORKDIR /home/node/app
 COPY . .
