@@ -12,7 +12,6 @@ import authenticationRouter from './db-api/routes/AuthenticationRoutes.js'
 import categoryRouter from './db-api/routes/CategoryRoutes.js'
 import placeRouter from './db-api/routes/PlaceRoutes.js'
 import roleRouter from './db-api/routes/RoleRoutes.js'
-import { gamePath, admPath, dbPath } from './config.js'
 
 
 const frontendPath = '../frontend'

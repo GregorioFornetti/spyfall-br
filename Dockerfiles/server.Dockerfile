@@ -10,6 +10,7 @@ RUN npm install
 WORKDIR /home/node/app/frontend/spyfall-br-adm
 RUN npm install
 ENV PUBLIC_URL $adm_path
+ENV REACT_APP_DB_PATH $db_path
 RUN npm run build
 WORKDIR /home/node/app/frontend/spyfall-br-game
 RUN npm install

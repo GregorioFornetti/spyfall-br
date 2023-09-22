@@ -1,7 +1,7 @@
 
-
+import { admPath } from '../../configs/index.js'
 export function getAuthPage(req, res) {
-    return res.sendFile('src/views/auth.html', {root: '.'})
+    return res.sendFile('frontend/auth.html', {root: '..'})
 }
 
 export function login(req, res) {
@@ -12,7 +12,7 @@ export function login(req, res) {
     
         req.session.save(function (err) {
           if (err) return next(err)
-          res.redirect('/adm')
+          res.redirect(admPath)
         })
     })
 }
@@ -21,5 +21,5 @@ export function logout(req, res) {
     req.session.destroy(function(){
         console.log("user logged out.")
      })
-     res.redirect('/auth')
+     res.redirect(`${admPath}/auth`)
 }

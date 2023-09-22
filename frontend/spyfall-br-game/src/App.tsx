@@ -18,7 +18,8 @@ import ResultsModal from "./components/ResultsModal";
 
 var loaded = false
 
-const serverURL = 'http://localhost:3000'  // http://191.101.235.230:3000
+const dbPath: string = process.env.REACT_APP_DB_PATH as string
+
 
 function getURLGameCode() {
   var url =  window.location.href
@@ -34,7 +35,7 @@ function getURLGameCode() {
 
 }
 
-const socket = io(serverURL, {autoConnect: false})
+const socket = io(window.location.host, {autoConnect: false})
 const sessionID = localStorage.getItem("sessionID")
 
 var places: Place[] = []
@@ -92,13 +93,13 @@ function App() {
     if (!loaded) {
 
       Promise.all([
-        fetch(`${serverURL}/places`, {method: 'GET'}).then((response) => (response.json())),
-        fetch(`${serverURL}/categories`, {method: 'GET'}).then((response) => (response.json())),
-        fetch(`${serverURL}/roles`, {method: 'GET'}).then((response) => (response.json()))
+        fetch(`${dbPath}/places`, {method: 'GET'}).then((response) => (response.json())),
+        fetch(`${dbPath}/categories`, {method: 'GET'}).then((response) => (response.json())),
+        fetch(`${dbPath}/roles`, {method: 'GET'}).then((response) => (response.json()))
       ]).then((responses) => {
         places = responses[0].map((place: any) => {
           if (place.imgPath) {
-            return {...place, imgPath: `${serverURL}/${place.imgPath}`}
+            return {...place, imgPath: `${dbPath}/${place.imgPath}`}
           }
           return place
         })
@@ -285,7 +286,7 @@ function App() {
         />
 
         <LobbyPage
-          serverURL={serverURL}
+          serverURL={window.location.host}
           show={currentPage === 'lobby'} 
           socket={socket}
           players={players} 

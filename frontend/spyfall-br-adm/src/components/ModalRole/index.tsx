@@ -7,7 +7,7 @@ import Place from '../../interfaces/PlaceInterface'
 import ModalProperties from '../../interfaces/ModalProperties'
 import Spinner from 'react-bootstrap/Spinner'
 import {useState} from 'react'
-import {serverURL} from '../../utils/configs'
+import {dbPath} from '../../utils/configs'
 import axios from 'axios'
 
 interface ModalRoleProps {
@@ -32,7 +32,7 @@ export default function ModalRole({modalRoleProperties, roles, setModalRolePrope
     }
 
     const createRole = () => {
-        axios.post(`${serverURL}/roles`, {
+        axios.post(`${dbPath}/roles`, {
             name: role.name
         })
         .then((response) => {
@@ -45,7 +45,7 @@ export default function ModalRole({modalRoleProperties, roles, setModalRolePrope
     }
 
     const updateRole = () => {
-        axios.put(`${serverURL}/roles/${role.id}`, {
+        axios.put(`${dbPath}/roles/${role.id}`, {
             name: role.name
         })
         .then((response) => {
@@ -60,7 +60,7 @@ export default function ModalRole({modalRoleProperties, roles, setModalRolePrope
     }
 
     const deleteRole = () => {
-        axios.delete(`${serverURL}/roles/${role.id}`)
+        axios.delete(`${dbPath}/roles/${role.id}`)
         .then((response) => {
             console.log(places)
             console.log(roles)

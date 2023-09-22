@@ -16,7 +16,7 @@ import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import SimpleCard from './components/SimpleCard';
 import ModalProperties from './interfaces/ModalProperties';
-import {serverURL} from './utils/configs'
+import {dbPath} from './utils/configs'
 import ModalLoading from './components/ModalLoading';
 import axios from 'axios'
 import { createEmptyCategory, createEmptyPlace, createEmptyRole } from './utils/utils';
@@ -45,12 +45,12 @@ function App() {
     if (!placesGetCalled) {
       placesGetCalled = true
 
-      axios.get(`${serverURL}/places`)
+      axios.get(`${dbPath}/places`)
       .then((response) => {
         let placesJSON = response.data as Place[]
         setPlaces(placesJSON.map((place) => {
           if (place.imgPath) {
-            return {...place, imgPath: `${serverURL}/${place.imgPath}`}
+            return {...place, imgPath: `${dbPath}/${place.imgPath}`}
           }
           return place
         }))
@@ -67,7 +67,7 @@ function App() {
     if (!categoriesGetCalled) {
       categoriesGetCalled = true
 
-      axios.get(`${serverURL}/categories`)
+      axios.get(`${dbPath}/categories`)
       .then((response) => {
         let categoriesJSON = response.data
         console.log(categoriesJSON)
@@ -85,7 +85,7 @@ function App() {
     if (!rolesGetCalled) {
       rolesGetCalled = true
 
-      axios.get(`${serverURL}/roles`)
+      axios.get(`${dbPath}/roles`)
       .then((response) => {
         let rolesJSON = response.data
         console.log(rolesJSON)

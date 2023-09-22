@@ -8,7 +8,7 @@ import ModalProperties from '../../interfaces/ModalProperties';
 import axios from 'axios'
 import Spinner from 'react-bootstrap/Spinner'
 import {useState} from 'react'
-import {serverURL} from '../../utils/configs'
+import {dbPath} from '../../utils/configs'
 
 interface ModalCategoryProps {
     modalCategoryProperties: ModalProperties<Category>,
@@ -32,7 +32,7 @@ export default function ModalCategory({modalCategoryProperties, categories, setM
     }
 
     const createCategory = () => {
-        axios.post(`${serverURL}/categories`, {
+        axios.post(`${dbPath}/categories`, {
             name: category.name
         })
         .then((response) => {
@@ -45,7 +45,7 @@ export default function ModalCategory({modalCategoryProperties, categories, setM
     }
 
     const updateCategory = () => {
-        axios.put(`${serverURL}/categories/${category.id}`, {
+        axios.put(`${dbPath}/categories/${category.id}`, {
             name: category.name
         })
         .then((response) => {
@@ -60,7 +60,7 @@ export default function ModalCategory({modalCategoryProperties, categories, setM
     }
 
     const deleteCategory = ()  => {
-        axios.delete(`${serverURL}/categories/${category.id}`)
+        axios.delete(`${dbPath}/categories/${category.id}`)
         .then((response) => {
             for (let place of places) {
                 place.categoriesIds = place.categoriesIds.filter((categoryId) => (categoryId !== category.id))

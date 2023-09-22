@@ -8,7 +8,7 @@ import Category from '../../interfaces/CategoryInterface'
 import Role from '../../interfaces/RoleInterface';
 import Spinner from 'react-bootstrap/Spinner'
 import { category2CategoryOption, getCategoryById, getRoleById, getPlaceById, role2RoleOption, createEmptyPlace } from '../../utils/utils';
-import { serverURL } from '../../utils/configs';
+import { dbPath } from '../../utils/configs';
 import { useState } from 'react';
 import PlaceCardPreview from '../PlaceCardPreview';
 import axios from 'axios'
@@ -49,7 +49,7 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
 
     const createNewRoles = async () => {
         return Promise.all(
-            newRoles.map((newRole) => (axios.post(`${serverURL}/roles`, {name: newRole})))
+            newRoles.map((newRole) => (axios.post(`${dbPath}/roles`, {name: newRole})))
         )
         .then((responses) => {
             place.rolesIds = place.rolesIds.concat(
@@ -61,7 +61,7 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
 
     const createNewCategories = async () => {
         return Promise.all(
-            newCategories.map((newCategory) => (axios.post(`${serverURL}/categories`, {name: newCategory})))
+            newCategories.map((newCategory) => (axios.post(`${dbPath}/categories`, {name: newCategory})))
         )
         .then((responses) => {
             place.categoriesIds = place.categoriesIds.concat(
@@ -82,7 +82,7 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
                 formData.append('placeImg', currentFile)
             }
 
-            axios.post(`${serverURL}/places`, formData)
+            axios.post(`${dbPath}/places`, formData)
             .then((response) => {
                 setPlaces([...places, {...place, id: response.data.id}])
 
@@ -108,7 +108,7 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
                 formData.append('placeImg', currentFile)
             }
 
-            axios.put(`${serverURL}/places/${place.id}`, formData)
+            axios.put(`${dbPath}/places/${place.id}`, formData)
             .then((response) => {
                 let placeIndex = places.findIndex((placeParam) => (placeParam.id === place.id))
                 places[placeIndex] = place
@@ -123,7 +123,7 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
     }
 
     const deletePlace = () => {
-        axios.delete(`${serverURL}/places/${place.id}`)
+        axios.delete(`${dbPath}/places/${place.id}`)
         .then((response) => {
             setPlaces(places.filter((placeParam) => place !== placeParam))
 
