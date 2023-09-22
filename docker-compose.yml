@@ -5,6 +5,9 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfiles/server.Dockerfile
+      args:
+        adm_path: /spyfall/adm
+        game_path: /spyfall
     command: "npm run server"
     working_dir: /home/node/app/backend
     networks:

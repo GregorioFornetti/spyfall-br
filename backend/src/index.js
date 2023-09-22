@@ -10,7 +10,9 @@ import gameEventsHandler from "./game/eventsHandlers/gameEventsHandler.js"
 import { handleSession, loadSession } from './game/session.js'
 import matchEventsHandler from './game/eventsHandlers/matchEventsHandler.js'
 
-
+const frontendPath = '../frontend'
+const frontendAdmBuildPath = `${frontendPath}/spyfall-br-adm/build`
+const frontendGameBuildPath = `${frontendPath}/spyfall-br-game/build`
 
 const app = express()
 app.use(session({
@@ -25,10 +27,10 @@ app.use(
 )
 
 app.use(redirectIfNotAuth)
-app.use('/adm', express.static('src/views/adm'))
+app.use('/adm', express.static(frontendAdmBuildPath))
 
-app.use('/', express.static('src/views/game'))
-app.use('/:URLGameCode', express.static('src/views/game'))
+app.use('/', express.static(frontendGameBuildPath))
+app.use('/:URLGameCode', express.static(frontendGameBuildPath))
 
 
 const server = createServer(app)
