@@ -1,0 +1,27 @@
+.previewImg {
+  width: 300px;
+  height: 200px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  border-radius: 20px;
+}
+
+.previewBox {
+  position: relative;
+  text-align: center;
+  border-radius: 20px;
+}
+
+.previewTitleBox {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.previewTitle {
+  color: white;
+  font-size: 1.5em;
+}/*# sourceMappingURL=PlaceCardPreview.module.css.map */

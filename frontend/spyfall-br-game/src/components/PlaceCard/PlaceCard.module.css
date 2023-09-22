@@ -1,0 +1,39 @@
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.placeImg {
+  width: 100%;
+  max-width: 300px;
+  height: 200px;
+  border-radius: 20px;
+}
+
+.placeBox {
+  position: relative;
+  text-align: center;
+  border-radius: 20px;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.placeTitleBox {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.placeTitle {
+  color: white;
+  font-size: 1.5em;
+}
+
+.markedPlace {
+  text-decoration: line-through;
+}/*# sourceMappingURL=PlaceCard.module.css.map */

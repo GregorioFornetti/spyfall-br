@@ -1,10 +1,10 @@
 import { Sequelize } from 'sequelize'
 
-const sequelize = new Sequelize('spyfall-br', 'postgres', 'secreto123', {
+const sequelize = new Sequelize('spyfall', 'postgres', 'postgres', {
     dialect: 'postgres',
-    host: 'localhost',
+    host: '172.16.10.3',
     port: '5432',
-    password: 'secreto123'
+    password: 'postgres'
 })
 
 try {

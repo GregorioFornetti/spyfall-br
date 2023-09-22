@@ -1,0 +1,31 @@
+.container-margin {
+  margin-bottom: 100px;
+}
+
+.game-footer {
+  height: 50px;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-link {
+  text-decoration: none;
+  color: rgb(230, 230, 230);
+  font-size: 1.5em;
+  animation: blinker 3s linear infinite;
+}
+
+.footer-link:hover {
+  color: white;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0.5;
+  }
+}/*# sourceMappingURL=GamePage.module.css.map */

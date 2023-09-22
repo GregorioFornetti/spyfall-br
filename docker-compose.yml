@@ -1,0 +1,40 @@
+version: "3"
+services:
+  server:
+    container_name: server
+    build:
+      context: .
+      dockerfile: ./Dockerfiles/server.Dockerfile
+    command: "npm run server"
+    working_dir: /home/node/app/backend
+    networks:
+      webdb:
+        ipv4_address: 172.16.10.2
+    environment:
+      - NODE_ENV=production
+    expose:
+      - "3000"
+    ports:
+      - "3000:3000"
+  bd:
+    build:
+      context: .
+      dockerfile: ./Dockerfiles/db.Dockerfile
+    expose:
+      - "5432"
+    container_name: postgres
+    networks:
+      webdb:
+        ipv4_address: 172.16.10.3
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
+
+networks:
+  webdb:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.10.0/24

@@ -10,5 +10,3 @@ services:
       - "3000"
     ports:
       - "3000:3000"
-    volumes:
-      - ./placeImgs:/home/node/app/placeImgs
