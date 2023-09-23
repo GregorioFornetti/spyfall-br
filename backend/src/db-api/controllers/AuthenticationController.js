@@ -1,7 +1,7 @@
 
 import { admPath } from '../../configs/index.js'
 export function getAuthPage(req, res) {
-    return res.sendFile('frontend/auth.html', {root: '..'})
+    return res.sendFile('frontend/spyfall-br-adm/build/auth.html', {root: '..'})
 }
 
 export function login(req, res) {
