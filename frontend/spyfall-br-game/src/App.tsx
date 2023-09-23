@@ -18,7 +18,14 @@ import ResultsModal from "./components/ResultsModal";
 
 var loaded = false
 
-const dbPath: string = process.env.REACT_APP_DB_PATH as string
+const dbPath: string = process.env.NODE_ENV === 'development' ?
+                       'http://localhost:3000' + process.env.REACT_APP_DB_PATH as string :
+                       process.env.REACT_APP_DB_PATH as string
+
+const rootUrl: string = process.env.NODE_ENV === 'development' ?
+                        'localhost:3000' :
+                        window.location.host
+
 const gamePath: string = process.env.PUBLIC_URL as string
 
 
@@ -37,7 +44,7 @@ function getURLGameCode() {
 }
 
 const socket = io(
-  window.location.host, {
+  rootUrl, {
     autoConnect: false,
     path: `${gamePath}/multiplayer/socket.io/`
   }

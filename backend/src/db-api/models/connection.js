@@ -1,10 +1,11 @@
 import { Sequelize } from 'sequelize'
+import { dbHost, dbName, dbPassword, dbPort, dbUser } from '../../configs/index.js'
 
-const sequelize = new Sequelize('spyfall', 'postgres', 'postgres', {
+const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
     dialect: 'postgres',
-    host: '172.16.10.3',
-    port: '5432',
-    password: 'postgres'
+    host: dbHost,
+    port: dbPort,
+    password: dbPassword
 })
 
 try {

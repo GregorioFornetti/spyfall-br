@@ -1,2 +1,4 @@
 
-export const dbPath = process.env.REACT_APP_DB_PATH // http://191.101.235.230:3000
+export const dbPath = process.env.NODE_ENV === 'development' ? 
+                                               'http://localhost:3000' + process.env.REACT_APP_DB_PATH :
+                                                process.env.REACT_APP_DB_PATH

@@ -15,12 +15,17 @@ services:
       webdb:
         ipv4_address: 172.16.10.2
     environment:
-      - NODE_ENV=production
-      - PORT=${PORT}
-      - PASSWORD=${PASSWORD}
-      - ADM_PATH=${ADM_PATH}
-      - GAME_PATH=${GAME_PATH}
-      - DB_PATH=${DB_PATH}
+      NODE_ENV: ${NODE_ENV}
+      PORT: ${PORT}
+      PASSWORD: ${PASSWORD}
+      ADM_PATH: ${ADM_PATH}
+      GAME_PATH: ${GAME_PATH}
+      DB_PATH: ${DB_PATH}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
     expose:
       - "3000"
     ports:
@@ -32,11 +37,17 @@ services:
       context: .
       dockerfile: ./Dockerfiles/db.Dockerfile
     expose:
-      - "5432"
+      - "${DB_PORT}"
     container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_PORT: ${DB_PORT}
     networks:
       webdb:
-        ipv4_address: 172.16.10.3
+        ipv4_address: ${DB_HOST}
     volumes:
       - ./data:/var/lib/postgresql/data
 

@@ -25,10 +25,17 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }))
-app.use(
-    express.json(),
-    cors() // AVISO: Remover isso quando for colocar em produção. É para parar de bloquear o frontend de acessar o backend no localhost
-)
+
+if (process.env.NODE_ENV === 'production') {
+    app.use(
+        express.json()
+    )
+} else {
+    app.use(
+        express.json(),
+        cors() // AVISO: Remover isso quando for colocar em produção. É para parar de bloquear o frontend de acessar o backend no localhost
+    )
+}
 app.use(admPath, authenticationRouter)
 app.use(dbPath, categoryRouter)
 app.use(dbPath, placeRouter)
@@ -42,11 +49,18 @@ app.use(`${gamePath}/:URLGameCode`, express.static(frontendGameBuildPath))
 
 
 const server = createServer(app)
+
+let corsOptions
+
+if (process.env.NODE_ENV === 'development') {
+    corsOptions = {
+        origin: "http://localhost:3001"
+    }
+}
+
 const io = new Server(server, {
     cookie: true,
-    cors: {
-        origin: "http://localhost:3001"
-    },
+    cors: corsOptions,
     path: `${gamePath}/multiplayer/socket.io/`
 })
 const games = {}
