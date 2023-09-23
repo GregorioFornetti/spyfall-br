@@ -31,7 +31,11 @@ services:
     ports:
       - "3000:3000"
     depends_on:
+      db:
+        condition: service_healthy
+    links:
       - db
+    restart: always
   db:
     build:
       context: .
@@ -50,6 +54,11 @@ services:
         ipv4_address: ${DB_HOST}
     volumes:
       - ./data:/var/lib/postgresql/data
+    healthcheck:
+        test: ["CMD-SHELL", "pg_isready -d ${DB_NAME} -U ${DB_USER}"]
+        interval: 5s
+        timeout: 10s
+        retries: 5
 
 networks:
   webdb:
