@@ -25,7 +25,9 @@ services:
       - "3000"
     ports:
       - "3000:3000"
-  bd:
+    depends_on:
+      - db
+  db:
     build:
       context: .
       dockerfile: ./Dockerfiles/db.Dockerfile
@@ -36,10 +38,7 @@ services:
       webdb:
         ipv4_address: 172.16.10.3
     volumes:
-      - pgdata:/var/lib/postgresql/data
-
-volumes:
-  pgdata:
+      - ./data:/var/lib/postgresql/data
 
 networks:
   webdb:

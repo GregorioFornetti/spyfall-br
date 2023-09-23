@@ -19,6 +19,7 @@ import ResultsModal from "./components/ResultsModal";
 var loaded = false
 
 const dbPath: string = process.env.REACT_APP_DB_PATH as string
+const gamePath: string = process.env.PUBLIC_URL as string
 
 
 function getURLGameCode() {
@@ -35,7 +36,12 @@ function getURLGameCode() {
 
 }
 
-const socket = io(window.location.host, {autoConnect: false})
+const socket = io(
+  window.location.host, {
+    autoConnect: false,
+    path: `${gamePath}/multiplayer/socket.io/`
+  }
+)
 const sessionID = localStorage.getItem("sessionID")
 
 var places: Place[] = []

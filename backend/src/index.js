@@ -46,7 +46,8 @@ const io = new Server(server, {
     cookie: true,
     cors: {
         origin: "http://localhost:3001"
-    }
+    },
+    path: `${gamePath}/multiplayer/socket.io/`
 })
 const games = {}
 const users = {}
