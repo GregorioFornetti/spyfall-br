@@ -36,6 +36,8 @@ services:
     links:
       - db
     restart: always
+    volumes:
+      - ./backend/placeImgs:/home/node/app/backend/placeImgs
   db:
     build:
       context: .
