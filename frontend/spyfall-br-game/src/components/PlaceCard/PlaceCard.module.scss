@@ -15,6 +15,7 @@ $border-radius: 20px;
     max-width: 300px;
     height: 200px;
     border-radius: $border-radius;
+    border: solid gray 3px;
 }
 
 .placeBox {
@@ -32,12 +33,17 @@ $border-radius: 20px;
     position: absolute;
     top: 50%;
     left: 50%;
+    background-color: rgba(0, 0, 0, 0.7);
     transform: translate(-50%, -50%);
+    padding: 10px;
+    padding-top: 5px;
+    border-radius: $border-radius;
 }
 
 .placeTitle {
     color: white;
-    font-size: 1.5em;
+    font-size: 1.4em;
+    margin: 0;
 }
 
 .markedPlace {
