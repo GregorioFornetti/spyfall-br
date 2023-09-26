@@ -3,9 +3,12 @@
 
 docker ps
 
-docker exec -i <container-id> pg_dump -U postgres -d spyfall -F c > dumpfile
+docker exec -i <container-id> pg_dump -U postgres -d spyfall -F c --clean --create -f dumpfile
 
-docker exec -i <container-id> pg_restore -U postgres -d spyfall < dumpfile
+docker cp <container-id>:dumpfile ./dumpfile
+
+RODAR DUAS VEZES (NÃO SEI AO CERTO O MOTIVO, MAS RODAR APENAS UMA VEZ NÃO RESTAURA TUDO...):
+docker exec -i <container-id> pg_restore -U postgres -d spyfall --clean --create < dumpfile
 
 OBS: é preciso reiniciar o docker-compose após usar o comando `pg_restore`. Isso, pois os dados ficam em memória no backend...
 
