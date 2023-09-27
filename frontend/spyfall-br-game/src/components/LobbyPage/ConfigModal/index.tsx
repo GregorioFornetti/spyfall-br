@@ -32,25 +32,68 @@ export default function ConfigModal({show, setShow, socket, currentUserID}: Conf
             </Modal.Header>
             <Form onSubmit={handleSubmit}>
                 <Modal.Body>
-                    <InputsContainer title='Sistema de pontuação'>
-                        <NumberInput
-                            name='nonSpyVictoryScore'
-                            tooltipText='Pontuação necessária para que os não espiões ganhem'
-                            labelText='Pontuação para vitória dos não espiões'
-                            min={1}
-                        />
-                        <NumberInput
-                            name='nonSpyVictoryScore'
-                            tooltipText='Pontuação necessária para que os não espiões ganhem'
-                            labelText='Pontuação para vitória dos não espiões'
-                            min={1}
-                        />
-                        <NumberInput
-                            name='nonSpyVictoryScore'
-                            tooltipText='Pontuação necessária para que os não espiões ganhem'
-                            labelText='Pontuação para vitória dos não espiões'
-                            min={1}
-                        />
+                    <InputsContainer title='Configurações de pontuação'>
+                        <Row xl={3} lg={2} sm={1} className='gy-3'>
+                            <NumberInput
+                                name='nonSpyVictoryScore'
+                                tooltipText='Pontuação recebida por todos os não espiões caso eles ganhem.'
+                                labelText='Vitória não espiões'
+                                defaultValue={1}
+                                min={0}
+                            />
+                            <NumberInput
+                                name='nonSpyAcusatorScore'
+                                tooltipText='Pontuação extra recebida pelo acusador caso o espião seja corretamente identificado.'
+                                labelText='Acusador não espiões'
+                                defaultValue={1}
+                                min={0}
+                            />
+                            <NumberInput
+                                name='timeFinishedScore'
+                                tooltipText='Pontuação que o espião recebe caso o tempo acabe.'
+                                labelText='Tempo acabou'
+                                defaultValue={2}
+                                min={0}
+                            />
+                            <NumberInput
+                                name='wrongAcusationScore'
+                                tooltipText='Pontuação que o espião recebe caso um não espião seja julgado incorretamente.'
+                                labelText='Acusação incorreta'
+                                defaultValue={4}
+                                min={0}
+                            />
+                            <NumberInput
+                                name='correctPlaceScore'
+                                tooltipText='Pontuação que o espião recebe caso ele acerte o lugar.'
+                                labelText='Adivinhação correta'
+                                defaultValue={4}
+                                min={0}
+                            />
+                        </Row>
+                    </InputsContainer>
+
+                    <InputsContainer title='Configurações de lugares'>
+                        <Row xl={3} lg={2} sm={1} className='gy-3'>
+                            <NumberInput
+                                name='qntSelectedPlaces'
+                                tooltipText='Quantidade de lugares que serão selecionados aleatoriamente (dentro dos lugares selecionados) para a partida.'
+                                labelText='Quantidade de lugares'
+                                defaultValue={20}
+                                min={1}
+                            />
+                        </Row>
+                    </InputsContainer>
+
+                    <InputsContainer title='Configurações de tempo'>
+                        <Row xl={3} lg={2} sm={1} className='gy-3'>
+                            <NumberInput
+                                name='maxTime'
+                                tooltipText='Tempo máximo de jogo em minutos. Acabou esse tempo é vitória do espião.'
+                                labelText='Tempo máximo de jogo'
+                                defaultValue={10}
+                                min={1}
+                            />
+                        </Row>
                     </InputsContainer>
                 </Modal.Body>
                 <Modal.Footer>

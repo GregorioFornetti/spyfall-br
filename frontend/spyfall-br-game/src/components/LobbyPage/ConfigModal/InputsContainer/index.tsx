@@ -7,11 +7,9 @@ interface InputsContainerProps {
 
 export default function InputsContainer({title, children}: InputsContainerProps) {
     return (
-        <Container className="border p-4 rounded">
+        <Container className="border p-4 rounded mb-4">
             <h2 className="h4 text-center mb-4">{title}</h2>
-            <Row xl={3} lg={2} sm={1}>
-                {children}
-            </Row>
+            {children}
         </Container>
     );
 }
