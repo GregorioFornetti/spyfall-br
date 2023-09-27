@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+
 import PlayerCard from "../PlayerCard";
 import PlayersContainer from "../PlayersContainer";
 import Player from '../../interfaces/PlayerInterface'
@@ -5,6 +7,7 @@ import classNames from "classnames";
 import { Button, Container, Form, InputGroup, Row } from "react-bootstrap";
 import { FaRegCopy } from 'react-icons/fa'
 import { Socket } from "socket.io-client";
+import ConfigModal from './ConfigModal';
 
 import CopyCodeForm from './CopyCodeForm'
 
@@ -19,6 +22,8 @@ interface LobbyPageInterface {
 }
 
 export default function LobbyPage({players, currentUserID, show, gameCode, leaderUserID, socket, serverURL}: LobbyPageInterface) {
+
+    const [showConfigModal, setShowConfigModal] = useState(false)
 
     const isCurrentPlayerReady = players.find((player) => player.id === currentUserID)?.ready
     const isAllPlayersReady = players.every((player) => (player.ready || player.id === leaderUserID))
@@ -77,9 +82,24 @@ export default function LobbyPage({players, currentUserID, show, gameCode, leade
                                 </Button>
                         }
                         {readyBtnToggler}
+
+                        <Button
+                            onClick={() => setShowConfigModal(true)}
+                            variant="info"
+                        >
+                            Configurações
+                        </Button>
                     </div>
                 </Row>
             </Container>
+
+            <ConfigModal
+                show={showConfigModal}
+                setShow={setShowConfigModal}
+                
+                socket={socket}
+                currentUserID={currentUserID}
+            />
         </div>
     )
 }
