@@ -48,7 +48,7 @@ export default function LobbyPage({players, currentUserID, show, gameCode, leade
         <div className={(show) ? ('') : ('d-none')}>
             <CopyCodeForm title='Código da partida' copyValue={gameCode} />
 
-            <CopyCodeForm title='Link da partida' copyValue={`${serverURL}/${gameCode}`} />
+            <CopyCodeForm title='Link da partida' copyValue={`${serverURL}${process.env.PUBLIC_URL}/${gameCode}`} />
 
             <PlayersContainer title='Jogadores' containerClassName={'mt-5'}>
                 {players.map((player) => (

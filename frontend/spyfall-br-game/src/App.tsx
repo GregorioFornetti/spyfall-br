@@ -133,6 +133,7 @@ function App() {
 
         if (gameInfo) {
           setPlayers(gameInfo.players)
+          window.history.replaceState({}, '', `${gamePath}/${gameInfo.code}`)
           setGameCode(gameInfo.code)
           setLeaderUserID(gameInfo.leaderUserID)
           if (gameInfo.inMatch) {
@@ -165,6 +166,7 @@ function App() {
 
       socket.on('success-join', (gameInfo) => {
         setPlayers([...gameInfo.players])
+        window.history.replaceState({}, '', `${gamePath}/${gameInfo.code}`)
         setGameCode(gameInfo.code)
         setLeaderUserID(gameInfo.leaderUserID)
         setCurrentPage('lobby')
@@ -182,6 +184,7 @@ function App() {
       })
 
       socket.on('logout', () => {
+        window.history.replaceState({}, '', `${gamePath}`)
         setCurrentPage('main')
       })
 
