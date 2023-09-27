@@ -4,7 +4,7 @@ import { BsCheck, BsQuestionLg, BsCheckLg, BsXLg, BsFillMegaphoneFill } from 're
 import styles from './PlayerCard.module.scss'
 import classNames from 'classnames'
 import { useState } from 'react'
-import GuessIcon from './GuessIcon'
+import TooltipIcon from '../TooltipIcon'
 
 
 interface PlayerCardProps {
@@ -49,43 +49,43 @@ export default function PlayerCard({username, leader, score, isCurrentUser, inGa
                     </div>
                     {leader &&
                         <div className='col-2'>
-                            <GuessIcon Icon={FaCrown} tooltipText={'criador da sala'} />
+                            <TooltipIcon Icon={FaCrown} tooltipText={'criador da sala'} />
                         </div>
                     }
                     {ready && 
                         <div className='col-2'>
-                            <GuessIcon Icon={BsCheck} tooltipText={'pronto'} />
+                            <TooltipIcon Icon={BsCheck} tooltipText={'pronto'} />
                         </div>
                     }
                     {(inGame && target) && 
                         <div className='col-2'>
-                            <GuessIcon Icon={BiTargetLock} tooltipText={'questionado'} />
+                            <TooltipIcon Icon={BiTargetLock} tooltipText={'questionado'} />
                         </div>
                     }
                     {(inGame && asking) &&
                         <div className='col-2'>
-                            <GuessIcon Icon={BsFillMegaphoneFill} tooltipText={'questionando'} />
+                            <TooltipIcon Icon={BsFillMegaphoneFill} tooltipText={'questionando'} />
                         </div>
                     }
                 </div>
             </div>
             {(!isCurrentUser && inGame) && 
                 <div className='d-flex justify-content-around h5 mt-3'>
-                    <GuessIcon
+                    <TooltipIcon
                         onClick={() => setGuess('undefined')} 
                         iconClass={styles['undefined-icon']}
                         tooltipText="indefinido"
                         Icon={BsQuestionLg} 
                         clickable
                     />
-                    <GuessIcon
+                    <TooltipIcon
                         onClick={() => setGuess('safe')}
                         iconClass={styles['safe-icon']}
                         Icon={BsCheckLg}
                         tooltipText="safe"
                         clickable
                     />
-                    <GuessIcon
+                    <TooltipIcon
                         onClick={() => setGuess('suspect')}
                         iconClass={classNames(styles['suspect-icon'], styles.icon)}
                         Icon={BsXLg}

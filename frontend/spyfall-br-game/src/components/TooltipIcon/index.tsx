@@ -2,9 +2,9 @@ import { IconType } from "react-icons";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import classNames from 'classnames'
-import styles from './GuessIcon.module.scss'
+import styles from './TooltipIcon.module.scss'
 
-interface GuessIconProps {
+interface TooltipIconProps {
     tooltipText: string,
     onClick?: () => void,
     Icon: IconType,
@@ -12,18 +12,18 @@ interface GuessIconProps {
     clickable?: boolean
 }
 
-export default function GuessIcon({tooltipText, onClick, Icon, iconClass, clickable}: GuessIconProps) {
+export default function TooltipIcon({tooltipText, onClick, Icon, iconClass, clickable}: TooltipIconProps) {
     return (
         <OverlayTrigger
             overlay={<Tooltip>{tooltipText}</Tooltip>}
             placement='top'
         >
-            <div>
+            <span>
                 <Icon
                     onClick={onClick} 
                     className={classNames(iconClass, {[styles.clickable]: clickable})} 
                 />
-            </div>
+            </span>
         </OverlayTrigger>
     )
 }
