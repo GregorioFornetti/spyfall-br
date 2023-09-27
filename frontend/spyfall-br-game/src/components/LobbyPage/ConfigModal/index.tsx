@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Container, Row } from 'react-bootstrap';
+import { Col, Container, Form, InputGroup, Row } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { Socket } from "socket.io-client";
+
 
 interface ConfigModalProps {
     show: boolean,
@@ -21,8 +22,17 @@ export default function ConfigModal({show, setShow, socket, currentUserID}: Conf
                 <Modal.Title>Configurações</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                
-            </Modal.Body>
+                <Form>
+                    <Container>
+                        <Row lg={3} md={2} sm={1}>
+                            <Form.Group controlId="nonSpyVictoryScore">
+                                <Form.Label>Pontos vitória não espião</Form.Label>
+                                <Form.Control type="email" value={1} />
+                            </Form.Group>
+                        </Row>
+                    </Container>
+                </Form>
+        </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
                     Fechar

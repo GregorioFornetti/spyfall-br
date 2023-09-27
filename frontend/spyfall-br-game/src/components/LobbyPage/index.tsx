@@ -83,9 +83,12 @@ export default function LobbyPage({players, currentUserID, show, gameCode, leade
                         }
                         {readyBtnToggler}
 
+                        
+                    </div>
+                    <div className='col col-10 col-sm-8 col-md-6 col-lg-4 d-grid mt-md-0 mt-3'>
                         <Button
                             onClick={() => setShowConfigModal(true)}
-                            variant="info"
+                            variant="primary"
                         >
                             Configurações
                         </Button>
@@ -96,7 +99,7 @@ export default function LobbyPage({players, currentUserID, show, gameCode, leade
             <ConfigModal
                 show={showConfigModal}
                 setShow={setShowConfigModal}
-                
+
                 socket={socket}
                 currentUserID={currentUserID}
             />
