@@ -3,9 +3,8 @@ import { Col, Container, Form, InputGroup, Row } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { Socket } from "socket.io-client";
-import TooltipIcon from '../../TooltipIcon';
-import { BsQuestionCircle } from 'react-icons/bs'
 import NumberInput from './NumberInput';
+import InputsContainer from './InputsContainer';
 
 
 interface ConfigModalProps {
@@ -33,16 +32,26 @@ export default function ConfigModal({show, setShow, socket, currentUserID}: Conf
             </Modal.Header>
             <Form onSubmit={handleSubmit}>
                 <Modal.Body>
-                    <Container className="border p-2">
-                        <Row lg={3} md={2} sm={1}>
-                            <NumberInput
-                                name='nonSpyVictoryScore'
-                                tooltipText='Pontuação necessária para que os não espiões ganhem'
-                                labelText='Pontuação para vitória dos não espiões'
-                                min={1}
-                            />
-                        </Row>
-                    </Container>
+                    <InputsContainer title='Sistema de pontuação'>
+                        <NumberInput
+                            name='nonSpyVictoryScore'
+                            tooltipText='Pontuação necessária para que os não espiões ganhem'
+                            labelText='Pontuação para vitória dos não espiões'
+                            min={1}
+                        />
+                        <NumberInput
+                            name='nonSpyVictoryScore'
+                            tooltipText='Pontuação necessária para que os não espiões ganhem'
+                            labelText='Pontuação para vitória dos não espiões'
+                            min={1}
+                        />
+                        <NumberInput
+                            name='nonSpyVictoryScore'
+                            tooltipText='Pontuação necessária para que os não espiões ganhem'
+                            labelText='Pontuação para vitória dos não espiões'
+                            min={1}
+                        />
+                    </InputsContainer>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>

@@ -13,8 +13,6 @@ interface NumberInputProps {
 }
 
 export default function NumberInput({name, tooltipText, labelText, min, max}: NumberInputProps) {
-
-
     return (
         <Form.Group controlId={name}>
             <Form.Label>
