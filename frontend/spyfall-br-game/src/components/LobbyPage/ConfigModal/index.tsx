@@ -115,15 +115,21 @@ export default function ConfigModal({show, setShow, socket, currentUserID, place
                                         title='Selecionar por categorias'
                                     />
                                 </Card.Header>
-                                <Card.Body>
+                                <Card.Body style={{height: '470px', overflowY: 'scroll'}}>
                                     <Container>
                                         <Row xl={3} lg={2} sm={1} className="gy-4">
-                                            {places.map((place) => (
+                                            {places
+                                            .filter((place) => config.selectedPlacesIds.includes(place.id))
+                                            .map((place) => (
                                                 <PlaceCard
                                                     type='option'
                                                     title={place.name}
                                                     key={place.id}
                                                     imgURL={place.imgPath}
+                                                    onClick={() => {
+                                                        config.selectedPlacesIds = config.selectedPlacesIds.filter((id) => id !== place.id);
+                                                        setConfig({...config}); 
+                                                    }}
                                                 />
                                             ))}
                                         </Row>
@@ -138,15 +144,21 @@ export default function ConfigModal({show, setShow, socket, currentUserID, place
                                 <Card.Header className={'text-center'}>
                                     <h3 className="h5">Lugares não selecionados</h3>
                                 </Card.Header>
-                                <Card.Body>
+                                <Card.Body style={{height: '470px', overflowY: 'scroll'}}>
                                     <Container>
                                         <Row xl={3} lg={2} sm={1} className="gy-4">
-                                            {places.map((place) => (
+                                            {places
+                                            .filter((place) => !config.selectedPlacesIds.includes(place.id))
+                                            .map((place) => (
                                                 <PlaceCard
                                                     type='option'
                                                     title={place.name}
                                                     key={place.id}
                                                     imgURL={place.imgPath}
+                                                    onClick={() => {
+                                                        config.selectedPlacesIds.push(place.id);
+                                                        setConfig({...config}); 
+                                                    }}
                                                 />
                                             ))}
                                         </Row>
