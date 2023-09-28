@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Col, Container, Form, InputGroup, Row } from 'react-bootstrap';
+import { Card, Col, Container, Form, InputGroup, Row } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { Socket } from "socket.io-client";
 import NumberInput from './NumberInput';
 import InputsContainer from './InputsContainer';
+import PlacesContainer from '../../PlacesContainer';
+import MultiSelect from '../../Multiselect';
 
 
 interface ConfigModalProps {
@@ -16,6 +18,7 @@ interface ConfigModalProps {
 
 export default function ConfigModal({show, setShow, socket, currentUserID}: ConfigModalProps) {
 
+    const [selectedPlaces, setSelectedPlaces] = useState([]);
     const handleClose = () => setShow(false);
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -82,6 +85,31 @@ export default function ConfigModal({show, setShow, socket, currentUserID}: Conf
                                 min={1}
                             />
                         </Row>
+
+                        <Container className='mt-4'>
+                            <Card>
+                                <Card.Header className={'text-center'}>
+                                    <h3 className="h5">Lugares selecionados</h3>
+                                    <MultiSelect
+                                        options={[
+                                            {value: '1', label: '1'},
+                                            {value: '2', label: '2'},
+                                            {value: '3', label: '3'}
+                                        ]}
+                                        selected={selectedPlaces}
+                                        setSelected={setSelectedPlaces}
+                                        title='Selecionar por categorias'
+                                    />
+                                </Card.Header>
+                                <Card.Body>
+                                    <Container>
+                                        <Row>
+
+                                        </Row>
+                                    </Container>
+                                </Card.Body>
+                            </Card>
+                        </Container>
                     </InputsContainer>
 
                     <InputsContainer title='Configurações de tempo'>
