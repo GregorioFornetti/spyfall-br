@@ -6,7 +6,7 @@ import { Socket } from "socket.io-client";
 import NumberInput from './NumberInput';
 import InputsContainer from './InputsContainer';
 import PlacesContainer from '../../PlacesContainer';
-import MultiSelect from '../../Multiselect';
+import MultiSelect, { Option } from '../../Multiselect';
 import Place from '../../../interfaces/PlaceInterface';
 import Category from '../../../interfaces/CategoryInterface';
 import PlaceCard from '../../PlaceCard';
@@ -105,14 +105,53 @@ export default function ConfigModal({show, setShow, socket, currentUserID, place
                                 <Card.Header className={'text-center'}>
                                     <h3 className="h5">Lugares selecionados</h3>
                                     <MultiSelect
-                                        options={[
-                                            {value: '1', label: '1'},
-                                            {value: '2', label: '2'},
-                                            {value: '3', label: '3'}
-                                        ]}
+                                        options={categories.map((category) => ({value: category.id, label: category.name}))}
                                         selected={selectedPlaces}
                                         setSelected={setSelectedPlaces}
                                         title='Selecionar por categorias'
+                                        onChange={(newValue, actionMeta, selectAllOption) => {
+                                            
+                                            const {action, option, removedValue} = actionMeta;
+                                            const opt = option as Option
+                                            const removed = removedValue as Option
+
+                                            console.log('action')
+                                            console.log(action)
+                                            console.log('option')
+                                            console.log(option)
+                                            console.log('removedValue')
+                                            console.log(removedValue)
+                                            console.log('oiii')
+
+                                            // Todas as categorias foram selecionadas, logo, todos locais também devem ser selecionados
+                                            if (action === 'select-option' && opt.value === selectAllOption.value) {
+                                                config.selectedPlacesIds = places.map((place) => place.id);
+                                                setConfig({...config});
+                                            }
+
+                                            // Todas as categorias foram deselecionadas, logo, todos locais também devem ser deselecionados
+                                            else if ((action === 'deselect-option' && opt.value === selectAllOption.value) || (action === 'remove-value' && removed.value === selectAllOption.value)) {
+
+                                                config.selectedPlacesIds = [];
+                                                setConfig({...config});
+                                            }
+
+                                            // Uma categoria foi deselecionada, logo, todos locais dessa categoria também devem ser deselecionados
+                                            else if (actionMeta.action === 'deselect-option' || actionMeta.action === 'remove-value') {
+                                                const currentOpt = removed || opt
+                                                config.selectedPlacesIds = config.selectedPlacesIds.filter((id) => {
+                                                    const place = places.find((place) => place.id === id) as Place
+                                                    return !place.categoriesIds.includes(currentOpt.value as number)
+                                                });
+                                                setConfig({...config});
+                                            }
+
+                                            // Uma categoria foi selecionada, logo, todos locais dessa categoria também devem ser selecionados
+                                            else if (actionMeta.action === 'select-option') {
+                                                config.selectedPlacesIds = [...config.selectedPlacesIds, ...places.filter((place) => place.categoriesIds.includes(opt.value as number)).map((place) => place.id)];
+                                                setConfig({...config});
+                                            }
+                                        }}
                                     />
                                 </Card.Header>
                                 <Card.Body style={{height: '470px', overflowY: 'scroll'}}>

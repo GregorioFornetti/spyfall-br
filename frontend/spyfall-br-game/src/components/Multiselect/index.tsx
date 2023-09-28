@@ -13,6 +13,7 @@ interface Props {
   selected: Option[],
   setSelected: Dispatch<SetStateAction<any>>,
   title: string,
+  onChange?: (newValue: unknown, actionMeta: ActionMeta<unknown>, selectAllOption: Option) => void,
   hide?: boolean,
 }
 
@@ -36,7 +37,7 @@ export default function MultiSelect(props: Props) {
   const valueRef = useRef(props.selected);
   valueRef.current = props.selected;
   
-  const selectAllOption = {value: "*", label:"Selecionar tudo"};
+  const selectAllOption = {value: "*", label:"Tudo"};
   const isSelectAllSelected = () => (valueRef.current.length === props.options.length) && props.options.length > 1;
   const isOptionSelected = (option: Option, selectValue: Options<Option>) => 
     valueRef.current.some(({value}) => value === option.value) ||
@@ -48,24 +49,24 @@ export default function MultiSelect(props: Props) {
 
   const handleSelect = (newValue: unknown, actionMeta: ActionMeta<unknown>) => {
     const {action, option, removedValue} = actionMeta;
+  
     // Reassigning for typing. Unknown by default
     const opt = option as Option;
     const removed = removedValue as Option;
     if (action === "select-option" && opt.value === selectAllOption.value) {
-      console.log("new item selected");
       props.setSelected(props.options);
     } else if ((action === "deselect-option" && opt.value === selectAllOption.value) || (action === "remove-value" && removed.value === selectAllOption.value)) {
       props.setSelected([]);
-      console.log("all items removed");
     } else if (actionMeta.action === "deselect-option" && isSelectAllSelected()) {
       props.setSelected(
         props.options.filter(({ value }) => value !== opt.value));
-        console.log("new item removed");
     } else {
       props.setSelected(newValue || []);
-      console.log("new item added");
     }
-    //console.log(action, newValue, getValue());
+
+    if (props.onChange) {
+      props.onChange(newValue, actionMeta, selectAllOption);
+    }
   }
 
   return (
