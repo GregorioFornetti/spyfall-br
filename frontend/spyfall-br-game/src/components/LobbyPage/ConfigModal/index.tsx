@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Col, Container, Form, InputGroup, Row } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
@@ -26,7 +26,8 @@ interface ConfigModalProps {
 
 export default function ConfigModal({show, setShow, socket, currentUserID, places, categories, config, setConfig}: ConfigModalProps) {
 
-    const [selectedPlaces, setSelectedPlaces] = useState([]);
+    const options = categories.map((category) => ({value: category.id, label: category.name}))
+    const [selectedCategories, setSelectedCategories] = useState<any>([]);
     const handleClose = () => setShow(false);
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -35,6 +36,29 @@ export default function ConfigModal({show, setShow, socket, currentUserID, place
         console.log(formData.get('nonSpyVictoryScore'))
     }
 
+    useEffect(() => {
+        // Essa função atualizará as categorias selecionadas de acordo com os lugares selecionados
+        // É necessário fazer isso sempre que os lugares selecionados forem alterados
+
+        const selectedCategories: any = {}  // Objeto no seguinte padrão: {<id_categoria>: boolean - true se todos os lugares dessa categoria estiverem selecionados, false caso contrário}
+
+        // Inicialmente todas as categorias estão selecionadas
+        for (let category of categories) {
+            selectedCategories[category.id] = true
+        }
+
+        // Todo lugar não selecionado, desmarca as categorias dele
+        for (let place of places) {
+            if (!config.selectedPlacesIds.includes(place.id)) {
+                for (let categoryId of place.categoriesIds) {
+                    selectedCategories[categoryId] = false
+                }
+            }
+        }
+
+        const selectedCategoriesIds = Object.keys(selectedCategories).filter((categoryId) => selectedCategories[categoryId])
+        setSelectedCategories(options.filter((option) => selectedCategoriesIds.includes(option.value.toString())))
+    }, [config.selectedPlacesIds, categories])
 
     return (
         <Modal show={show} onHide={handleClose} size='xl' centered>
@@ -105,23 +129,15 @@ export default function ConfigModal({show, setShow, socket, currentUserID, place
                                 <Card.Header className={'text-center'}>
                                     <h3 className="h5">Lugares selecionados</h3>
                                     <MultiSelect
-                                        options={categories.map((category) => ({value: category.id, label: category.name}))}
-                                        selected={selectedPlaces}
-                                        setSelected={setSelectedPlaces}
+                                        options={options}
+                                        selected={selectedCategories}
+                                        setSelected={setSelectedCategories}
                                         title='Selecionar por categorias'
                                         onChange={(newValue, actionMeta, selectAllOption) => {
                                             
                                             const {action, option, removedValue} = actionMeta;
                                             const opt = option as Option
                                             const removed = removedValue as Option
-
-                                            console.log('action')
-                                            console.log(action)
-                                            console.log('option')
-                                            console.log(option)
-                                            console.log('removedValue')
-                                            console.log(removedValue)
-                                            console.log('oiii')
 
                                             // Todas as categorias foram selecionadas, logo, todos locais também devem ser selecionados
                                             if (action === 'select-option' && opt.value === selectAllOption.value) {
@@ -151,6 +167,7 @@ export default function ConfigModal({show, setShow, socket, currentUserID, place
                                                 config.selectedPlacesIds = [...config.selectedPlacesIds, ...places.filter((place) => place.categoriesIds.includes(opt.value as number)).map((place) => place.id)];
                                                 setConfig({...config});
                                             }
+
                                         }}
                                     />
                                 </Card.Header>
@@ -167,7 +184,7 @@ export default function ConfigModal({show, setShow, socket, currentUserID, place
                                                     imgURL={place.imgPath}
                                                     onClick={() => {
                                                         config.selectedPlacesIds = config.selectedPlacesIds.filter((id) => id !== place.id);
-                                                        setConfig({...config}); 
+                                                        setConfig({...config});
                                                     }}
                                                 />
                                             ))}
@@ -195,8 +212,8 @@ export default function ConfigModal({show, setShow, socket, currentUserID, place
                                                     key={place.id}
                                                     imgURL={place.imgPath}
                                                     onClick={() => {
-                                                        config.selectedPlacesIds.push(place.id);
-                                                        setConfig({...config}); 
+                                                        config.selectedPlacesIds = [...config.selectedPlacesIds, place.id]
+                                                        setConfig({...config})
                                                     }}
                                                 />
                                             ))}
