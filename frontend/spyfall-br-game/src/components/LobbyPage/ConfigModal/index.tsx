@@ -7,16 +7,24 @@ import NumberInput from './NumberInput';
 import InputsContainer from './InputsContainer';
 import PlacesContainer from '../../PlacesContainer';
 import MultiSelect from '../../Multiselect';
+import Place from '../../../interfaces/PlaceInterface';
+import Category from '../../../interfaces/CategoryInterface';
+import PlaceCard from '../../PlaceCard';
+import Config from '../../../interfaces/ConfigInterface';
 
 
 interface ConfigModalProps {
     show: boolean,
     setShow: React.Dispatch<React.SetStateAction<boolean>>,
     socket: Socket,
-    currentUserID: string
+    currentUserID: string,
+    places: Place[],
+    categories: Category[],
+    config: Config,
+    setConfig: React.Dispatch<React.SetStateAction<Config>>
 }
 
-export default function ConfigModal({show, setShow, socket, currentUserID}: ConfigModalProps) {
+export default function ConfigModal({show, setShow, socket, currentUserID, places, categories, config, setConfig}: ConfigModalProps) {
 
     const [selectedPlaces, setSelectedPlaces] = useState([]);
     const handleClose = () => setShow(false);
@@ -41,35 +49,40 @@ export default function ConfigModal({show, setShow, socket, currentUserID}: Conf
                                 name='nonSpyVictoryScore'
                                 tooltipText='Pontuação recebida por todos os não espiões caso eles ganhem.'
                                 labelText='Vitória não espiões'
-                                defaultValue={1}
+                                config={config}
+                                setConfig={setConfig}
                                 min={0}
                             />
                             <NumberInput
                                 name='nonSpyAcusatorScore'
                                 tooltipText='Pontuação extra recebida pelo acusador caso o espião seja corretamente identificado.'
                                 labelText='Acusador não espiões'
-                                defaultValue={1}
+                                config={config}
+                                setConfig={setConfig}
                                 min={0}
                             />
                             <NumberInput
                                 name='timeFinishedScore'
                                 tooltipText='Pontuação que o espião recebe caso o tempo acabe.'
                                 labelText='Tempo acabou'
-                                defaultValue={2}
+                                config={config}
+                                setConfig={setConfig}
                                 min={0}
                             />
                             <NumberInput
                                 name='wrongAcusationScore'
                                 tooltipText='Pontuação que o espião recebe caso um não espião seja julgado incorretamente.'
                                 labelText='Acusação incorreta'
-                                defaultValue={4}
+                                config={config}
+                                setConfig={setConfig}
                                 min={0}
                             />
                             <NumberInput
                                 name='correctPlaceScore'
                                 tooltipText='Pontuação que o espião recebe caso ele acerte o lugar.'
                                 labelText='Adivinhação correta'
-                                defaultValue={4}
+                                config={config}
+                                setConfig={setConfig}
                                 min={0}
                             />
                         </Row>
@@ -81,7 +94,8 @@ export default function ConfigModal({show, setShow, socket, currentUserID}: Conf
                                 name='qntSelectedPlaces'
                                 tooltipText='Quantidade de lugares que serão selecionados aleatoriamente (dentro dos lugares selecionados) para a partida.'
                                 labelText='Quantidade de lugares'
-                                defaultValue={20}
+                                config={config}
+                                setConfig={setConfig}
                                 min={1}
                             />
                         </Row>
@@ -103,8 +117,38 @@ export default function ConfigModal({show, setShow, socket, currentUserID}: Conf
                                 </Card.Header>
                                 <Card.Body>
                                     <Container>
-                                        <Row>
+                                        <Row xl={3} lg={2} sm={1} className="gy-4">
+                                            {places.map((place) => (
+                                                <PlaceCard
+                                                    type='option'
+                                                    title={place.name}
+                                                    key={place.id}
+                                                    imgURL={place.imgPath}
+                                                />
+                                            ))}
+                                        </Row>
+                                    </Container>
+                                </Card.Body>
+                            </Card>
+                        </Container>
 
+
+                        <Container className='mt-4'>
+                            <Card>
+                                <Card.Header className={'text-center'}>
+                                    <h3 className="h5">Lugares não selecionados</h3>
+                                </Card.Header>
+                                <Card.Body>
+                                    <Container>
+                                        <Row xl={3} lg={2} sm={1} className="gy-4">
+                                            {places.map((place) => (
+                                                <PlaceCard
+                                                    type='option'
+                                                    title={place.name}
+                                                    key={place.id}
+                                                    imgURL={place.imgPath}
+                                                />
+                                            ))}
                                         </Row>
                                     </Container>
                                 </Card.Body>
@@ -115,10 +159,11 @@ export default function ConfigModal({show, setShow, socket, currentUserID}: Conf
                     <InputsContainer title='Configurações de tempo'>
                         <Row xl={3} lg={2} sm={1} className='gy-3'>
                             <NumberInput
-                                name='maxTime'
-                                tooltipText='Tempo máximo de jogo em minutos. Acabou esse tempo é vitória do espião.'
-                                labelText='Tempo máximo de jogo'
-                                defaultValue={10}
+                                name='roundMaxTime'
+                                tooltipText='Tempo máximo de rodada em minutos. Acabou esse tempo é vitória do espião.'
+                                labelText='Tempo máximo de rodada'
+                                config={config}
+                                setConfig={setConfig}
                                 min={1}
                             />
                         </Row>

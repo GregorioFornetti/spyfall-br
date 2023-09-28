@@ -15,6 +15,7 @@ import Category from './interfaces/CategoryInterface'
 import LoadingModal from "./components/LoadingModal";
 import { Nav, Row } from "react-bootstrap";
 import ResultsModal from "./components/ResultsModal";
+import { defaultConfig } from "./interfaces/ConfigInterface";
 
 var loaded = false
 
@@ -65,6 +66,7 @@ function App() {
   const [currentUserID, setCurrentUserID] = useState("")
   const [leaderUserID, setLeaderUserID] = useState("")
   const [players, setPlayers] = useState<Player[]>([])
+  const [config, setConfig] = useState(defaultConfig)
   const [currentPage, setCurrentPage] = useState<"loading"|"main"|"lobby"|"game">("loading")
   const [matchTime, setMatchTime] = useState(0)
   const [votationTime, setVotationTime] = useState(10)
@@ -308,7 +310,11 @@ function App() {
           players={players} 
           currentUserID={currentUserID} 
           leaderUserID={leaderUserID}
-          gameCode={gameCode} 
+          gameCode={gameCode}
+          places={places}
+          categories={categories}
+          config={config}
+          setConfig={setConfig}
         />
 
         <GamePage

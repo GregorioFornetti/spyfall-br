@@ -10,6 +10,9 @@ import { Socket } from "socket.io-client";
 import ConfigModal from './ConfigModal';
 
 import CopyCodeForm from './CopyCodeForm'
+import Place from '../../interfaces/PlaceInterface';
+import Category from '../../interfaces/CategoryInterface';
+import Config from '../../interfaces/ConfigInterface';
 
 interface LobbyPageInterface {
     currentUserID: string,
@@ -18,10 +21,14 @@ interface LobbyPageInterface {
     gameCode: string,
     leaderUserID: string,
     socket: Socket,
-    serverURL: string
+    serverURL: string,
+    places: Place[],
+    categories: Category[],
+    config: Config,
+    setConfig: React.Dispatch<React.SetStateAction<Config>>
 }
 
-export default function LobbyPage({players, currentUserID, show, gameCode, leaderUserID, socket, serverURL}: LobbyPageInterface) {
+export default function LobbyPage({players, currentUserID, show, gameCode, leaderUserID, socket, serverURL, places, categories, config, setConfig}: LobbyPageInterface) {
 
     const [showConfigModal, setShowConfigModal] = useState(false)
 
@@ -102,6 +109,11 @@ export default function LobbyPage({players, currentUserID, show, gameCode, leade
 
                 socket={socket}
                 currentUserID={currentUserID}
+                places={places}
+                categories={categories}
+
+                config={config}
+                setConfig={setConfig}
             />
         </div>
     )
