@@ -45,9 +45,9 @@ function selectUserRoles(possibleRolesIDs, usersIDs, spyID) {
 
 
 export default class Match extends EventEmitter {
-    static async build(options, users, io) {
+    static async build(config, users, io) {
         const usersIDs = users.map((user) => (user.userID))
-        const newMatch = new this(options, users, usersIDs)
+        const newMatch = new this(config, users, usersIDs)
 
         newMatch.usersRolesIDs = selectUserRoles(await getPlaceRoles(newMatch.selectedPlaceID), usersIDs, newMatch.spyUserID)
         newMatch.emitMatchStart(io)
@@ -55,17 +55,17 @@ export default class Match extends EventEmitter {
         return newMatch
     }
 
-    constructor(options, users, usersIDs) {
+    constructor(config, users, usersIDs) {
         super()
         this.users = users
-        this.possiblePlacesIDs = selectMatchPossiblePlaces(options.possiblePlaces, options.possiblePlacesNumber)
+        this.possiblePlacesIDs = selectMatchPossiblePlaces(config.selectedPlacesIds, config.qntSelectedPlaces)
         this.selectedPlaceID = selectMatchPlace(this.possiblePlacesIDs)
         this.spyUserID = selectSpy(usersIDs)
         this.askingUserID = selectAskingUser(usersIDs)
         this.targetUserID = null
         this.usersRolesIDs = null
         this.previousAskingUserID = null
-        this.matchTimeLeft = options.matchTime
+        this.matchTimeLeft = config.roundMaxTime
         this.matchInterval = setInterval(() => {
             if (this.matchTimeLeft <= 0) {
                 this.matchTimeLeft = 0
@@ -80,7 +80,7 @@ export default class Match extends EventEmitter {
         this.desagreedUsersIds = []
         this.accuserUserID = null
         this.accusedUserID = null
-        this.votationTime = options.votationTime
+        this.votationTime = config.votationTime
         this.votationTimeLeft = null
     }
 

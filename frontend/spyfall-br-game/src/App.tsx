@@ -308,6 +308,7 @@ function App() {
           show={currentPage === 'lobby'} 
           socket={socket}
           players={players} 
+          setPlayers={setPlayers}
           currentUserID={currentUserID} 
           leaderUserID={leaderUserID}
           gameCode={gameCode}

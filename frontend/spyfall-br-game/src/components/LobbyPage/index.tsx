@@ -17,6 +17,7 @@ import Config from '../../interfaces/ConfigInterface';
 interface LobbyPageInterface {
     currentUserID: string,
     players: Player[],
+    setPlayers: React.Dispatch<React.SetStateAction<Player[]>>,
     show?: boolean,
     gameCode: string,
     leaderUserID: string,
@@ -28,11 +29,12 @@ interface LobbyPageInterface {
     setConfig: React.Dispatch<React.SetStateAction<Config>>
 }
 
-export default function LobbyPage({players, currentUserID, show, gameCode, leaderUserID, socket, serverURL, places, categories, config, setConfig}: LobbyPageInterface) {
+export default function LobbyPage({players, setPlayers, currentUserID, show, gameCode, leaderUserID, socket, serverURL, places, categories, config, setConfig}: LobbyPageInterface) {
 
     const [showConfigModal, setShowConfigModal] = useState(false)
 
-    const isCurrentPlayerReady = players.find((player) => player.id === currentUserID)?.ready
+    const currentPlayer = players.find((player) => player.id === currentUserID)
+    const isCurrentPlayerReady = currentPlayer?.ready
     const isAllPlayersReady = players.every((player) => (player.ready || player.id === leaderUserID))
 
     let readyBtnToggler
@@ -41,7 +43,13 @@ export default function LobbyPage({players, currentUserID, show, gameCode, leade
             readyBtnToggler = 
             <Button 
                 variant='success' 
-                onClick={() => socket.emit('player-ready', currentUserID)}
+                onClick={() => {
+                    socket.emit('player-ready', currentUserID)
+                    if (currentPlayer) {
+                        currentPlayer.ready = true
+                        setPlayers([...players])
+                    }
+                }}
             >
                 Estou pronto
             </Button>
@@ -49,7 +57,13 @@ export default function LobbyPage({players, currentUserID, show, gameCode, leade
             readyBtnToggler = 
             <Button 
                 variant='danger' 
-                onClick={() => socket.emit('player-unready', currentUserID)}
+                onClick={() => {
+                    socket.emit('player-unready', currentUserID)
+                    if (currentPlayer) {
+                        currentPlayer.ready = false
+                        setPlayers([...players])
+                    }
+                }}
             >
                 Não estou pronto
             </Button>

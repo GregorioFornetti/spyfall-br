@@ -1,5 +1,5 @@
 import crypto from 'crypto'
-import Options from './Options.js'
+import Config from './Config.js'
 import Player from './Player.js'
 import Match from './Match.js'
 
@@ -15,7 +15,7 @@ export default class Game {
         }
 
         const newGame = new this(user, username)
-        newGame.options = await Options.build()
+        newGame.config = await Config.build()
 
         socket.emit('success-join', newGame.toJSON())
 
@@ -27,7 +27,7 @@ export default class Game {
         this.inMatch = false
         this.leader = user
         this.players = [new Player(user, username)]
-        this.options = null
+        this.config = null
         this.match = null
     }
 
@@ -62,17 +62,23 @@ export default class Game {
     }
 
     playerReady(user, io) {
-        this.players.find((player) => player.user === user).ready = true
+        const currentPlayer = this.players.find((player) => player.user === user)
+        currentPlayer.ready = true
 
         for (let player of this.players) {
+            if (player.user === user) 
+                continue
             io.to(player.getSocketID()).emit('player-ready', user.userID)
         }
     }
 
     playerUnready(user, io) {
-        this.players.find((player) => player.user === user).ready = false
+        const currentPlayer = this.players.find((player) => player.user === user)
+        currentPlayer.ready = false
         
         for (let player of this.players) {
+            if (player.user === user) 
+                continue
             io.to(player.getSocketID()).emit('player-unready', user.userID)
         }
     }
@@ -96,7 +102,7 @@ export default class Game {
         }
 
 
-        this.match = await Match.build(this.options, this.players.map((player) => (player.user)), io)
+        this.match = await Match.build(this.config, this.players.map((player) => (player.user)), io)
         this.match.on('match-end', () => this.endMatch())
         for (let player of this.players) {
             player.ready = false
@@ -115,7 +121,7 @@ export default class Game {
             inMatch: this.inMatch,
             leaderUserID: this.leader.userID,
             players: this.players.map((player) => (player.toJSON())),
-            options: this.options.toJSON(),
+            config: this.config.toJSON(),
             match: null
         }
 
