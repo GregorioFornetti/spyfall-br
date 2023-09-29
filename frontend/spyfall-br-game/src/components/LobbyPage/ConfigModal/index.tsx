@@ -28,12 +28,17 @@ export default function ConfigModal({show, setShow, socket, currentUserID, place
 
     const options = categories.map((category) => ({value: category.id, label: category.name}))
     const [selectedCategories, setSelectedCategories] = useState<any>([]);
+    const [loading, setLoading] = useState(false);
     const handleClose = () => setShow(false);
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const form = event.currentTarget;
-        const formData = new FormData(form);
-        console.log(formData.get('nonSpyVictoryScore'))
+        if (config.selectedPlacesIds.length < 2) {
+            alert('Selecione pelo menos 2 lugares para jogar.')
+            return
+        }
+        socket.emit('set-new-config', config)
+        console.log(config)
+        setLoading(true)
     }
 
     useEffect(() => {
@@ -60,13 +65,35 @@ export default function ConfigModal({show, setShow, socket, currentUserID, place
         setSelectedCategories(options.filter((option) => selectedCategoriesIds.includes(option.value.toString())))
     }, [config.selectedPlacesIds, categories])
 
+    useEffect(() => {
+        socket.on('config-success', () => {
+            alert('Configurações salvas com sucesso!')
+            setLoading(false)
+        })
+
+        socket.on('config-error', (error: any) => {
+            alert('Ocorreu um erro ao salvar novas configurações. Verifique o console para mais detalhes.')
+            console.log(error)
+            setLoading(false)
+        })
+    }, [])
+
     return (
         <Modal show={show} onHide={handleClose} size='xl' centered>
-            <Modal.Header closeButton>
+            <Modal.Header closeButton={!loading}>
                 <Modal.Title>Configurações</Modal.Title>
             </Modal.Header>
             <Form onSubmit={handleSubmit}>
                 <Modal.Body>
+                    {loading
+                    ?
+                    <div className="d-flex justify-content-center">
+                        <div className="spinner-border" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    :
+                    <>
                     <InputsContainer title='Configurações de pontuação'>
                         <Row xl={3} lg={2} sm={1} className='gy-3'>
                             <NumberInput
@@ -233,15 +260,18 @@ export default function ConfigModal({show, setShow, socket, currentUserID, place
                                 config={config}
                                 setConfig={setConfig}
                                 min={1}
+                                max={60}
                             />
                         </Row>
                     </InputsContainer>
+                    </>
+                    }
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
+                    <Button disabled={loading} variant="secondary" onClick={handleClose}>
                         Fechar
                     </Button>
-                    <Button variant="primary" type='submit'>
+                    <Button disabled={loading} variant="primary" type='submit'>
                         Salvar
                     </Button>
                 </Modal.Footer>

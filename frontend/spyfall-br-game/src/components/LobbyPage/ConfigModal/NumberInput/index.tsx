@@ -22,7 +22,7 @@ export default function NumberInput({name, tooltipText, labelText, config, setCo
                 {labelText} <TooltipIcon Icon={BsQuestionCircle} tooltipText={tooltipText} />
             </Form.Label>
             <Form.Control
-                onChange={(event) => setConfig({...config, [name]: event.target.value})}
+                onChange={(event) => setConfig({...config, [name]: parseInt(event.target.value)})}
                 value={config[name] as number}
                 name={name}
                 min={min} 

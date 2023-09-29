@@ -28,6 +28,15 @@ export default function gameEventsHandler(io, socket, games, users) {
         }
     })
 
+    socket.on('set-new-config', (arg) => {
+        var user = users[socket.sessionID]
+        var game = user.game
+
+        if (game) {
+            game.setNewConfig(arg, user, socket, io)
+        }
+    })
+
     socket.on('player-ready', () => {
         var user = users[socket.sessionID]
         var game = user.game

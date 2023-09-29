@@ -61,6 +61,31 @@ export default class Game {
         socket.emit('logout')
     }
 
+    setNewConfig(newConfig, user, socket, io) {
+        if (user !== this.leader) {
+            socket.emit('config-error', 'Apenas o lider da sala pode alterar as configurações')
+            return
+        }
+        if (this.inMatch) {
+            socket.emit('config-error', 'Não é possível alterar as configurações enquanto uma partida está em andamento')
+            return
+        }
+
+        const [error, errors] = this.config.setNewConfig(newConfig)
+        if (error) {
+            socket.emit('config-error', errors)
+            return
+        }
+
+        socket.emit('config-success')
+
+        for (let player of this.players) {
+            if (player.user !== user) {
+                io.to(player.getSocketID()).emit('new-config', this.config.toJSON())
+            }
+        }
+    }
+
     playerReady(user, io) {
         const currentPlayer = this.players.find((player) => player.user === user)
         currentPlayer.ready = true

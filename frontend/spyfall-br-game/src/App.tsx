@@ -15,7 +15,7 @@ import Category from './interfaces/CategoryInterface'
 import LoadingModal from "./components/LoadingModal";
 import { Nav, Row } from "react-bootstrap";
 import ResultsModal from "./components/ResultsModal";
-import { defaultConfig } from "./interfaces/ConfigInterface";
+import ConfigInterface, { defaultConfig } from "./interfaces/ConfigInterface";
 
 var loaded = false
 
@@ -138,6 +138,7 @@ function App() {
           window.history.replaceState({}, '', `${gamePath}/${gameInfo.code}`)
           setGameCode(gameInfo.code)
           setLeaderUserID(gameInfo.leaderUserID)
+          setConfig(gameInfo.config)
           if (gameInfo.inMatch) {
             var match = gameInfo.match
             setAskingUserID(match.askingUserID)
@@ -171,6 +172,7 @@ function App() {
         window.history.replaceState({}, '', `${gamePath}/${gameInfo.code}`)
         setGameCode(gameInfo.code)
         setLeaderUserID(gameInfo.leaderUserID)
+        setConfig(gameInfo.config)
         setCurrentPage('lobby')
       })
 
@@ -192,6 +194,10 @@ function App() {
 
       socket.on('error', (message) => {
         alert(message)
+      })
+
+      socket.on('new-config', (newConfig: ConfigInterface) => {
+        setConfig(newConfig)
       })
 
       loaded = true
