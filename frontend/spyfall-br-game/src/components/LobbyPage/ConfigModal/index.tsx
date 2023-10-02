@@ -27,8 +27,6 @@ interface ConfigModalProps {
 
 export default function ConfigModal({show, setShow, socket, currentUserID, leaderUserID, places, categories, config, setConfig}: ConfigModalProps) {
 
-    const options = categories.map((category) => ({value: category.id, label: category.name}))
-    const [selectedCategories, setSelectedCategories] = useState<any>([]);
     const [loading, setLoading] = useState(false);
     const handleClose = () => setShow(false);
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -41,30 +39,6 @@ export default function ConfigModal({show, setShow, socket, currentUserID, leade
         console.log(config)
         setLoading(true)
     }
-
-    useEffect(() => {
-        // Essa função atualizará as categorias selecionadas de acordo com os lugares selecionados
-        // É necessário fazer isso sempre que os lugares selecionados forem alterados
-
-        const selectedCategories: any = {}  // Objeto no seguinte padrão: {<id_categoria>: boolean - true se todos os lugares dessa categoria estiverem selecionados, false caso contrário}
-
-        // Inicialmente todas as categorias estão selecionadas
-        for (let category of categories) {
-            selectedCategories[category.id] = true
-        }
-
-        // Todo lugar não selecionado, desmarca as categorias dele
-        for (let place of places) {
-            if (!config.selectedPlacesIds.includes(place.id)) {
-                for (let categoryId of place.categoriesIds) {
-                    selectedCategories[categoryId] = false
-                }
-            }
-        }
-
-        const selectedCategoriesIds = Object.keys(selectedCategories).filter((categoryId) => selectedCategories[categoryId])
-        setSelectedCategories(options.filter((option) => selectedCategoriesIds.includes(option.value.toString())))
-    }, [config.selectedPlacesIds, categories])
 
     useEffect(() => {
         socket.on('config-success', () => {

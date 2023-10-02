@@ -6,6 +6,7 @@ import Category from '../../../../interfaces/CategoryInterface';
 import Place from '../../../../interfaces/PlaceInterface';
 import Config from '../../../../interfaces/ConfigInterface';
 import PlaceCard from '../../../PlaceCard';
+import { BsArrowDownUp } from "react-icons/bs";
 
 interface PlaceSelectorProps {
     categories: Category[],
@@ -116,6 +117,8 @@ export default function PlaceSelector({categories, config, places, setConfig, di
                     </Card.Body>
                 </Card>
             </Container>
+            
+            <BsArrowDownUp className='d-block mx-auto mt-4' size={50} />
 
             <Container className='mt-4'>
                 <Card>
