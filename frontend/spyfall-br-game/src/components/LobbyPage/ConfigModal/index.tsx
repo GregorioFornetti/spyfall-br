@@ -18,13 +18,14 @@ interface ConfigModalProps {
     setShow: React.Dispatch<React.SetStateAction<boolean>>,
     socket: Socket,
     currentUserID: string,
+    leaderUserID: string,
     places: Place[],
     categories: Category[],
     config: Config,
     setConfig: React.Dispatch<React.SetStateAction<Config>>
 }
 
-export default function ConfigModal({show, setShow, socket, currentUserID, places, categories, config, setConfig}: ConfigModalProps) {
+export default function ConfigModal({show, setShow, socket, currentUserID, leaderUserID, places, categories, config, setConfig}: ConfigModalProps) {
 
     const options = categories.map((category) => ({value: category.id, label: category.name}))
     const [selectedCategories, setSelectedCategories] = useState<any>([]);
@@ -103,6 +104,8 @@ export default function ConfigModal({show, setShow, socket, currentUserID, place
                                 config={config}
                                 setConfig={setConfig}
                                 min={0}
+                                disabled={leaderUserID !== currentUserID}
+                                disabledTooltipText='Apenas o líder pode alterar essa configuração.'
                             />
                             <NumberInput
                                 name='nonSpyAcusatorScore'
@@ -111,6 +114,8 @@ export default function ConfigModal({show, setShow, socket, currentUserID, place
                                 config={config}
                                 setConfig={setConfig}
                                 min={0}
+                                disabled={leaderUserID !== currentUserID}
+                                disabledTooltipText='Apenas o líder pode alterar essa configuração.'
                             />
                             <NumberInput
                                 name='timeFinishedScore'
@@ -119,6 +124,8 @@ export default function ConfigModal({show, setShow, socket, currentUserID, place
                                 config={config}
                                 setConfig={setConfig}
                                 min={0}
+                                disabled={leaderUserID !== currentUserID}
+                                disabledTooltipText='Apenas o líder pode alterar essa configuração.'
                             />
                             <NumberInput
                                 name='wrongAcusationScore'
@@ -127,6 +134,8 @@ export default function ConfigModal({show, setShow, socket, currentUserID, place
                                 config={config}
                                 setConfig={setConfig}
                                 min={0}
+                                disabled={leaderUserID !== currentUserID}
+                                disabledTooltipText='Apenas o líder pode alterar essa configuração.'
                             />
                             <NumberInput
                                 name='correctPlaceScore'
@@ -135,6 +144,8 @@ export default function ConfigModal({show, setShow, socket, currentUserID, place
                                 config={config}
                                 setConfig={setConfig}
                                 min={0}
+                                disabled={leaderUserID !== currentUserID}
+                                disabledTooltipText='Apenas o líder pode alterar essa configuração.'
                             />
                         </Row>
                     </InputsContainer>
@@ -148,6 +159,8 @@ export default function ConfigModal({show, setShow, socket, currentUserID, place
                                 config={config}
                                 setConfig={setConfig}
                                 min={1}
+                                disabled={leaderUserID !== currentUserID}
+                                disabledTooltipText='Apenas o líder pode alterar essa configuração.'
                             />
                         </Row>
 
@@ -196,6 +209,7 @@ export default function ConfigModal({show, setShow, socket, currentUserID, place
                                             }
 
                                         }}
+                                        disabled={leaderUserID !== currentUserID}
                                     />
                                 </Card.Header>
                                 <Card.Body style={{height: '470px', overflowY: 'scroll'}}>
@@ -205,11 +219,11 @@ export default function ConfigModal({show, setShow, socket, currentUserID, place
                                             .filter((place) => config.selectedPlacesIds.includes(place.id))
                                             .map((place) => (
                                                 <PlaceCard
-                                                    type='option'
+                                                    type={leaderUserID !== currentUserID ? 'selected' : 'option'}
                                                     title={place.name}
                                                     key={place.id}
                                                     imgURL={place.imgPath}
-                                                    onClick={() => {
+                                                    onClick={leaderUserID !== currentUserID ? undefined : () => {
                                                         config.selectedPlacesIds = config.selectedPlacesIds.filter((id) => id !== place.id);
                                                         setConfig({...config});
                                                     }}
@@ -234,11 +248,11 @@ export default function ConfigModal({show, setShow, socket, currentUserID, place
                                             .filter((place) => !config.selectedPlacesIds.includes(place.id))
                                             .map((place) => (
                                                 <PlaceCard
-                                                    type='option'
+                                                    type={leaderUserID !== currentUserID ? 'selected' : 'option'}
                                                     title={place.name}
                                                     key={place.id}
                                                     imgURL={place.imgPath}
-                                                    onClick={() => {
+                                                    onClick={leaderUserID !== currentUserID ? undefined : () => {
                                                         config.selectedPlacesIds = [...config.selectedPlacesIds, place.id]
                                                         setConfig({...config})
                                                     }}
@@ -261,6 +275,8 @@ export default function ConfigModal({show, setShow, socket, currentUserID, place
                                 setConfig={setConfig}
                                 min={1}
                                 max={60}
+                                disabled={leaderUserID !== currentUserID}
+                                disabledTooltipText='Apenas o líder pode alterar essa configuração.'
                             />
                         </Row>
                     </InputsContainer>
@@ -271,7 +287,7 @@ export default function ConfigModal({show, setShow, socket, currentUserID, place
                     <Button disabled={loading} variant="secondary" onClick={handleClose}>
                         Fechar
                     </Button>
-                    <Button disabled={loading} variant="primary" type='submit'>
+                    <Button disabled={loading || currentUserID !== leaderUserID} variant="primary" type='submit'>
                         Salvar
                     </Button>
                 </Modal.Footer>

@@ -120,6 +120,7 @@ export default function LobbyPage({players, setPlayers, currentUserID, show, gam
             <ConfigModal
                 show={showConfigModal}
                 setShow={setShowConfigModal}
+                leaderUserID={leaderUserID}
 
                 socket={socket}
                 currentUserID={currentUserID}

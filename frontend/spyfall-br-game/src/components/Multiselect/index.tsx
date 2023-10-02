@@ -15,6 +15,8 @@ interface Props {
   title: string,
   onChange?: (newValue: unknown, actionMeta: ActionMeta<unknown>, selectAllOption: Option) => void,
   hide?: boolean,
+  disabled?: boolean,
+  disabledTooltipText?: string
 }
 
 export type Option = {
@@ -70,6 +72,7 @@ export default function MultiSelect(props: Props) {
   }
 
   return (
+    
       <Select
         isOptionSelected={isOptionSelected}
         closeMenuOnSelect={false}
@@ -84,6 +87,7 @@ export default function MultiSelect(props: Props) {
         hideSelectedOptions={props.hide ?? false}
         instanceId={props.title}
         id={props.title}
+        isDisabled={props.disabled}
       />
   )
 }
