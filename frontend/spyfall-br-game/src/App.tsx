@@ -16,6 +16,7 @@ import LoadingModal from "./components/LoadingModal";
 import { Nav, Row } from "react-bootstrap";
 import ResultsModal from "./components/ResultsModal";
 import ConfigInterface, { defaultConfig } from "./interfaces/ConfigInterface";
+import HelpModal from "./components/HelpModal";
 
 var loaded = false
 
@@ -89,6 +90,7 @@ function App() {
   const [winner, setWinner] = useState<"spy"|"agents"|undefined>()
   const [winDescription, setWinDescription] = useState<string|undefined>()
   const [spy, setSpy] = useState<Player|undefined>()
+  const [showHelpModal, setShowHelpModal] = useState(false)
 
   useEffect(() => {
     clearTimeout(matchTimeoutObject)
@@ -287,7 +289,10 @@ function App() {
         <Container>
           <Navbar.Brand>Spyfall-br</Navbar.Brand>
           <Container>
-            <Row>
+            <Row xs={2}>
+              <Nav>
+                  <Nav.Link href="#" onClick={() => setShowHelpModal(true)}>Ajuda</Nav.Link>
+              </Nav>
               <Nav className="me-auto justify-content-end">
                 {(currentPage === 'lobby' || currentPage === 'game') && 
                   <Nav.Link href="#" className='link-danger' onClick={() => socket.emit('logout')}>Sair do jogo</Nav.Link>
@@ -355,6 +360,11 @@ function App() {
           selectedPlace={selectedPlace}
           winDescripton={winDescription}
           winner={winner}
+        />
+
+        <HelpModal
+          show={showHelpModal}
+          setShow={setShowHelpModal}
         />
       </main>
     </>
