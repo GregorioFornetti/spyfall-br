@@ -127,7 +127,7 @@ export default class Game {
         }
 
 
-        this.match = await Match.build(this.config, this.players.map((player) => (player.user)), io)
+        this.match = await Match.build(this.config, this.players, io)
         this.match.on('match-end', () => this.endMatch())
         for (let player of this.players) {
             player.ready = false

@@ -224,6 +224,7 @@ function App() {
     setWinDescription(matchResults.winDescription)
     setSelectedPlace(places.find((place) => (place.id === matchResults.selectedPlaceID)))
     setSpy(players.find((player) => (player.id === matchResults.spyUserID)))
+    setPlayers(matchResults.players)
 
     setAccusedUserID(undefined)
     setAccusedUserID(undefined)

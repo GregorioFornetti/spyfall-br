@@ -45,9 +45,10 @@ function selectUserRoles(possibleRolesIDs, usersIDs, spyID) {
 
 
 export default class Match extends EventEmitter {
-    static async build(config, users, io) {
-        const usersIDs = users.map((user) => (user.userID))
-        const newMatch = new this(config, users, usersIDs)
+    static async build(config, players, io) {
+
+        const usersIDs = players.map((player) => (player.user.userID))
+        const newMatch = new this(config, players, usersIDs, io)
 
         newMatch.usersRolesIDs = selectUserRoles(await getPlaceRoles(newMatch.selectedPlaceID), usersIDs, newMatch.spyUserID)
         newMatch.emitMatchStart(io)
@@ -55,9 +56,11 @@ export default class Match extends EventEmitter {
         return newMatch
     }
 
-    constructor(config, users, usersIDs) {
+    constructor(config, players, usersIDs, io) {
         super()
-        this.users = users
+        this.config = config
+        this.players = players
+        this.users = players.map((player) => (player.user))
         this.possiblePlacesIDs = selectMatchPossiblePlaces(config.selectedPlacesIds, config.qntSelectedPlaces)
         this.selectedPlaceID = selectMatchPlace(this.possiblePlacesIDs)
         this.spyUserID = selectSpy(usersIDs)
@@ -69,7 +72,14 @@ export default class Match extends EventEmitter {
         this.matchInterval = setInterval(() => {
             if (this.matchTimeLeft <= 0) {
                 this.matchTimeLeft = 0
+                for (let player of this.players) {
+                    if (player.user.userID === this.spyUserID) {
+                        player.score += this.config.timeFinishedScore
+                        break
+                    }
+                }
                 clearInterval(this.matchInterval)
+                this.endMatch(io, 'spy', 'O tempo acabou')
                 return
             }
             this.matchTimeLeft--
@@ -144,9 +154,20 @@ export default class Match extends EventEmitter {
 
         if (placeID === this.selectedPlaceID) {
             // Espião ganhou
+            for (let player of this.players) {
+                if (player.user.userID === this.spyUserID) {
+                    player.score += this.config.correctPlaceScore
+                    break
+                }
+            }
             this.endMatch(io, 'spy', 'O espião adivinhou corretamente o local')
         } else {
             // Espião perdeu (agentes ganharam)
+            for (let player of this.players) {
+                if (player.user.userID !== this.spyUserID) {
+                    player.score += this.config.nonSpyVictoryScore
+                }
+            }
             this.endMatch(io, 'agents', 'O espião errou o local')
         }
     }
@@ -182,8 +203,21 @@ export default class Match extends EventEmitter {
 
         if (this.agreedUsersIds.length === this.users.length - 2) {
             if (this.accusedUserID === this.spyUserID) {
+                for (let player of this.players) {
+                    if (player.user.userID === this.accuserUserID) {
+                        player.score += this.config.nonSpyAcusatorScore + this.config.nonSpyVictoryScore
+                    } else if (player.user.userID !== this.spyUserID) {
+                        player.score += this.config.nonSpyVictoryScore
+                    }
+                }
                 this.endMatch(io, 'agents', 'O espião foi descoberto')
             } else {
+                for (let player of this.players) {
+                    if (player.user.userID === this.spyUserID) {
+                        player.score += this.config.wrongAcusationScore
+                        break
+                    }
+                }
                 this.endMatch(io, 'spy', 'Um agente foi julgado incorretamente')
             }
         } else {
@@ -247,16 +281,19 @@ export default class Match extends EventEmitter {
     }
 
     endMatch(io, winner, winDescription) {
+        console.log(this.spyUserID)
         let matchResult = {
             spyUserID: this.spyUserID,
             selectedPlaceID: this.selectedPlaceID,
             winner: winner,
-            winDescription: winDescription
+            winDescription: winDescription,
+            players: this.players.map((player) => (player.toJSON()))
         }
 
         for (let user of this.users) {
             io.to(user.socketID).emit('match-end', matchResult)
         }
+        clearInterval(this.matchInterval)
         this.emit('match-end')
     }
 

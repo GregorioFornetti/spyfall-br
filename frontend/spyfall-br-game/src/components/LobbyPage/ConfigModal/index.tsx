@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Container, Form, Row } from 'react-bootstrap';
+import { Form, Row } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { Socket } from "socket.io-client";
 import NumberInput from './NumberInput';
 import InputsContainer from './InputsContainer';
-import MultiSelect, { Option } from '../../Multiselect';
 import Place from '../../../interfaces/PlaceInterface';
 import Category from '../../../interfaces/CategoryInterface';
-import PlaceCard from '../../PlaceCard';
 import Config from '../../../interfaces/ConfigInterface';
 import PlaceSelector from './PlacesSelector';
 
