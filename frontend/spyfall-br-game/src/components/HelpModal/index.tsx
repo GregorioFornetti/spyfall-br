@@ -17,6 +17,14 @@ export default function HelpModal({show, setShow}: HelpModalProps) {
             </Modal.Header>
             <Modal.Body >
                 <h2 className='h3'>
+                    Tutorial em vídeo
+                </h2>
+                <p>
+                    Caso prefira, existe <a href='https://youtu.be/OdbCMcpCR4c?si=jx8pOGtwF-S0b2Zg'>um tutorial em vídeo muito bom no YouTube, feito pelo canal Covil dos Jogos</a>
+                </p>
+
+
+                <h2 className='h3'>
                     Contexto
                 </h2>
                 <p>
