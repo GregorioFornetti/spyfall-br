@@ -40,7 +40,37 @@ No início de cada rodada, todos os jogadores, exceto o espião, recebem uma **p
 
 **Tempo acabou**: no começo da rodada, um cronômetro será iniciado. Caso o tempo acabe, o espião ganha
 
-## Como fazer backup
+## Prints do jogo
+
+! COMPLETAR AQUI !
+
+## Instalação e execução
+
+! COMPLETAR SOBRE !
+
+### Como executar - Modo desenvolvimento
+
+1 - Ir na pasta `backend`
+
+2 - `docker-compose up`
+
+3 - Novamente na mesma pasta, em outro terminal, executar `npm run server`
+
+4 - Escolher o frontend "spyfall-br-adm" ou "spyfall-br-game" e rodar `npm run start`
+
+### Como executar - prod
+
+1 - Configurar `.env`
+
+2 - `docker-compose up`
+
+## Backup
+
+! COMPLETAR SOBRE !
+
+### Criando arquivo de backup
+
+### Aplicando backup ao banco de dados
 
 docker ps
 
@@ -52,15 +82,3 @@ RODAR DUAS VEZES (NÃO SEI AO CERTO O MOTIVO, MAS RODAR APENAS UMA VEZ NÃO REST
 docker exec -i <container-id> pg_restore -U postgres -d spyfall --clean --create < dumpfile
 
 OBS: é preciso reiniciar o docker-compose após usar o comando `pg_restore`. Isso, pois os dados ficam em memória no backend...
-
-## Como executar - dev
-
-1 - Ir na pasta `backend`
-2 - `docker-compose up`
-3 - Novamente na mesma pasta, em outro terminal, executar `npm run server`
-4 - Escolher o frontend "spyfall-br-adm" ou "spyfall-br-game" e rodar `npm run start`
-
-## Como executar - prod
-
-1 - Configurar `.env`
-2 - `docker-compose up`
