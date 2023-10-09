@@ -118,19 +118,46 @@ Isso irá gerar o frontend ao vivo, podendo edita-lo e ver as modificações rap
 
 ## Backup
 
-! COMPLETAR SOBRE !
+O banco de dados virá "vazio" por padrão, sem nada cadastrado. Existe o arquivo `dumpfile` com um backup, que possui um banco de dados previamente populado que pode ser utilizado como base.
 
-### Criando arquivo de backup
+Mas, carregar o backup não é obrigatório, o banco de dados pode ser populado manualmente na página de administração.
 
 ### Aplicando backup ao banco de dados
 
-docker ps
+Para aplicar o backup do banco de dados, siga os passos abaixo:
 
-docker exec -i <container-id> pg_dump -U postgres -d spyfall -F c --clean --create -f dumpfile
+1- Execute o comando: `docker ps`
 
-docker cp <container-id>:dumpfile ./dumpfile
+Esse comando irá mostrar os containers ativos no momento (é preciso que o servidor esteja no ar). É preciso buscar o id do container de nome `spyfall-br_db`.
 
-RODAR DUAS VEZES (NÃO SEI AO CERTO O MOTIVO, MAS RODAR APENAS UMA VEZ NÃO RESTAURA TUDO...):
-docker exec -i <container-id> pg_restore -U postgres -d spyfall --clean --create < dumpfile
+Por exemplo, um possível retorno desse comando seria:
 
-OBS: é preciso reiniciar o docker-compose após usar o comando `pg_restore`. Isso, pois os dados ficam em memória no backend...
+![print resultado do comando docker ps](prints/containers.png)
+
+Nesse print, está marcado o container com nome `spyfall-br_db`. Este tem o id `f83859a807d4`, que deverá ser utilizado nos comandos posteriores.
+
+2- Execute o comando: `docker exec -i <container-id> pg_restore -U postgres -d spyfall --clean --create < dumpfile`
+
+No comando acima, antes de executar, substitua `<container-id>` pelo id descoberto pelo primeeiro comando executado. No caso do exemplo,
+`container-id` seria substituido por `f83859a807d4`.
+
+Este comando aplicará o backup no servidor de banco de dados.
+
+OBS: pode ser que esse comando não funcione totalmente ao executar apenas uma vez... Talvez executar duas vezes resolva o problema.
+
+### Criando arquivo de backup
+
+Para criar um novo backup, siga os comandos abaixo:
+
+1- Execute o comando: `docker ps`
+
+Esse comando irá mostrar os containers ativos no momento (é preciso que o servidor esteja no ar). É preciso buscar o id do container de nome `spyfall-br_db` (mesma coisa que o
+comando 1 para aplicar o backup).
+
+2- Execute o comando: `docker exec -i <container-id> pg_dump -U postgres -d spyfall -F c --clean --create -f dumpfile`
+
+No comando acima, antes de executar, substitua `<container-id>` pelo id descoberto pelo primeeiro comando executado. No caso do exemplo,
+`container-id` seria substituido por `f83859a807d4`.
+
+Esse comando irá criar um novo arquivo `dumpfile` com o backup do banco de dados. CUIDADO: esse comando irá sobrescrever o arquivo `dumpfile`,
+então, tome cuidado antes de executar esse comando.
