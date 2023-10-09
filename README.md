@@ -46,6 +46,30 @@ Página de edição de locais (interface para configuração de banco de dados):
 
 ![print editor de locais](prints/editor-de-locais.png)
 
+Página do lobby:
+
+![print página do lobby](prints/lobby.png)
+
+Página de configurações:
+
+![print página de configurações](prints/configuracoes.png)
+
+Página do jogo:
+
+![print página do jogo 1](prints/game-page-1.png)
+
+![print página do jogo 2](prints/game-page-2.png)
+
+(Sim, eu que desenhei essas obras artítiscas das imagens dos locais)
+
+Página de votação/acusação:
+
+![print votação](prints/votation.png)
+
+Página de resultados:
+
+![print resultados](prints/resultados.png)
+
 ## Instalação e execução
 
 ! COMPLETAR SOBRE !
