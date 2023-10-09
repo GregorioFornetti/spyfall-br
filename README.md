@@ -78,7 +78,7 @@ Existem duas formas de executar o projeto, e cada uma com uma finalidade. Uma fo
 
 Para subir o servidor, é preciso ter instalado o `Docker` e o `Docker Compose`. O docker disponibiliza um [tutorial para sua instalação](https://docs.docker.com/desktop/).
 
-Com tudo instalado, para colocar o jogo no ar em modo de produção, siga os passos abaixo.
+Com tudo instalado, para colocar o jogo no ar em modo de produção, siga os passos abaixo:
 
 1 - Configurar `.env`
 
@@ -99,6 +99,8 @@ Esse comando irá subir o servidor no ar (esse comando funciona para o Windows, 
 Para subir o servidor de banco de dados, é preciso ter instalado o `Docker` e o `Docker Compose`. O docker disponibiliza um [tutorial para sua instalação](https://docs.docker.com/desktop/).
 
 Para instalar as bibliotecas, é neceessário ter o Node.js instalado. Pode ser instalado pelo [próprio site do Node.js](https://nodejs.org/en).
+
+Com tudo instalado, para começar a desenvolver, siga os passos abaixo:
 
 1 - Na pasta `backend`, rodar `docker-compose up`
 
