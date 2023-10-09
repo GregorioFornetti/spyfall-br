@@ -1,6 +1,6 @@
 # Spyfall
 
-Este repositório contém o código base do jogo de tabuleiro [spyfall](https://www.spyfall.app/).
+Este repositório contém o código base do jogo multiplayer de tabuleiro [spyfall](https://www.spyfall.app/).
 
 As principais tecnologias usadas no projeto foram: [React](https://react.dev/), [TypeScript](https://www.typescriptlang.org/), [Socket.io](https://socket.io/), [Bootstrap](https://getbootstrap.com/) e [Express](https://expressjs.com/pt-br/).
 
