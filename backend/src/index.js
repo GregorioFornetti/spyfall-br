@@ -69,13 +69,39 @@ const users = {}
 io.use((socket, next) => handleSession(socket, next, users));
 
 io.on('connection', (socket) => {
+
+    users[socket.sessionID].online = true
+    
     loadSession(socket, users)
 
     gameEventsHandler(io, socket, games, users)
 
     matchEventsHandler(io, socket, users)
+
+    socket.on('disconnect', () => {
+        users[socket.sessionID].online = false
+    })
 })
+
 
 server.listen(port, () => {
     console.log(`Servidor spyfall online na porta ${port}`)
 })
+
+setInterval(() => {
+    // cleanup - irá buscar por jogadores inativos por um bom tempo e salas vazias por muito tempo e limpará eles
+
+    // Limpando jogos inativos
+    for (const gameCode in games) {
+        if (games[gameCode].players.length === 0 || games[gameCode].players.every((player) => !player.user.online)) {
+            delete games[gameCode]
+        }
+    }
+
+    // Limpando usuários inativos
+    for (const sessionID in users) {
+        if (!users[sessionID].online) {
+            delete users[sessionID]
+        }
+    }
+}, 1000 * 60 * 10)  // A cada 10 minutos irá fazer a limpeza

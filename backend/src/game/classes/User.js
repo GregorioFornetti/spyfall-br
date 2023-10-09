@@ -6,5 +6,6 @@ export default class User {
         this.userID = randomID()
         this.socketID = socketID
         this.game = null
+        this.online = true
     }
 }
