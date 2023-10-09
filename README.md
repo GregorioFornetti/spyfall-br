@@ -42,7 +42,9 @@ No início de cada rodada, todos os jogadores, exceto o espião, recebem uma **p
 
 ## Prints do jogo
 
-! COMPLETAR AQUI !
+Página de edição de locais (interface para configuração de banco de dados):
+
+![print editor de locais](prints/editor-de-locais.png)
 
 ## Instalação e execução
 
