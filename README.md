@@ -96,13 +96,25 @@ Esse comando irá subir o servidor no ar (esse comando funciona para o Windows, 
 
 ### Como executar - Modo desenvolvimento
 
-1 - Ir na pasta `backend`
+Para subir o servidor de banco de dados, é preciso ter instalado o `Docker` e o `Docker Compose`. O docker disponibiliza um [tutorial para sua instalação](https://docs.docker.com/desktop/).
 
-2 - `docker-compose up`
+Para instalar as bibliotecas, é neceessário ter o Node.js instalado. Pode ser instalado pelo [próprio site do Node.js](https://nodejs.org/en).
 
-3 - Novamente na mesma pasta, em outro terminal, executar `npm run server`
+1 - Na pasta `backend`, rodar `docker-compose up`
 
-4 - Escolher o frontend "spyfall-br-adm" ou "spyfall-br-game" e rodar `npm run start`
+Este comando irá subir o servidor de banco de dados.
+
+2 - Na mesma pasta, em outro terminal, executar `npm install`
+
+Instalará as bibliotecas necessárias para subir o servidor do backend.
+
+3- Rodar o comando `npm run server`
+
+Irá subir o servidor backend
+
+4 - Escolher o frontend `spyfall-br-adm` ou `spyfall-br-game` e rodar `npm install` e depois `npm run start`.
+
+Isso irá gerar o frontend ao vivo, podendo edita-lo e ver as modificações rapidamente. `spyfall-br-adm` é o frontend da página de administração e `spyfall-br-game` é o frontend da página do jogo.
 
 ## Backup
 
