@@ -72,17 +72,27 @@ Página de resultados:
 
 ## Instalação e execução
 
-Existem duas formas de executar o projeto, e cada uma com uma finalidade. Uma forma de execução é o modo produção, para colocar no ar o jogo para que o público possa jogar. A outra forma é desenvolvimento, para conseguir visualizar o resultado das modificações do código ao vivo.
+Existem duas formas de executar o projeto, e cada uma com uma finalidade. Uma forma de execução é o modo produção, para colocar no ar o jogo para que o público possa jogar. A outra forma é desenvolvimento, para conseguir visualizar o resultado das modificações do código ao vivo. Para conseguir 
 
 ### Como executar - Modo produção
 
-Para colocar o jogo no ar em modo de produção, siga os passos abaixo.
+Para subir o servidor, é preciso ter instalado o `Docker` e o `Docker Compose`. O docker disponibiliza um [tutorial para sua instalação](https://docs.docker.com/desktop/).
+
+Com tudo instalado, para colocar o jogo no ar em modo de produção, siga os passos abaixo.
 
 1 - Configurar `.env`
 
+As principais variáveis que devem ser modificadas são:
 
+  - `DB_PATH`: endpoint para fazer requisições ao banco de dados.
+  - `ADM_PATH`: endpoint para acessar a página de administração (configurações do banco de dados). Para acessar a página, a URL final será: `<endereço_servidor>/<DB_PATH>`.
+  - `GAME_PATH`: endpoint para acessar a página do jogo. Para acessar a página, a URL final será: `<endereço_servidor>/<GAME_PATH>`.
+  - `PORT`: porta em que toda a aplicação ficará exposta.
+  - `PASSWORD`: senha que será pedida para acessar a página de administração. Essa senha dará acesso total para manipulação do banco de dados, logo, cuide bem dela.
 
 2 - `docker-compose up`
+
+Esse comando irá subir o servidor no ar (esse comando funciona para o Windows, mas pode ser diferente para outro OS). Isso pode levar um tempo considerável, já que irá instalar todas as bibliotecas necessárias. Mas, uma vez feito isso, é esperado que não seja mais tão demorado para executar novamente.
 
 ### Como executar - Modo desenvolvimento
 
