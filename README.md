@@ -72,7 +72,17 @@ Página de resultados:
 
 ## Instalação e execução
 
-! COMPLETAR SOBRE !
+Existem duas formas de executar o projeto, e cada uma com uma finalidade. Uma forma de execução é o modo produção, para colocar no ar o jogo para que o público possa jogar. A outra forma é desenvolvimento, para conseguir visualizar o resultado das modificações do código ao vivo.
+
+### Como executar - Modo produção
+
+Para colocar o jogo no ar em modo de produção, siga os passos abaixo.
+
+1 - Configurar `.env`
+
+
+
+2 - `docker-compose up`
 
 ### Como executar - Modo desenvolvimento
 
@@ -83,12 +93,6 @@ Página de resultados:
 3 - Novamente na mesma pasta, em outro terminal, executar `npm run server`
 
 4 - Escolher o frontend "spyfall-br-adm" ou "spyfall-br-game" e rodar `npm run start`
-
-### Como executar - prod
-
-1 - Configurar `.env`
-
-2 - `docker-compose up`
 
 ## Backup
 
