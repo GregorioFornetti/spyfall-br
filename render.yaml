@@ -1,4 +1,4 @@
-# Render Blueprint — game server only.
+# Render Blueprint — game server only, Docker (same image as docker-compose).
 # The admin server (backend/src/admServer.js) is deliberately NOT deployed:
 # it has no authentication, so it should only run locally when needed
 # (see README). The game server reads places/roles/categories from the
@@ -6,26 +6,29 @@
 services:
   - type: web
     name: spyfall-br
-    runtime: node
+    runtime: docker
     plan: free
-    buildCommand: cd frontend/spyfall-br-game && npm install && npm run build && cd ../../backend && npm install --omit=dev
-    startCommand: cd backend && node src/index.js
+    dockerfilePath: ./Dockerfiles/server.Dockerfile
+    dockerContext: .
+    # The Dockerfile's CMD already does this; kept explicit because
+    # docker-compose is what used to override the old broken CMD.
+    dockerCommand: cd /home/node/app/backend && node src/index.js
     healthCheckPath: /spyfall
     autoDeploy: true
     envVars:
-      - key: NODE_VERSION
-        value: "20"
       - key: NODE_ENV
         value: production
-      # Render provides PORT automatically; do not set it here.
+      # Render passes envVars to Docker as build args. These keys must
+      # match the Dockerfile ARG names (lowercase) so PUBLIC_URL and
+      # REACT_APP_DB_PATH are baked into the frontend bundle.
+      - key: game_path
+        value: /spyfall
+      - key: db_path
+        value: /spyfall/db
+      # Runtime config for the backend. Render provides PORT; do not set it.
       - key: GAME_PATH
         value: /spyfall
       - key: DB_PATH
         value: /spyfall/db
       - key: ADM_PATH
         value: /spyfall/adm
-      # Inlined into the frontend bundle at build time.
-      - key: PUBLIC_URL
-        value: /spyfall
-      - key: REACT_APP_DB_PATH
-        value: /spyfall/db
