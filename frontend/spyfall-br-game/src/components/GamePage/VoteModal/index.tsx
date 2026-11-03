@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
-import { Container, Row } from 'react-bootstrap';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
 import { Socket } from "socket.io-client";
 
 import Player from '../../../interfaces/PlayerInterface'
 import PlayerCard from '../../PlayerCard'
 import Timer from '../Timer';
+import Modal, { ActionButton } from '../../ui/Modal';
+import { useTranslation } from 'react-i18next';
 
 interface VoteModalProps {
     show: boolean,
@@ -22,6 +20,7 @@ interface VoteModalProps {
 
 export default function VoteModal({show, socket, currentUserID, players, accusedUserID, accuserUserID, agreedUsersIds, desagreedUsersIds, votationTime}: VoteModalProps) {
 
+    const { t } = useTranslation()
     var accusedUsername = ''
     if (accusedUserID) {
         accusedUsername = (players.find((player) => player.id == accusedUserID) as Player).username
@@ -31,65 +30,58 @@ export default function VoteModal({show, socket, currentUserID, players, accused
         accuserUsername = (players.find((player) => player.id == accuserUserID) as Player).username
     }
 
-    const disabled = (currentUserID === accusedUserID || 
-                      currentUserID === accuserUserID || 
+    const disabled = (currentUserID === accusedUserID ||
+                      currentUserID === accuserUserID ||
                       agreedUsersIds.includes(currentUserID) ||
                       desagreedUsersIds.includes(currentUserID))
 
-
     return (
-        <Modal show={show} size='xl' centered>
-            <Modal.Header className='d-block text-center'>
-                <Modal.Title>Votação</Modal.Title>
-                <span>
-                    <strong>{accuserUsername}</strong> está acusando <strong>{accusedUsername}</strong>
-                </span>
-                <div className='d-flex justify-content-center mt-3'>
-                    <Timer time={votationTime} />
-                </div>
-            </Modal.Header>
-            <Modal.Body>
-                <Container>
-                    <Row className='gy-4'>
-                        {players.map((player) => (
-                            <div className='col-sm-12 col-lg-6 col-xl-4' key={player.id}>
-                                <PlayerCard
-                                    username={player.username}
-                                    score={player.score}
-
-                                    agreed={agreedUsersIds.includes(player.id) || player.id === accuserUserID}
-                                    desagreed={desagreedUsersIds.includes(player.id)}
-                                    accused={player.id === accusedUserID}
-                                />
-                            </div>
-                        ))}
-                    </Row>
-                </Container>
-            </Modal.Body>
-            <Modal.Footer>
-                <Container>
-                    <Row className='justify-content-between'>
-                        <div className='d-grid col-5 col-lg-4 col-xl-3 m-auto'>
-                            <Button 
-                                variant="success"
-                                onClick={() => socket.emit('vote', true)}
-                                disabled={disabled}
-                            >
-                                Concordar
-                            </Button>
-                        </div>
-                        <div className='d-grid col-5 col-lg-4 col-xl-3 m-auto'>
-                            <Button 
-                                variant="danger"
-                                onClick={() => socket.emit('vote', false)}
-                                disabled={disabled}
-                            >
-                                Discordar
-                            </Button>
-                        </div>
-                    </Row>
-                </Container>
-            </Modal.Footer>
+        <Modal
+            show={show}
+            title={t('game.vote')}
+            wide
+            headerExtra={
+                <>
+                    <p className="mt-1 text-sm text-zinc-600">
+                        <strong>{accuserUsername}</strong> {t('game.accusingConnector')} <strong>{accusedUsername}</strong>
+                    </p>
+                    <div className="mt-3">
+                        <Timer time={votationTime} />
+                    </div>
+                </>
+            }
+            footer={
+                <>
+                    <ActionButton
+                        onClick={() => socket.emit('vote', true)}
+                        disabled={disabled}
+                        className="flex-1 sm:flex-none"
+                    >
+                        {t('game.agree')}
+                    </ActionButton>
+                    <ActionButton
+                        variant="danger"
+                        onClick={() => socket.emit('vote', false)}
+                        disabled={disabled}
+                        className="flex-1 sm:flex-none"
+                    >
+                        {t('game.disagree')}
+                    </ActionButton>
+                </>
+            }
+        >
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                {players.map((player) => (
+                    <PlayerCard
+                        key={player.id}
+                        username={player.username}
+                        score={player.score}
+                        agreed={agreedUsersIds.includes(player.id) || player.id === accuserUserID}
+                        desagreed={desagreedUsersIds.includes(player.id)}
+                        accused={player.id === accusedUserID}
+                    />
+                ))}
+            </div>
         </Modal>
     );
 }

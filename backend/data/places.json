@@ -1,0 +1,4123 @@
+[
+  {
+    "id": 1,
+    "name": {
+      "pt": "Casa",
+      "en": "House"
+    },
+    "imgPath": "placeImgs/2f29784f-5f33-410c-9e95-f06bb81410e4.png",
+    "rolesIds": [
+      3,
+      4,
+      5,
+      6
+    ],
+    "categoriesIds": [
+      2
+    ]
+  },
+  {
+    "id": 2,
+    "name": {
+      "pt": "Submarino",
+      "en": "Submarine"
+    },
+    "imgPath": "placeImgs/49dbe301-e061-4476-acb2-48623bdcf540.png",
+    "rolesIds": [
+      1,
+      2
+    ],
+    "categoriesIds": [
+      1
+    ]
+  },
+  {
+    "id": 3,
+    "name": {
+      "pt": "Avião",
+      "en": "Airplane"
+    },
+    "imgPath": "placeImgs/94f5995d-d2db-4af8-9379-cff0ea8bb24d.png",
+    "rolesIds": [
+      1,
+      15,
+      50,
+      51
+    ],
+    "categoriesIds": [
+      1
+    ]
+  },
+  {
+    "id": 4,
+    "name": {
+      "pt": "Carro",
+      "en": "Car"
+    },
+    "imgPath": "placeImgs/e767d6ee-7960-4999-87a3-8eea0b2818f3.png",
+    "rolesIds": [
+      7,
+      9
+    ],
+    "categoriesIds": [
+      1
+    ]
+  },
+  {
+    "id": 5,
+    "name": {
+      "pt": "Casino",
+      "en": "Casino"
+    },
+    "imgPath": "placeImgs/431cbbcd-3517-4ceb-b1c8-976caf16d9b4.png",
+    "rolesIds": [
+      4,
+      14,
+      45,
+      46
+    ],
+    "categoriesIds": [
+      3,
+      5
+    ]
+  },
+  {
+    "id": 6,
+    "name": {
+      "pt": "Cemitério",
+      "en": "Cemetery"
+    },
+    "imgPath": "placeImgs/71f8d23a-4c77-459c-a2e0-144501103417.png",
+    "rolesIds": [
+      14,
+      22,
+      23
+    ],
+    "categoriesIds": [
+      4
+    ]
+  },
+  {
+    "id": 7,
+    "name": {
+      "pt": "Circo",
+      "en": "Circus"
+    },
+    "imgPath": "placeImgs/b4c83601-2965-4e97-be0e-c690cf5d6a87.png",
+    "rolesIds": [
+      14,
+      24,
+      26,
+      27,
+      28,
+      29
+    ],
+    "categoriesIds": [
+      3,
+      5
+    ]
+  },
+  {
+    "id": 8,
+    "name": {
+      "pt": "Cruzeiro",
+      "en": "Cruise ship"
+    },
+    "imgPath": "placeImgs/65bd148c-5082-47a3-a8ba-9449ec173a39.png",
+    "rolesIds": [
+      1,
+      2,
+      5,
+      14,
+      16
+    ],
+    "categoriesIds": [
+      1,
+      3
+    ]
+  },
+  {
+    "id": 9,
+    "name": {
+      "pt": "Delegacia",
+      "en": "Police station"
+    },
+    "imgPath": "placeImgs/d4080d15-a98f-486e-b1f5-625e8d904d56.png",
+    "rolesIds": [
+      53,
+      54,
+      55
+    ],
+    "categoriesIds": [
+      6
+    ]
+  },
+  {
+    "id": 10,
+    "name": {
+      "pt": "Fliperama",
+      "en": "Arcade"
+    },
+    "imgPath": "placeImgs/8b7fae63-d626-41f2-bb1e-e30e1b4301ac.png",
+    "rolesIds": [
+      10,
+      11,
+      12
+    ],
+    "categoriesIds": [
+      3,
+      5
+    ]
+  },
+  {
+    "id": 11,
+    "name": {
+      "pt": "Floresta",
+      "en": "Forest"
+    },
+    "imgPath": "placeImgs/ab0c6c1c-9489-4548-a307-1d1dbe50bd9a.png",
+    "rolesIds": [
+      32,
+      33,
+      34,
+      35,
+      36
+    ],
+    "categoriesIds": [
+      4
+    ]
+  },
+  {
+    "id": 12,
+    "name": {
+      "pt": "Hospital",
+      "en": "Hospital"
+    },
+    "imgPath": "placeImgs/d94c3cb8-d974-46a4-8f88-7e7c3a22b52b.png",
+    "rolesIds": [
+      4,
+      12,
+      14,
+      37,
+      38,
+      39,
+      40
+    ],
+    "categoriesIds": [
+      6
+    ]
+  },
+  {
+    "id": 13,
+    "name": {
+      "pt": "Igreja",
+      "en": "Church"
+    },
+    "imgPath": "placeImgs/5b5f861a-478f-40eb-a8bb-2c10ee8afc88.png",
+    "rolesIds": [
+      4,
+      14,
+      42,
+      43,
+      44
+    ],
+    "categoriesIds": [
+      7
+    ]
+  },
+  {
+    "id": 14,
+    "name": {
+      "pt": "Ilha",
+      "en": "Island"
+    },
+    "imgPath": "placeImgs/ceedac1a-44c3-4bb1-8fcb-e1a52c98601a.png",
+    "rolesIds": [
+      52
+    ],
+    "categoriesIds": [
+      4
+    ]
+  },
+  {
+    "id": 15,
+    "name": {
+      "pt": "Montanha russa",
+      "en": "Roller coaster"
+    },
+    "imgPath": "placeImgs/747556ed-5d4a-490e-ae2e-211c2362f113.png",
+    "rolesIds": [
+      11,
+      13,
+      14,
+      15
+    ],
+    "categoriesIds": [
+      3,
+      5
+    ]
+  },
+  {
+    "id": 16,
+    "name": {
+      "pt": "Navio pirata",
+      "en": "Pirate ship"
+    },
+    "imgPath": "placeImgs/8ab1b5ab-9d6a-481a-bcb4-679b2e79c67f.png",
+    "rolesIds": [
+      4,
+      47,
+      48
+    ],
+    "categoriesIds": [
+      1
+    ]
+  },
+  {
+    "id": 17,
+    "name": {
+      "pt": "Ônibus",
+      "en": "Bus"
+    },
+    "imgPath": "placeImgs/8db23c41-575b-4edb-b590-89b5170c5d95.png",
+    "rolesIds": [
+      7,
+      8,
+      9
+    ],
+    "categoriesIds": [
+      1
+    ]
+  },
+  {
+    "id": 18,
+    "name": {
+      "pt": "Parque de diversões",
+      "en": "Amusement park"
+    },
+    "imgPath": "placeImgs/dbf1d01b-a29f-4b31-9a50-5a88077b19a2.png",
+    "rolesIds": [
+      4,
+      13,
+      14,
+      15,
+      41
+    ],
+    "categoriesIds": [
+      3,
+      4,
+      5
+    ]
+  },
+  {
+    "id": 19,
+    "name": {
+      "pt": "Parque",
+      "en": "Park"
+    },
+    "imgPath": "placeImgs/496c033f-0e8d-4c67-ac05-b77f3306b450.png",
+    "rolesIds": [
+      4,
+      6,
+      14,
+      23
+    ],
+    "categoriesIds": [
+      4,
+      5
+    ]
+  },
+  {
+    "id": 20,
+    "name": {
+      "pt": "Posto de bombeiros",
+      "en": "Fire station"
+    },
+    "imgPath": "placeImgs/ec0f4c32-0f97-45bb-ae61-9dd89ec069a9.png",
+    "rolesIds": [
+      30,
+      31
+    ],
+    "categoriesIds": [
+      6
+    ]
+  },
+  {
+    "id": 21,
+    "name": {
+      "pt": "Restaurante",
+      "en": "Restaurant"
+    },
+    "imgPath": "placeImgs/7aad9cc2-01a0-4a37-a94e-30e6951682fb.png",
+    "rolesIds": [
+      5,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "categoriesIds": [
+      2
+    ]
+  },
+  {
+    "id": 22,
+    "name": {
+      "pt": "Roda-gigante",
+      "en": "Ferris wheel"
+    },
+    "imgPath": "placeImgs/cb70df9e-9c1b-4fd1-aaad-af84bcb1988b.png",
+    "rolesIds": [
+      15,
+      18,
+      49
+    ],
+    "categoriesIds": [
+      3
+    ]
+  },
+  {
+    "id": 23,
+    "name": {
+      "pt": "Teatro",
+      "en": "Theater"
+    },
+    "imgPath": "placeImgs/036504ad-7060-4835-a259-e74c4f067db5.png",
+    "rolesIds": [
+      4,
+      14,
+      24,
+      25
+    ],
+    "categoriesIds": [
+      5
+    ]
+  },
+  {
+    "id": 24,
+    "name": {
+      "pt": "Trem",
+      "en": "Train"
+    },
+    "imgPath": "placeImgs/b16dd79c-95db-4b23-b887-579841eb0e02.png",
+    "rolesIds": [
+      9,
+      20,
+      21
+    ],
+    "categoriesIds": [
+      1
+    ]
+  },
+  {
+    "id": 25,
+    "name": {
+      "pt": "Escola",
+      "en": "School"
+    },
+    "imgPath": "placeImgs/a4c2e9df-67bb-4656-9dad-cc4e1a4f346c.png",
+    "rolesIds": [
+      56,
+      57,
+      58,
+      4,
+      5
+    ],
+    "categoriesIds": [
+      8
+    ]
+  },
+  {
+    "id": 26,
+    "name": {
+      "pt": "Praia",
+      "en": "Beach"
+    },
+    "imgPath": "placeImgs/421ea54b-5590-41ad-ab1b-45c9b2f67134.png",
+    "rolesIds": [
+      59,
+      60,
+      61,
+      62,
+      14
+    ],
+    "categoriesIds": [
+      4,
+      9
+    ]
+  },
+  {
+    "id": 27,
+    "name": {
+      "pt": "Estádio de futebol",
+      "en": "Soccer stadium"
+    },
+    "imgPath": "placeImgs/5ae9696f-931d-40a4-b692-9557a83dd83d.png",
+    "rolesIds": [
+      10,
+      11,
+      63,
+      64,
+      24
+    ],
+    "categoriesIds": [
+      9
+    ]
+  },
+  {
+    "id": 28,
+    "name": {
+      "pt": "Academia",
+      "en": "Gym"
+    },
+    "imgPath": "placeImgs/8d44b46c-d0e1-48f6-a7db-c991461bd9b0.png",
+    "rolesIds": [
+      65,
+      66,
+      12,
+      4,
+      17
+    ],
+    "categoriesIds": [
+      9
+    ]
+  },
+  {
+    "id": 29,
+    "name": {
+      "pt": "Shopping",
+      "en": "Mall"
+    },
+    "imgPath": "placeImgs/b283a1be-1d34-4d2f-ace7-c41ed25a5f48.png",
+    "rolesIds": [
+      15,
+      67,
+      17,
+      68,
+      4
+    ],
+    "categoriesIds": [
+      10
+    ]
+  },
+  {
+    "id": 30,
+    "name": {
+      "pt": "Supermercado",
+      "en": "Supermarket"
+    },
+    "imgPath": "placeImgs/4896f65f-3c28-4572-9741-c0e5555ed9b7.png",
+    "rolesIds": [
+      15,
+      69,
+      17,
+      70,
+      21
+    ],
+    "categoriesIds": [
+      10
+    ]
+  },
+  {
+    "id": 31,
+    "name": {
+      "pt": "Padaria",
+      "en": "Bakery"
+    },
+    "imgPath": "placeImgs/980a1026-d96d-4286-9775-386d8bc292b3.png",
+    "rolesIds": [
+      71,
+      5,
+      15,
+      19,
+      17
+    ],
+    "categoriesIds": [
+      10,
+      2
+    ]
+  },
+  {
+    "id": 32,
+    "name": {
+      "pt": "Fazenda",
+      "en": "Farm"
+    },
+    "imgPath": "placeImgs/54c0e152-6fa5-4f59-a752-b1aed67db5bf.png",
+    "rolesIds": [
+      72,
+      73,
+      23,
+      7,
+      5
+    ],
+    "categoriesIds": [
+      4
+    ]
+  },
+  {
+    "id": 33,
+    "name": {
+      "pt": "Zoológico",
+      "en": "Zoo"
+    },
+    "imgPath": "placeImgs/f0c92698-c41a-4944-81c6-bfefedf05d78.png",
+    "rolesIds": [
+      74,
+      73,
+      13,
+      23,
+      41
+    ],
+    "categoriesIds": [
+      3,
+      4
+    ]
+  },
+  {
+    "id": 34,
+    "name": {
+      "pt": "Museu",
+      "en": "Museum"
+    },
+    "imgPath": "placeImgs/ba6626a2-464b-41a5-8609-50e0d5bba408.png",
+    "rolesIds": [
+      13,
+      23,
+      75,
+      14,
+      12
+    ],
+    "categoriesIds": [
+      5,
+      8
+    ]
+  },
+  {
+    "id": 35,
+    "name": {
+      "pt": "Biblioteca",
+      "en": "Library"
+    },
+    "imgPath": "placeImgs/f1d53177-c9f9-4252-b2ab-a6556b52ec2c.png",
+    "rolesIds": [
+      76,
+      77,
+      78,
+      12
+    ],
+    "categoriesIds": [
+      8,
+      2
+    ]
+  },
+  {
+    "id": 36,
+    "name": {
+      "pt": "Aeroporto",
+      "en": "Airport"
+    },
+    "imgPath": "placeImgs/59350016-04ff-413b-9b11-954495b89f6e.png",
+    "rolesIds": [
+      1,
+      51,
+      9,
+      79,
+      68
+    ],
+    "categoriesIds": [
+      1
+    ]
+  },
+  {
+    "id": 37,
+    "name": {
+      "pt": "Oficina mecânica",
+      "en": "Mechanic shop"
+    },
+    "imgPath": "placeImgs/b0e77cdd-8d6b-4fb9-a910-a2faae8186fe.png",
+    "rolesIds": [
+      80,
+      15,
+      17,
+      7,
+      21
+    ],
+    "categoriesIds": [
+      6
+    ]
+  },
+  {
+    "id": 38,
+    "name": {
+      "pt": "Castelo medieval",
+      "en": "Medieval castle"
+    },
+    "imgPath": "placeImgs/f8edab81-bfa0-4a57-9355-76c10347c155.png",
+    "rolesIds": [
+      81,
+      82,
+      83,
+      84,
+      14
+    ],
+    "categoriesIds": [
+      11
+    ]
+  },
+  {
+    "id": 39,
+    "name": {
+      "pt": "Estação espacial",
+      "en": "Space station"
+    },
+    "imgPath": "placeImgs/a3795bad-c995-4272-b15e-8bfe09e07677.png",
+    "rolesIds": [
+      85,
+      86,
+      87,
+      47,
+      49
+    ],
+    "categoriesIds": [
+      11
+    ]
+  },
+  {
+    "id": 40,
+    "name": {
+      "pt": "Banco",
+      "en": "Bank"
+    },
+    "imgPath": "placeImgs/e36ab9ae-2abe-464f-8aef-e88c427dd155.png",
+    "rolesIds": [
+      17,
+      68,
+      15,
+      21,
+      88
+    ],
+    "categoriesIds": [
+      6
+    ]
+  },
+  {
+    "id": 41,
+    "name": {
+      "pt": "Correios",
+      "en": "Post office"
+    },
+    "imgPath": "placeImgs/d02ec635-9d13-4b28-9fcf-e3e8ce7aa1f3.png",
+    "rolesIds": [
+      89,
+      21,
+      15,
+      7,
+      17
+    ],
+    "categoriesIds": [
+      6
+    ]
+  },
+  {
+    "id": 42,
+    "name": {
+      "pt": "Hotel",
+      "en": "Hotel"
+    },
+    "imgPath": "placeImgs/c28405c5-0b6a-4422-8da2-4e95d5cca8af.png",
+    "rolesIds": [
+      12,
+      90,
+      4,
+      19,
+      17
+    ],
+    "categoriesIds": [
+      2,
+      6
+    ]
+  },
+  {
+    "id": 43,
+    "name": {
+      "pt": "Cinema",
+      "en": "Movie theater"
+    },
+    "imgPath": "placeImgs/43481f16-cba2-4962-9718-90d0791ed439.png",
+    "rolesIds": [
+      24,
+      21,
+      49,
+      15,
+      4
+    ],
+    "categoriesIds": [
+      5
+    ]
+  },
+  {
+    "id": 44,
+    "name": {
+      "pt": "Salão de beleza",
+      "en": "Beauty salon"
+    },
+    "imgPath": "placeImgs/eba500fc-949c-4e02-b91a-ec24cccf1742.png",
+    "rolesIds": [
+      91,
+      15,
+      92,
+      12
+    ],
+    "categoriesIds": [
+      6,
+      2
+    ]
+  },
+  {
+    "id": 45,
+    "name": {
+      "pt": "Pet shop",
+      "en": "Pet shop"
+    },
+    "imgPath": "placeImgs/4677bcd6-6615-44ea-85b3-e000b4abde9d.png",
+    "rolesIds": [
+      73,
+      21,
+      15,
+      93,
+      17
+    ],
+    "categoriesIds": [
+      10
+    ]
+  },
+  {
+    "id": 46,
+    "name": {
+      "pt": "Porto",
+      "en": "Harbor"
+    },
+    "imgPath": "placeImgs/9e839bf4-a666-4c88-b483-b7e6410ba45b.png",
+    "rolesIds": [
+      47,
+      48,
+      94,
+      49,
+      61
+    ],
+    "categoriesIds": [
+      1,
+      4
+    ]
+  },
+  {
+    "id": 47,
+    "name": {
+      "pt": "Acampamento",
+      "en": "Campsite"
+    },
+    "imgPath": "placeImgs/fc521b90-b0eb-4385-9c9d-8fe769252e04.png",
+    "rolesIds": [
+      35,
+      36,
+      33,
+      41,
+      13
+    ],
+    "categoriesIds": [
+      4,
+      3
+    ]
+  },
+  {
+    "id": 48,
+    "name": {
+      "pt": "Cachoeira",
+      "en": "Waterfall"
+    },
+    "imgPath": "placeImgs/573dd004-b881-4d3d-87c2-92c2b27da4fb.png",
+    "rolesIds": [
+      61,
+      13,
+      33,
+      95,
+      59
+    ],
+    "categoriesIds": [
+      4
+    ]
+  },
+  {
+    "id": 49,
+    "name": {
+      "pt": "Deserto",
+      "en": "Desert"
+    },
+    "imgPath": "placeImgs/5c39c936-e177-4da4-8a13-486441315707.png",
+    "rolesIds": [
+      33,
+      13,
+      61,
+      52,
+      86
+    ],
+    "categoriesIds": [
+      4
+    ]
+  },
+  {
+    "id": 50,
+    "name": {
+      "pt": "Estação de esqui",
+      "en": "Ski resort"
+    },
+    "imgPath": "placeImgs/00dad2d3-22a1-4d5d-8a2d-5e5f20af473c.png",
+    "rolesIds": [
+      96,
+      97,
+      61,
+      49,
+      31
+    ],
+    "categoriesIds": [
+      9,
+      4
+    ]
+  },
+  {
+    "id": 51,
+    "name": {
+      "pt": "Parque aquático",
+      "en": "Water park"
+    },
+    "imgPath": "placeImgs/0675503d-941f-424a-88a7-d28e85e1b6d7.png",
+    "rolesIds": [
+      59,
+      41,
+      61,
+      21,
+      14
+    ],
+    "categoriesIds": [
+      3
+    ]
+  },
+  {
+    "id": 52,
+    "name": {
+      "pt": "Casa assombrada",
+      "en": "Haunted house"
+    },
+    "imgPath": "placeImgs/d152729c-39e6-43e4-860a-b9a1a7dda1d4.png",
+    "rolesIds": [
+      25,
+      24,
+      23,
+      26,
+      27
+    ],
+    "categoriesIds": [
+      3,
+      11
+    ]
+  },
+  {
+    "id": 53,
+    "name": {
+      "pt": "Fundo do mar",
+      "en": "Ocean floor"
+    },
+    "imgPath": "placeImgs/cf27af19-b4cc-4dd1-904d-f7fea9847371.png",
+    "rolesIds": [
+      98,
+      86,
+      47,
+      52,
+      33
+    ],
+    "categoriesIds": [
+      11
+    ]
+  },
+  {
+    "id": 54,
+    "name": {
+      "pt": "Laboratório secreto",
+      "en": "Secret lab"
+    },
+    "imgPath": "placeImgs/51f71eb6-dd3f-482c-9d5b-22dcf0db1566.png",
+    "rolesIds": [
+      86,
+      55,
+      68,
+      87,
+      54
+    ],
+    "categoriesIds": [
+      11
+    ]
+  },
+  {
+    "id": 55,
+    "name": {
+      "pt": "Nave espacial",
+      "en": "Spaceship"
+    },
+    "imgPath": "placeImgs/bd5e1829-6df8-4ff3-87ba-ce94418ed823.png",
+    "rolesIds": [
+      85,
+      47,
+      87,
+      86,
+      2
+    ],
+    "categoriesIds": [
+      11,
+      1
+    ]
+  },
+  {
+    "id": 56,
+    "name": {
+      "pt": "Velho oeste",
+      "en": "Wild West town"
+    },
+    "imgPath": "placeImgs/ceefe762-71d9-4443-a06d-ffd6c9d72d44.png",
+    "rolesIds": [
+      99,
+      72,
+      45,
+      54,
+      19
+    ],
+    "categoriesIds": [
+      11
+    ]
+  },
+  {
+    "id": 57,
+    "name": {
+      "pt": "Casamento",
+      "en": "Wedding"
+    },
+    "imgPath": "placeImgs/a64af0b4-d5d5-4806-b9de-433fe4587931.png",
+    "rolesIds": [
+      100,
+      101,
+      42,
+      95,
+      103
+    ],
+    "categoriesIds": [
+      2,
+      5
+    ]
+  },
+  {
+    "id": 58,
+    "name": {
+      "pt": "Show de rock",
+      "en": "Rock concert"
+    },
+    "imgPath": "placeImgs/97199f4f-5ad4-4f62-a676-a5ddeca76a31.png",
+    "rolesIds": [
+      102,
+      24,
+      68,
+      11,
+      64
+    ],
+    "categoriesIds": [
+      5
+    ]
+  },
+  {
+    "id": 59,
+    "name": {
+      "pt": "Autódromo",
+      "en": "Race track"
+    },
+    "imgPath": "placeImgs/9b6318dc-e091-4a7e-b5fc-1e80ffed61d8.png",
+    "rolesIds": [
+      1,
+      80,
+      11,
+      24,
+      63
+    ],
+    "categoriesIds": [
+      9,
+      1
+    ]
+  },
+  {
+    "id": 60,
+    "name": {
+      "pt": "Feira livre",
+      "en": "Street market"
+    },
+    "imgPath": "placeImgs/270c5260-b6fa-4324-9523-13f0b79c24b0.png",
+    "rolesIds": [
+      104,
+      15,
+      61,
+      17,
+      68
+    ],
+    "categoriesIds": [
+      10,
+      4
+    ]
+  },
+  {
+    "id": 61,
+    "name": {
+      "pt": "Universidade",
+      "en": "University"
+    },
+    "imgPath": "placeImgs/65bd1782-1dc1-4167-a931-1d9b45efc94e.png",
+    "rolesIds": [
+      56,
+      77,
+      105,
+      76,
+      4
+    ],
+    "categoriesIds": [
+      8
+    ]
+  },
+  {
+    "id": 62,
+    "name": {
+      "pt": "Cafeteria",
+      "en": "Coffee shop"
+    },
+    "imgPath": "placeImgs/65da6352-06cb-40dc-9071-c687ad36659d.png",
+    "rolesIds": [
+      106,
+      15,
+      19,
+      17,
+      78
+    ],
+    "categoriesIds": [
+      2,
+      10
+    ]
+  },
+  {
+    "id": 63,
+    "name": {
+      "pt": "Sorveteria",
+      "en": "Ice cream parlor"
+    },
+    "imgPath": "placeImgs/b6ed5ab5-1eb1-4a35-a223-1c1c3c916e1a.png",
+    "rolesIds": [
+      21,
+      41,
+      15,
+      5,
+      61
+    ],
+    "categoriesIds": [
+      10,
+      3
+    ]
+  },
+  {
+    "id": 64,
+    "name": {
+      "pt": "Livraria",
+      "en": "Bookstore"
+    },
+    "imgPath": "placeImgs/b1825007-ad6e-4b5f-a0e6-d765690117d4.png",
+    "rolesIds": [
+      107,
+      15,
+      78,
+      77,
+      17
+    ],
+    "categoriesIds": [
+      10,
+      8
+    ]
+  },
+  {
+    "id": 65,
+    "name": {
+      "pt": "Barbearia",
+      "en": "Barbershop"
+    },
+    "imgPath": "placeImgs/1026cf25-3dd0-415f-a294-3098148be3fb.png",
+    "rolesIds": [
+      108,
+      15,
+      12,
+      4
+    ],
+    "categoriesIds": [
+      6
+    ]
+  },
+  {
+    "id": 66,
+    "name": {
+      "pt": "Boliche",
+      "en": "Bowling alley"
+    },
+    "imgPath": "placeImgs/de5d1b02-bf22-4a71-9fee-45ce36f8b34c.png",
+    "rolesIds": [
+      10,
+      21,
+      15,
+      11,
+      24
+    ],
+    "categoriesIds": [
+      3,
+      9
+    ]
+  },
+  {
+    "id": 67,
+    "name": {
+      "pt": "Aquário",
+      "en": "Aquarium"
+    },
+    "imgPath": "placeImgs/20070dc2-daac-4021-8e24-440c05491f4c.png",
+    "rolesIds": [
+      98,
+      13,
+      74,
+      23,
+      41
+    ],
+    "categoriesIds": [
+      3,
+      5
+    ]
+  },
+  {
+    "id": 68,
+    "name": {
+      "pt": "Planetário",
+      "en": "Planetarium"
+    },
+    "imgPath": "placeImgs/e4101155-9a42-432a-afd6-669b39f18b61.png",
+    "rolesIds": [
+      85,
+      86,
+      13,
+      23,
+      49
+    ],
+    "categoriesIds": [
+      5,
+      8
+    ]
+  },
+  {
+    "id": 69,
+    "name": {
+      "pt": "Parque de trampolim",
+      "en": "Trampoline park"
+    },
+    "imgPath": "placeImgs/084f88fd-8e51-4ea2-a0ec-7769707b905e.png",
+    "rolesIds": [
+      41,
+      97,
+      21,
+      14,
+      61
+    ],
+    "categoriesIds": [
+      3,
+      9
+    ]
+  },
+  {
+    "id": 70,
+    "name": {
+      "pt": "Escape room",
+      "en": "Escape room"
+    },
+    "imgPath": "placeImgs/37ceeb63-61a4-49fc-b577-91275236aa53.png",
+    "rolesIds": [
+      54,
+      23,
+      49,
+      24,
+      27
+    ],
+    "categoriesIds": [
+      3,
+      11
+    ]
+  },
+  {
+    "id": 71,
+    "name": {
+      "pt": "Estúdio de TV",
+      "en": "TV studio"
+    },
+    "imgPath": "placeImgs/aff3988e-1a40-4317-8d2e-79d8eca79dfd.png",
+    "rolesIds": [
+      109,
+      102,
+      25,
+      11,
+      49
+    ],
+    "categoriesIds": [
+      5
+    ]
+  },
+  {
+    "id": 72,
+    "name": {
+      "pt": "Jardim botânico",
+      "en": "Botanical garden"
+    },
+    "imgPath": "placeImgs/f44f22ec-bf41-43f5-a94a-ac654d53c122.png",
+    "rolesIds": [
+      6,
+      13,
+      95,
+      61,
+      86
+    ],
+    "categoriesIds": [
+      4
+    ]
+  },
+  {
+    "id": 73,
+    "name": {
+      "pt": "Caverna",
+      "en": "Cave"
+    },
+    "imgPath": "placeImgs/b5149da0-1158-4ec8-af73-312d4dead68b.png",
+    "rolesIds": [
+      33,
+      13,
+      86,
+      98,
+      36
+    ],
+    "categoriesIds": [
+      4,
+      11
+    ]
+  },
+  {
+    "id": 74,
+    "name": {
+      "pt": "Mina de ouro",
+      "en": "Gold mine"
+    },
+    "imgPath": "placeImgs/7c3f98f2-3917-4cc5-b025-0f81f568753d.png",
+    "rolesIds": [
+      110,
+      87,
+      33,
+      68,
+      49
+    ],
+    "categoriesIds": [
+      11,
+      4
+    ]
+  },
+  {
+    "id": 75,
+    "name": {
+      "pt": "Vulcão",
+      "en": "Volcano"
+    },
+    "imgPath": "placeImgs/c26d4e08-b4c2-43d6-ba03-00f6aef54757.png",
+    "rolesIds": [
+      86,
+      33,
+      13,
+      95,
+      61
+    ],
+    "categoriesIds": [
+      4,
+      11
+    ]
+  },
+  {
+    "id": 76,
+    "name": {
+      "pt": "Iglu",
+      "en": "Igloo"
+    },
+    "imgPath": "placeImgs/c06e4f31-04bb-4158-a495-b2aa1543c6e3.png",
+    "rolesIds": [
+      96,
+      33,
+      13,
+      52,
+      94
+    ],
+    "categoriesIds": [
+      11,
+      4
+    ]
+  },
+  {
+    "id": 77,
+    "name": {
+      "pt": "Farol",
+      "en": "Lighthouse"
+    },
+    "imgPath": "placeImgs/f1fd263d-a7d1-4ba4-9722-cad23cd4c09f.png",
+    "rolesIds": [
+      111,
+      48,
+      47,
+      61,
+      94
+    ],
+    "categoriesIds": [
+      4,
+      1
+    ]
+  },
+  {
+    "id": 78,
+    "name": {
+      "pt": "Fábrica de chocolate",
+      "en": "Chocolate factory"
+    },
+    "imgPath": "placeImgs/43bd87e5-9505-4b87-8af1-b4bc551d59b4.png",
+    "rolesIds": [
+      5,
+      49,
+      15,
+      17,
+      16
+    ],
+    "categoriesIds": [
+      10,
+      6
+    ]
+  },
+  {
+    "id": 79,
+    "name": {
+      "pt": "Clínica veterinária",
+      "en": "Vet clinic"
+    },
+    "imgPath": "placeImgs/4c9ff462-6263-4411-ba67-c37a3caad6c0.png",
+    "rolesIds": [
+      73,
+      21,
+      15,
+      93,
+      12
+    ],
+    "categoriesIds": [
+      6
+    ]
+  },
+  {
+    "id": 80,
+    "name": {
+      "pt": "Quartel",
+      "en": "Army base"
+    },
+    "imgPath": "placeImgs/d5fbb287-7a84-4881-94a6-f5fb8b5b12de.png",
+    "rolesIds": [
+      112,
+      47,
+      38,
+      87,
+      14
+    ],
+    "categoriesIds": [
+      11,
+      6
+    ]
+  },
+  {
+    "id": 81,
+    "name": {
+      "pt": "Prisão",
+      "en": "Prison"
+    },
+    "imgPath": "placeImgs/0c9f148e-c0ca-4f73-98f2-098e63227f59.png",
+    "rolesIds": [
+      14,
+      54,
+      53,
+      5,
+      23
+    ],
+    "categoriesIds": [
+      11
+    ]
+  },
+  {
+    "id": 82,
+    "name": {
+      "pt": "Festa junina",
+      "en": "June festival"
+    },
+    "imgPath": "placeImgs/3370d0a9-a0da-4355-b38e-187c6783804c.png",
+    "rolesIds": [
+      113,
+      100,
+      114,
+      15,
+      5
+    ],
+    "categoriesIds": [
+      3,
+      5
+    ]
+  },
+  {
+    "id": 83,
+    "name": {
+      "pt": "Carnaval",
+      "en": "Carnival parade"
+    },
+    "imgPath": "placeImgs/5890f96c-6c7b-4534-927b-a5395cf7681d.png",
+    "rolesIds": [
+      115,
+      116,
+      117,
+      24,
+      102
+    ],
+    "categoriesIds": [
+      5,
+      3
+    ]
+  },
+  {
+    "id": 84,
+    "name": {
+      "pt": "Rodeio",
+      "en": "Rodeo"
+    },
+    "imgPath": "placeImgs/ed852135-0b19-48d4-bc82-50947c5c1bdf.png",
+    "rolesIds": [
+      118,
+      63,
+      24,
+      72,
+      119
+    ],
+    "categoriesIds": [
+      9,
+      3
+    ]
+  },
+  {
+    "id": 85,
+    "name": {
+      "pt": "Fábrica de brinquedos",
+      "en": "Toy factory"
+    },
+    "imgPath": "placeImgs/12030cbf-dc60-406b-8b20-b3c9d1d55df7.png",
+    "rolesIds": [
+      49,
+      87,
+      17,
+      15,
+      120
+    ],
+    "categoriesIds": [
+      11,
+      10
+    ]
+  },
+  {
+    "id": 86,
+    "name": {
+      "pt": "Metrô",
+      "en": "Subway station"
+    },
+    "imgPath": "placeImgs/fe07a69e-40ee-4cda-a830-d09a590d0fb9.png",
+    "rolesIds": [
+      20,
+      9,
+      8,
+      68,
+      21
+    ],
+    "categoriesIds": [
+      1
+    ]
+  },
+  {
+    "id": 87,
+    "name": {
+      "pt": "Karaokê",
+      "en": "Karaoke bar"
+    },
+    "imgPath": "placeImgs/5eb008bf-7da1-4b18-87a9-cd83e7e30340.png",
+    "rolesIds": [
+      102,
+      15,
+      19,
+      49,
+      24
+    ],
+    "categoriesIds": [
+      5
+    ]
+  },
+  {
+    "id": 88,
+    "name": {
+      "pt": "Drive-in",
+      "en": "Drive-in theater"
+    },
+    "imgPath": "placeImgs/eef95cc8-14b3-4a92-86fe-5f2b2bc10b28.png",
+    "rolesIds": [
+      24,
+      21,
+      49,
+      15,
+      7
+    ],
+    "categoriesIds": [
+      5,
+      3
+    ]
+  },
+  {
+    "id": 89,
+    "name": {
+      "pt": "Spa",
+      "en": "Spa"
+    },
+    "imgPath": "placeImgs/d3591e63-7ce4-4200-8d18-4f13338a8991.png",
+    "rolesIds": [
+      121,
+      15,
+      12,
+      17,
+      4
+    ],
+    "categoriesIds": [
+      2,
+      6
+    ]
+  },
+  {
+    "id": 90,
+    "name": {
+      "pt": "Vinícola",
+      "en": "Winery"
+    },
+    "imgPath": "placeImgs/9327dc5c-9ec6-4913-98c4-c2dde2d2e689.png",
+    "rolesIds": [
+      122,
+      72,
+      61,
+      13,
+      19
+    ],
+    "categoriesIds": [
+      10,
+      4
+    ]
+  },
+  {
+    "id": 91,
+    "name": {
+      "pt": "Safári",
+      "en": "Safari"
+    },
+    "imgPath": "placeImgs/9e216960-0273-4d4a-9f13-85eb856d9d79.png",
+    "rolesIds": [
+      13,
+      61,
+      95,
+      36,
+      7
+    ],
+    "categoriesIds": [
+      4,
+      3
+    ]
+  },
+  {
+    "id": 92,
+    "name": {
+      "pt": "Pirâmide",
+      "en": "Egyptian pyramid"
+    },
+    "imgPath": "placeImgs/c0aa3987-95f3-4e75-8ff9-e26ad62e0de4.png",
+    "rolesIds": [
+      33,
+      86,
+      13,
+      61,
+      54
+    ],
+    "categoriesIds": [
+      11,
+      4
+    ]
+  },
+  {
+    "id": 93,
+    "name": {
+      "pt": "Parque de skate",
+      "en": "Skate park"
+    },
+    "imgPath": "placeImgs/a323f2c4-9408-4ecc-ae10-ce7e282c1055.png",
+    "rolesIds": [
+      123,
+      97,
+      24,
+      61,
+      14
+    ],
+    "categoriesIds": [
+      9,
+      4
+    ]
+  },
+  {
+    "id": 94,
+    "name": {
+      "pt": "Kartódromo",
+      "en": "Go-kart track"
+    },
+    "imgPath": "placeImgs/24731ec5-2772-47e6-9e0c-c9bce1b796c5.png",
+    "rolesIds": [
+      1,
+      80,
+      63,
+      24,
+      11
+    ],
+    "categoriesIds": [
+      9,
+      3
+    ]
+  },
+  {
+    "id": 95,
+    "name": {
+      "pt": "Paintball",
+      "en": "Paintball arena"
+    },
+    "imgPath": "placeImgs/34d66435-5b56-42ca-93d5-b72369d796b5.png",
+    "rolesIds": [
+      10,
+      63,
+      97,
+      49,
+      24
+    ],
+    "categoriesIds": [
+      9,
+      3
+    ]
+  },
+  {
+    "id": 96,
+    "name": {
+      "pt": "Plataforma de petróleo",
+      "en": "Oil rig"
+    },
+    "imgPath": "placeImgs/c8baeeac-f595-4264-875c-bf770f158ed2.png",
+    "rolesIds": [
+      87,
+      49,
+      47,
+      80,
+      5
+    ],
+    "categoriesIds": [
+      6,
+      11
+    ]
+  },
+  {
+    "id": 97,
+    "name": {
+      "pt": "Parque eólico",
+      "en": "Wind farm"
+    },
+    "imgPath": "placeImgs/99a4eb20-abc5-4375-ace5-676b98b37e76.png",
+    "rolesIds": [
+      87,
+      11,
+      49,
+      61,
+      36
+    ],
+    "categoriesIds": [
+      4
+    ]
+  },
+  {
+    "id": 98,
+    "name": {
+      "pt": "Balonismo",
+      "en": "Hot air balloon festival"
+    },
+    "imgPath": "placeImgs/7a2a4f38-d3d3-4f3f-bd76-46607cae36c2.png",
+    "rolesIds": [
+      1,
+      61,
+      95,
+      49,
+      13
+    ],
+    "categoriesIds": [
+      3,
+      4
+    ]
+  },
+  {
+    "id": 99,
+    "name": {
+      "pt": "Mosteiro",
+      "en": "Monastery"
+    },
+    "imgPath": "placeImgs/d77f22f0-ac43-4668-8159-e8ff565b5d53.png",
+    "rolesIds": [
+      124,
+      42,
+      23,
+      6,
+      5
+    ],
+    "categoriesIds": [
+      7
+    ]
+  },
+  {
+    "id": 100,
+    "name": {
+      "pt": "Tribunal",
+      "en": "Courtroom"
+    },
+    "imgPath": "placeImgs/ce75b200-9a02-469c-bdf8-d50bbf2faf7a.png",
+    "rolesIds": [
+      63,
+      125,
+      54,
+      53,
+      24
+    ],
+    "categoriesIds": [
+      6
+    ]
+  },
+  {
+    "id": 101,
+    "name": {
+      "pt": "Farmácia",
+      "en": "Pharmacy"
+    },
+    "imgPath": "placeImgs/bdc479df-4d42-4928-a555-d0f4d5ff1a1e.png",
+    "rolesIds": [
+      126,
+      21,
+      15,
+      17,
+      38
+    ],
+    "categoriesIds": [
+      10
+    ]
+  },
+  {
+    "id": 102,
+    "name": {
+      "pt": "Estúdio de tatuagem",
+      "en": "Tattoo studio"
+    },
+    "imgPath": "placeImgs/7b201517-7767-40f2-986c-837deb4a8eff.png",
+    "rolesIds": [
+      127,
+      15,
+      12,
+      21
+    ],
+    "categoriesIds": [
+      6,
+      2
+    ]
+  },
+  {
+    "id": 103,
+    "name": {
+      "pt": "Redação de jornal",
+      "en": "Newsroom"
+    },
+    "imgPath": "placeImgs/53347761-0668-445f-85c7-5efbac5b2773.png",
+    "rolesIds": [
+      128,
+      95,
+      109,
+      78,
+      49
+    ],
+    "categoriesIds": [
+      5
+    ]
+  },
+  {
+    "id": 104,
+    "name": {
+      "pt": "Floricultura",
+      "en": "Flower shop"
+    },
+    "imgPath": "placeImgs/78c78bec-e760-45ac-bba2-f51ead021e1d.png",
+    "rolesIds": [
+      129,
+      15,
+      6,
+      21,
+      7
+    ],
+    "categoriesIds": [
+      10
+    ]
+  },
+  {
+    "id": 105,
+    "name": {
+      "pt": "Churrascaria",
+      "en": "Steakhouse"
+    },
+    "imgPath": "placeImgs/c36bdafa-568d-4f4a-abd2-6b1871bf8cde.png",
+    "rolesIds": [
+      19,
+      16,
+      15,
+      17,
+      70
+    ],
+    "categoriesIds": [
+      2,
+      10
+    ]
+  },
+  {
+    "id": 106,
+    "name": {
+      "pt": "Boteco",
+      "en": "Brazilian pub"
+    },
+    "imgPath": "placeImgs/5fc4adc9-d076-4e9b-9db5-ed73d355ef33.png",
+    "rolesIds": [
+      19,
+      15,
+      102,
+      17,
+      5
+    ],
+    "categoriesIds": [
+      2,
+      5
+    ]
+  },
+  {
+    "id": 107,
+    "name": {
+      "pt": "Cervejaria",
+      "en": "Brewery"
+    },
+    "imgPath": "placeImgs/9fad0cb2-f2d8-4d78-a6f5-2778b04f78bd.png",
+    "rolesIds": [
+      130,
+      49,
+      19,
+      61,
+      17
+    ],
+    "categoriesIds": [
+      10
+    ]
+  },
+  {
+    "id": 108,
+    "name": {
+      "pt": "Escola de magia",
+      "en": "Magic school"
+    },
+    "imgPath": "placeImgs/c4e98d89-d5da-49cc-8f3f-309a07c7a395.png",
+    "rolesIds": [
+      56,
+      57,
+      27,
+      76,
+      58
+    ],
+    "categoriesIds": [
+      11,
+      8
+    ]
+  },
+  {
+    "id": 109,
+    "name": {
+      "pt": "Atlântida",
+      "en": "Atlantis"
+    },
+    "imgPath": "placeImgs/044d4a5e-c75a-4265-b16d-93b42afe32ce.png",
+    "rolesIds": [
+      81,
+      82,
+      98,
+      86,
+      14
+    ],
+    "categoriesIds": [
+      11
+    ]
+  },
+  {
+    "id": 110,
+    "name": {
+      "pt": "Navio fantasma",
+      "en": "Ghost ship"
+    },
+    "imgPath": "placeImgs/aa339874-71f0-4c74-b619-6109b45794cf.png",
+    "rolesIds": [
+      47,
+      48,
+      52,
+      54,
+      27
+    ],
+    "categoriesIds": [
+      11
+    ]
+  },
+  {
+    "id": 111,
+    "name": {
+      "pt": "Vilarejo medieval",
+      "en": "Medieval village"
+    },
+    "imgPath": "placeImgs/4bbb222d-7261-42e0-80aa-57dc87ddd65b.png",
+    "rolesIds": [
+      72,
+      131,
+      14,
+      5,
+      84
+    ],
+    "categoriesIds": [
+      11
+    ]
+  },
+  {
+    "id": 112,
+    "name": {
+      "pt": "Geleira",
+      "en": "Glacier"
+    },
+    "imgPath": "placeImgs/fdf25aff-a119-4aa0-b598-7edb47ef7fb3.png",
+    "rolesIds": [
+      86,
+      33,
+      95,
+      13,
+      96
+    ],
+    "categoriesIds": [
+      4
+    ]
+  },
+  {
+    "id": 113,
+    "name": {
+      "pt": "Corredeiras",
+      "en": "Rafting river"
+    },
+    "imgPath": "placeImgs/73ba8165-1ee6-4964-a745-6f89740f1e92.png",
+    "rolesIds": [
+      13,
+      97,
+      61,
+      59,
+      95
+    ],
+    "categoriesIds": [
+      4,
+      9
+    ]
+  },
+  {
+    "id": 114,
+    "name": {
+      "pt": "Base na Antártida",
+      "en": "Antarctic research station"
+    },
+    "imgPath": "placeImgs/83a85399-ed56-4415-ab15-73d9d3af881a.png",
+    "rolesIds": [
+      86,
+      38,
+      87,
+      5,
+      49
+    ],
+    "categoriesIds": [
+      11,
+      4
+    ]
+  },
+  {
+    "id": 115,
+    "name": {
+      "pt": "Usina solar",
+      "en": "Solar farm"
+    },
+    "imgPath": "placeImgs/956fba35-d368-4fc4-b6dd-fed33a2ff7c4.png",
+    "rolesIds": [
+      87,
+      11,
+      49,
+      61,
+      68
+    ],
+    "categoriesIds": [
+      4
+    ]
+  },
+  {
+    "id": 116,
+    "name": {
+      "pt": "Quadra de basquete",
+      "en": "Basketball court"
+    },
+    "imgPath": "placeImgs/b3b9e648-acf3-4617-b31a-d1c90ae2cc5d.png",
+    "rolesIds": [
+      10,
+      63,
+      11,
+      64,
+      24
+    ],
+    "categoriesIds": [
+      9
+    ]
+  },
+  {
+    "id": 117,
+    "name": {
+      "pt": "Piscina olímpica",
+      "en": "Olympic pool"
+    },
+    "imgPath": "placeImgs/9dbceb43-aa63-46dd-9227-71fbd9fe6ad1.png",
+    "rolesIds": [
+      132,
+      97,
+      59,
+      63,
+      24
+    ],
+    "categoriesIds": [
+      9
+    ]
+  },
+  {
+    "id": 118,
+    "name": {
+      "pt": "Consultório dentário",
+      "en": "Dentist office"
+    },
+    "imgPath": "placeImgs/117d173a-9bee-4833-84c8-31c9f5af5a8b.png",
+    "rolesIds": [
+      133,
+      39,
+      12,
+      134
+    ],
+    "categoriesIds": [
+      6
+    ]
+  },
+  {
+    "id": 119,
+    "name": {
+      "pt": "Posto de gasolina",
+      "en": "Gas station"
+    },
+    "imgPath": "placeImgs/e68fb0b3-dca2-45c0-aac7-21099e38dac9.png",
+    "rolesIds": [
+      135,
+      80,
+      7,
+      15
+    ],
+    "categoriesIds": [
+      1,
+      6
+    ]
+  },
+  {
+    "id": 120,
+    "name": {
+      "pt": "Lavanderia",
+      "en": "Laundromat"
+    },
+    "imgPath": "placeImgs/035e774e-a562-47e9-b5c6-6da08d6f6c43.png",
+    "rolesIds": [
+      21,
+      136,
+      15
+    ],
+    "categoriesIds": [
+      6
+    ]
+  },
+  {
+    "id": 121,
+    "name": {
+      "pt": "Estúdio de dança",
+      "en": "Dance studio"
+    },
+    "imgPath": "placeImgs/4264b0f8-d006-4ccb-93c1-4d63c3ea103a.png",
+    "rolesIds": [
+      137,
+      56,
+      57
+    ],
+    "categoriesIds": [
+      5,
+      8
+    ]
+  },
+  {
+    "id": 122,
+    "name": {
+      "pt": "Dojô",
+      "en": "Martial arts dojo"
+    },
+    "imgPath": "placeImgs/2d88d1ea-89a1-426d-91b9-a2c6db0a8121.png",
+    "rolesIds": [
+      138,
+      97,
+      57
+    ],
+    "categoriesIds": [
+      9,
+      8
+    ]
+  },
+  {
+    "id": 123,
+    "name": {
+      "pt": "Campo de golfe",
+      "en": "Golf course"
+    },
+    "imgPath": "placeImgs/466ca9ac-3698-43db-8e81-69c915a6309f.png",
+    "rolesIds": [
+      139,
+      140,
+      97,
+      6
+    ],
+    "categoriesIds": [
+      9,
+      4
+    ]
+  },
+  {
+    "id": 124,
+    "name": {
+      "pt": "Pista de patinação no gelo",
+      "en": "Ice rink"
+    },
+    "imgPath": "placeImgs/ac299f99-46fb-4e59-8a44-93231d720f84.png",
+    "rolesIds": [
+      141,
+      97,
+      24,
+      61
+    ],
+    "categoriesIds": [
+      9,
+      3
+    ]
+  },
+  {
+    "id": 125,
+    "name": {
+      "pt": "Escritório",
+      "en": "Office"
+    },
+    "imgPath": "placeImgs/a1558e45-be46-4005-a6c0-367a4d769cd2.png",
+    "rolesIds": [
+      142,
+      143,
+      17,
+      4
+    ],
+    "categoriesIds": [
+      12
+    ]
+  },
+  {
+    "id": 126,
+    "name": {
+      "pt": "Cartório",
+      "en": "Notary office"
+    },
+    "imgPath": "placeImgs/8ef810e7-19fb-46ac-859d-05139c8dd6d4.png",
+    "rolesIds": [
+      144,
+      125,
+      15
+    ],
+    "categoriesIds": [
+      12,
+      6
+    ]
+  },
+  {
+    "id": 127,
+    "name": {
+      "pt": "Prefeitura",
+      "en": "City hall"
+    },
+    "imgPath": "placeImgs/ae716d79-00d5-4388-a4ea-50f62eff900d.png",
+    "rolesIds": [
+      145,
+      146,
+      21,
+      3
+    ],
+    "categoriesIds": [
+      12
+    ]
+  },
+  {
+    "id": 128,
+    "name": {
+      "pt": "Centro de distribuição",
+      "en": "Distribution center"
+    },
+    "imgPath": "placeImgs/d0588d53-7b6c-4e15-80cb-9822c7821bb9.png",
+    "rolesIds": [
+      147,
+      148,
+      7,
+      49
+    ],
+    "categoriesIds": [
+      12,
+      10
+    ]
+  },
+  {
+    "id": 129,
+    "name": {
+      "pt": "Ateliê de cerâmica",
+      "en": "Pottery studio"
+    },
+    "imgPath": "placeImgs/5fc334ed-3e21-4e56-bb9d-457bb7c800e6.png",
+    "rolesIds": [
+      149,
+      56,
+      57,
+      15
+    ],
+    "categoriesIds": [
+      3,
+      8
+    ]
+  },
+  {
+    "id": 130,
+    "name": {
+      "pt": "Marcenaria",
+      "en": "Carpentry workshop"
+    },
+    "imgPath": "placeImgs/c2cb4535-ea6a-4713-9fe9-738fd54772e0.png",
+    "rolesIds": [
+      150,
+      151,
+      15
+    ],
+    "categoriesIds": [
+      6,
+      12
+    ]
+  },
+  {
+    "id": 131,
+    "name": {
+      "pt": "Casa de leilões",
+      "en": "Auction house"
+    },
+    "imgPath": "placeImgs/bb7127c0-c009-48d7-95aa-3fae0af1de14.png",
+    "rolesIds": [
+      152,
+      153,
+      68,
+      15
+    ],
+    "categoriesIds": [
+      10,
+      5
+    ]
+  },
+  {
+    "id": 132,
+    "name": {
+      "pt": "Brechó",
+      "en": "Thrift store"
+    },
+    "imgPath": "placeImgs/18339596-7b93-46ad-a69a-5a4bc5d8d061.png",
+    "rolesIds": [
+      154,
+      67,
+      17,
+      15
+    ],
+    "categoriesIds": [
+      10
+    ]
+  },
+  {
+    "id": 133,
+    "name": {
+      "pt": "Joalheria",
+      "en": "Jewelry store"
+    },
+    "imgPath": "placeImgs/9a52d7f1-4402-4a29-9452-e627f03c865b.png",
+    "rolesIds": [
+      155,
+      67,
+      68,
+      15
+    ],
+    "categoriesIds": [
+      10
+    ]
+  },
+  {
+    "id": 134,
+    "name": {
+      "pt": "Parque para cachorros",
+      "en": "Dog park"
+    },
+    "imgPath": "placeImgs/b353e4c9-c1c8-473d-8077-319b43c26d56.png",
+    "rolesIds": [
+      156,
+      3,
+      74,
+      73
+    ],
+    "categoriesIds": [
+      4,
+      3
+    ]
+  },
+  {
+    "id": 135,
+    "name": {
+      "pt": "Estúdio de podcast",
+      "en": "Podcast studio"
+    },
+    "imgPath": "placeImgs/f57203f5-bc55-425e-bd6b-dca71956c7cb.png",
+    "rolesIds": [
+      157,
+      109,
+      128,
+      158
+    ],
+    "categoriesIds": [
+      5,
+      12
+    ]
+  },
+  {
+    "id": 136,
+    "name": {
+      "pt": "Set de filmagem",
+      "en": "Movie set"
+    },
+    "imgPath": "placeImgs/035f114b-e29b-4f12-84d3-3cfaa750404d.png",
+    "rolesIds": [
+      159,
+      160,
+      161,
+      25,
+      58,
+      78
+    ],
+    "categoriesIds": [
+      5
+    ]
+  },
+  {
+    "id": 137,
+    "name": {
+      "pt": "Boate",
+      "en": "Nightclub"
+    },
+    "imgPath": "placeImgs/878fb17d-aa38-4483-910d-97bca336aa5c.png",
+    "rolesIds": [
+      162,
+      163,
+      137,
+      68,
+      15
+    ],
+    "categoriesIds": [
+      5,
+      3
+    ]
+  },
+  {
+    "id": 138,
+    "name": {
+      "pt": "Rodoviária",
+      "en": "Bus terminal"
+    },
+    "rolesIds": [
+      7,
+      8,
+      9,
+      62,
+      14
+    ],
+    "categoriesIds": [
+      1
+    ],
+    "imgPath": "placeImgs/f7604937-ce84-49e2-9072-3a721c90929a.png"
+  },
+  {
+    "id": 139,
+    "name": {
+      "pt": "Teleférico",
+      "en": "Cable car"
+    },
+    "rolesIds": [
+      49,
+      61,
+      13,
+      95,
+      11
+    ],
+    "categoriesIds": [
+      1,
+      4
+    ],
+    "imgPath": "placeImgs/826de3d8-0a31-4e20-beb7-261cc08bbfa7.jpg"
+  },
+  {
+    "id": 140,
+    "name": {
+      "pt": "Balsa",
+      "en": "Ferry"
+    },
+    "rolesIds": [
+      47,
+      48,
+      9,
+      7,
+      94
+    ],
+    "categoriesIds": [
+      1
+    ],
+    "imgPath": "placeImgs/be04bb61-4024-4d98-99ae-f61645971501.png"
+  },
+  {
+    "id": 141,
+    "name": {
+      "pt": "Ambulância",
+      "en": "Ambulance"
+    },
+    "rolesIds": [
+      38,
+      40,
+      7,
+      39,
+      31
+    ],
+    "categoriesIds": [
+      1
+    ],
+    "imgPath": "placeImgs/a1c9649b-6b42-4af7-9a7d-40f1d555f58b.png"
+  },
+  {
+    "id": 142,
+    "name": {
+      "pt": "Helicóptero",
+      "en": "Helicopter"
+    },
+    "rolesIds": [
+      1,
+      50,
+      9,
+      80,
+      95
+    ],
+    "categoriesIds": [
+      1
+    ],
+    "imgPath": "placeImgs/1151c13f-7234-4414-a689-11536e970155.jpg"
+  },
+  {
+    "id": 143,
+    "name": {
+      "pt": "Elevador",
+      "en": "Elevator"
+    },
+    "rolesIds": [
+      9,
+      11,
+      4,
+      68,
+      49
+    ],
+    "categoriesIds": [
+      1
+    ],
+    "imgPath": "placeImgs/bf416dd2-9255-4185-8ad9-1906b7d11c69.jpg"
+  },
+  {
+    "id": 144,
+    "name": {
+      "pt": "Lan house",
+      "en": "LAN house"
+    },
+    "rolesIds": [
+      10,
+      11,
+      21,
+      77,
+      15
+    ],
+    "categoriesIds": [
+      3,
+      5
+    ],
+    "imgPath": "placeImgs/094531d9-0eea-4b97-a47b-014d74e427a4.jpg"
+  },
+  {
+    "id": 145,
+    "name": {
+      "pt": "Buffet infantil",
+      "en": "Kids' party buffet"
+    },
+    "rolesIds": [
+      164,
+      26,
+      41,
+      5,
+      95
+    ],
+    "categoriesIds": [
+      3,
+      5
+    ],
+    "imgPath": "placeImgs/72484582-9990-40d2-8f28-72e6e0c60a58.jpg"
+  },
+  {
+    "id": 146,
+    "name": {
+      "pt": "Pesque e pague",
+      "en": "Pay-to-fish pond"
+    },
+    "rolesIds": [
+      94,
+      13,
+      61,
+      5,
+      62
+    ],
+    "categoriesIds": [
+      4,
+      3
+    ],
+    "imgPath": "placeImgs/90b87685-e0c9-42e1-8f7a-5349f1e45ff3.jpg"
+  },
+  {
+    "id": 147,
+    "name": {
+      "pt": "Autoescola",
+      "en": "Driving school"
+    },
+    "rolesIds": [
+      97,
+      57,
+      12,
+      80,
+      7
+    ],
+    "categoriesIds": [
+      8,
+      1
+    ],
+    "imgPath": "placeImgs/2ca3e9cd-93ce-49b1-8eaa-4449d3ba26ea.jpg"
+  },
+  {
+    "id": 148,
+    "name": {
+      "pt": "Concessionária",
+      "en": "Car dealership"
+    },
+    "rolesIds": [
+      67,
+      15,
+      80,
+      17,
+      4
+    ],
+    "categoriesIds": [
+      10,
+      1
+    ],
+    "imgPath": "placeImgs/58946356-5d30-49c6-b5dc-afa444718e27.jpg"
+  },
+  {
+    "id": 149,
+    "name": {
+      "pt": "Peixaria",
+      "en": "Fish market"
+    },
+    "rolesIds": [
+      104,
+      15,
+      94,
+      69,
+      70
+    ],
+    "categoriesIds": [
+      10
+    ],
+    "imgPath": "placeImgs/16f245f1-77c5-4eb4-bd32-198568fbf9ef.jpg"
+  },
+  {
+    "id": 150,
+    "name": {
+      "pt": "Loja de conveniência",
+      "en": "Convenience store"
+    },
+    "rolesIds": [
+      21,
+      15,
+      135,
+      148,
+      68
+    ],
+    "categoriesIds": [
+      10
+    ],
+    "imgPath": "placeImgs/6af6466d-6e26-483f-a0ac-e2cf27b3beca.jpg"
+  },
+  {
+    "id": 151,
+    "name": {
+      "pt": "Dormitório universitário",
+      "en": "Student dorm"
+    },
+    "rolesIds": [
+      77,
+      3,
+      4,
+      68,
+      23
+    ],
+    "categoriesIds": [
+      2,
+      8
+    ],
+    "imgPath": "placeImgs/eebc2920-5767-409b-85c4-4d4df60c17a1.jpg"
+  },
+  {
+    "id": 152,
+    "name": {
+      "pt": "Mercado municipal",
+      "en": "Municipal market"
+    },
+    "rolesIds": [
+      104,
+      70,
+      61,
+      15,
+      68
+    ],
+    "categoriesIds": [
+      10,
+      4
+    ],
+    "imgPath": "placeImgs/0346d0c1-e425-4df0-8d4a-f4461259e5d0.jpg"
+  },
+  {
+    "id": 153,
+    "name": {
+      "pt": "Ringue de boxe",
+      "en": "Boxing ring"
+    },
+    "rolesIds": [
+      138,
+      97,
+      63,
+      121,
+      24
+    ],
+    "categoriesIds": [
+      9
+    ],
+    "imgPath": "placeImgs/6fb5d222-fac8-4d73-bce4-9c3487cb8277.jpg"
+  },
+  {
+    "id": 154,
+    "name": {
+      "pt": "Maratona de rua",
+      "en": "Street marathon"
+    },
+    "rolesIds": [
+      165,
+      66,
+      24,
+      95,
+      14
+    ],
+    "categoriesIds": [
+      9,
+      4
+    ],
+    "imgPath": "placeImgs/bd13cd13-7e5a-4e26-964a-0274733a1fab.jpg"
+  },
+  {
+    "id": 155,
+    "name": {
+      "pt": "Parede de escalada",
+      "en": "Indoor climbing wall"
+    },
+    "rolesIds": [
+      97,
+      66,
+      15,
+      68,
+      41
+    ],
+    "categoriesIds": [
+      9,
+      3
+    ],
+    "imgPath": "placeImgs/fb0d4477-c18c-4840-97f4-ea5af10595f2.jpg"
+  },
+  {
+    "id": 156,
+    "name": {
+      "pt": "Hipódromo",
+      "en": "Horse race track"
+    },
+    "rolesIds": [
+      166,
+      45,
+      73,
+      24,
+      118
+    ],
+    "categoriesIds": [
+      9,
+      3
+    ],
+    "imgPath": "placeImgs/499ea1e2-15c1-4c06-b455-073a5ed540a1.jpg"
+  },
+  {
+    "id": 157,
+    "name": {
+      "pt": "Ginásio poliesportivo",
+      "en": "Sports arena"
+    },
+    "rolesIds": [
+      66,
+      11,
+      64,
+      63,
+      4
+    ],
+    "categoriesIds": [
+      9
+    ],
+    "imgPath": "placeImgs/b04b9812-30a8-4645-bc98-3cb8a1ee8b07.jpg"
+  },
+  {
+    "id": 158,
+    "name": {
+      "pt": "Passeio de buggy nas dunas",
+      "en": "Dune buggy tour"
+    },
+    "rolesIds": [
+      7,
+      13,
+      61,
+      95,
+      80
+    ],
+    "categoriesIds": [
+      4,
+      3
+    ],
+    "imgPath": "placeImgs/6b4206be-2f14-4a6f-8c44-705e5505a558.jpg"
+  },
+  {
+    "id": 159,
+    "name": {
+      "pt": "Lago com pedalinhos",
+      "en": "Pedal-boat lake"
+    },
+    "rolesIds": [
+      61,
+      13,
+      62,
+      59,
+      41
+    ],
+    "categoriesIds": [
+      4,
+      3
+    ],
+    "imgPath": "placeImgs/75dde15c-6c80-4fc2-bd9a-f6f5091af528.jpg"
+  },
+  {
+    "id": 160,
+    "name": {
+      "pt": "Trilha com mirante",
+      "en": "Lookout trail"
+    },
+    "rolesIds": [
+      13,
+      33,
+      95,
+      36,
+      61
+    ],
+    "categoriesIds": [
+      4
+    ],
+    "imgPath": "placeImgs/1ae6a414-0583-498b-9288-792548afb318.jpg"
+  },
+  {
+    "id": 161,
+    "name": {
+      "pt": "Ensaio de escola de samba",
+      "en": "Samba school rehearsal"
+    },
+    "rolesIds": [
+      115,
+      116,
+      117,
+      102,
+      24
+    ],
+    "categoriesIds": [
+      5,
+      3
+    ],
+    "imgPath": "placeImgs/b9ea5881-9dee-41ec-b394-3c8e6c523217.jpg"
+  },
+  {
+    "id": 162,
+    "name": {
+      "pt": "Bar de stand-up",
+      "en": "Stand-up comedy club"
+    },
+    "rolesIds": [
+      167,
+      24,
+      163,
+      17,
+      109
+    ],
+    "categoriesIds": [
+      5
+    ],
+    "imgPath": "placeImgs/868fb8d4-f369-4922-b468-15783b1e6698.jpg"
+  },
+  {
+    "id": 163,
+    "name": {
+      "pt": "Baile de formatura",
+      "en": "Prom"
+    },
+    "rolesIds": [
+      168,
+      162,
+      95,
+      103,
+      68
+    ],
+    "categoriesIds": [
+      5,
+      3
+    ],
+    "imgPath": "placeImgs/977d1ce1-d0f4-46d1-8c31-8ef75948451b.jpg"
+  },
+  {
+    "id": 164,
+    "name": {
+      "pt": "Galeria de arte",
+      "en": "Art gallery"
+    },
+    "rolesIds": [
+      169,
+      75,
+      23,
+      68,
+      153
+    ],
+    "categoriesIds": [
+      5,
+      8
+    ],
+    "imgPath": "placeImgs/d8933066-4122-42f5-ae09-dc88d61ba8a2.jpg"
+  },
+  {
+    "id": 165,
+    "name": {
+      "pt": "Museu de cera",
+      "en": "Wax museum"
+    },
+    "rolesIds": [
+      170,
+      75,
+      23,
+      13,
+      4
+    ],
+    "categoriesIds": [
+      5,
+      3
+    ],
+    "imgPath": "placeImgs/3932e221-52de-41fb-9a6f-a418b8544346.jpg"
+  },
+  {
+    "id": 166,
+    "name": {
+      "pt": "Obra",
+      "en": "Construction site"
+    },
+    "rolesIds": [
+      171,
+      172,
+      87,
+      49,
+      14
+    ],
+    "categoriesIds": [
+      12
+    ],
+    "imgPath": "placeImgs/3ef8f1a7-4271-4b0e-8518-da78dd677e79.jpg"
+  },
+  {
+    "id": 167,
+    "name": {
+      "pt": "Call center",
+      "en": "Call center"
+    },
+    "rolesIds": [
+      21,
+      17,
+      143,
+      142,
+      11
+    ],
+    "categoriesIds": [
+      12
+    ],
+    "imgPath": "placeImgs/c47c4102-c8d3-498a-b667-0c02c555d22a.jpg"
+  },
+  {
+    "id": 168,
+    "name": {
+      "pt": "Gráfica",
+      "en": "Print shop"
+    },
+    "rolesIds": [
+      49,
+      15,
+      17,
+      148,
+      11
+    ],
+    "categoriesIds": [
+      6,
+      12
+    ],
+    "imgPath": "placeImgs/a837551a-abbf-4ec0-893d-f0d2bfc4ec03.jpg"
+  },
+  {
+    "id": 169,
+    "name": {
+      "pt": "Agência de viagens",
+      "en": "Travel agency"
+    },
+    "rolesIds": [
+      21,
+      15,
+      17,
+      61,
+      13
+    ],
+    "categoriesIds": [
+      10,
+      6
+    ],
+    "imgPath": "placeImgs/57de7078-b6c1-4add-84f8-e306ec1cddbd.jpg"
+  },
+  {
+    "id": 170,
+    "name": {
+      "pt": "Imobiliária",
+      "en": "Real estate agency"
+    },
+    "rolesIds": [
+      173,
+      15,
+      17,
+      4
+    ],
+    "categoriesIds": [
+      10,
+      12
+    ],
+    "imgPath": "placeImgs/625779a3-5969-4418-820f-88a047da68ab.png"
+  },
+  {
+    "id": 171,
+    "name": {
+      "pt": "Estúdio fotográfico",
+      "en": "Photo studio"
+    },
+    "rolesIds": [
+      95,
+      15,
+      160,
+      158,
+      12
+    ],
+    "categoriesIds": [
+      6,
+      5
+    ],
+    "imgPath": "placeImgs/d68b5369-0bca-443f-b9e8-195029d519de.jpg"
+  },
+  {
+    "id": 172,
+    "name": {
+      "pt": "Creche",
+      "en": "Kindergarten"
+    },
+    "rolesIds": [
+      56,
+      41,
+      5,
+      4,
+      58
+    ],
+    "categoriesIds": [
+      8
+    ],
+    "imgPath": "placeImgs/69f92290-e720-49a7-9c7f-46e606d40737.jpg"
+  },
+  {
+    "id": 173,
+    "name": {
+      "pt": "Escola de idiomas",
+      "en": "Language school"
+    },
+    "rolesIds": [
+      56,
+      57,
+      12,
+      58,
+      61
+    ],
+    "categoriesIds": [
+      8
+    ],
+    "imgPath": "placeImgs/e8c458f5-96e0-4228-9ef9-7edc1aeb3fc2.jpg"
+  },
+  {
+    "id": 174,
+    "name": {
+      "pt": "Aula de culinária",
+      "en": "Cooking class"
+    },
+    "rolesIds": [
+      16,
+      57,
+      5,
+      15,
+      56
+    ],
+    "categoriesIds": [
+      8,
+      2
+    ],
+    "imgPath": "placeImgs/79ef7f76-13e7-49c4-84a3-63601bdd1801.jpg"
+  },
+  {
+    "id": 175,
+    "name": {
+      "pt": "Templo budista",
+      "en": "Buddhist temple"
+    },
+    "rolesIds": [
+      124,
+      23,
+      13,
+      6,
+      61
+    ],
+    "categoriesIds": [
+      7
+    ],
+    "imgPath": "placeImgs/a11677b5-1b83-491e-9cfe-1573e3df7c48.jpg"
+  },
+  {
+    "id": 176,
+    "name": {
+      "pt": "Capela de velório",
+      "en": "Funeral chapel"
+    },
+    "rolesIds": [
+      22,
+      23,
+      129,
+      42,
+      4
+    ],
+    "categoriesIds": [
+      7
+    ],
+    "imgPath": "placeImgs/5babc953-c765-414c-8438-d20133dba5b6.jpg"
+  },
+  {
+    "id": 177,
+    "name": {
+      "pt": "Parque dos dinossauros",
+      "en": "Dinosaur park"
+    },
+    "rolesIds": [
+      174,
+      13,
+      74,
+      23,
+      68
+    ],
+    "categoriesIds": [
+      11,
+      3
+    ],
+    "imgPath": "placeImgs/896f2d82-a012-4e63-bbe3-119107a94e88.jpg"
+  },
+  {
+    "id": 178,
+    "name": {
+      "pt": "Base lunar",
+      "en": "Lunar base"
+    },
+    "rolesIds": [
+      85,
+      86,
+      87,
+      47,
+      49
+    ],
+    "categoriesIds": [
+      11
+    ],
+    "imgPath": "placeImgs/c4774788-fb6b-4b2e-b61a-6c942ca6b83e.jpg"
+  },
+  {
+    "id": 179,
+    "name": {
+      "pt": "Cidade subterrânea",
+      "en": "Underground city"
+    },
+    "rolesIds": [
+      110,
+      14,
+      33,
+      13,
+      87
+    ],
+    "categoriesIds": [
+      11,
+      4
+    ],
+    "imgPath": "placeImgs/ad4f178c-c13b-43cb-bbc3-50aed7b66bb2.jpg"
+  },
+  {
+    "id": 180,
+    "name": {
+      "pt": "Reino das fadas",
+      "en": "Fairy kingdom"
+    },
+    "rolesIds": [
+      120,
+      82,
+      6,
+      14,
+      27
+    ],
+    "categoriesIds": [
+      11
+    ],
+    "imgPath": "placeImgs/c4760477-bc12-4867-a362-0b5d1e025eac.jpg"
+  },
+  {
+    "id": 181,
+    "name": {
+      "pt": "Fábrica de robôs",
+      "en": "Robot factory"
+    },
+    "rolesIds": [
+      87,
+      86,
+      49,
+      11,
+      17
+    ],
+    "categoriesIds": [
+      11,
+      12
+    ],
+    "imgPath": "placeImgs/aa753e31-fb6f-43b3-86aa-0d6b38681965.jpg"
+  },
+  {
+    "id": 182,
+    "name": {
+      "pt": "Dirigível",
+      "en": "Blimp"
+    },
+    "rolesIds": [
+      1,
+      50,
+      9,
+      61,
+      95
+    ],
+    "categoriesIds": [
+      1
+    ],
+    "imgPath": "placeImgs/15bba254-e744-4928-a9dc-5207f3706da2.jpg"
+  },
+  {
+    "id": 183,
+    "name": {
+      "pt": "Jangada",
+      "en": "Jangada raft"
+    },
+    "rolesIds": [
+      94,
+      13,
+      61,
+      48,
+      95
+    ],
+    "categoriesIds": [
+      1,
+      4
+    ],
+    "imgPath": "placeImgs/340f0c54-35bb-462a-b8ee-9336bbf34329.jpg"
+  },
+  {
+    "id": 184,
+    "name": {
+      "pt": "Iate",
+      "en": "Yacht"
+    },
+    "rolesIds": [
+      47,
+      48,
+      15,
+      5,
+      61
+    ],
+    "categoriesIds": [
+      1,
+      3
+    ],
+    "imgPath": "placeImgs/32008e3b-e7f5-497e-8cfc-7a95224513f1.jpg"
+  },
+  {
+    "id": 185,
+    "name": {
+      "pt": "Posto de pedágio",
+      "en": "Toll booth"
+    },
+    "rolesIds": [
+      8,
+      7,
+      9,
+      68,
+      11
+    ],
+    "categoriesIds": [
+      1,
+      6
+    ],
+    "imgPath": "placeImgs/9545e860-33e7-4090-9949-fba842e36811.jpg"
+  },
+  {
+    "id": 186,
+    "name": {
+      "pt": "Táxi",
+      "en": "Taxi"
+    },
+    "rolesIds": [
+      7,
+      9,
+      18,
+      61,
+      80
+    ],
+    "categoriesIds": [
+      1
+    ],
+    "imgPath": "placeImgs/de910bc9-2bc1-4be3-9033-e610161afa62.jpg"
+  },
+  {
+    "id": 187,
+    "name": {
+      "pt": "Lotérica",
+      "en": "Lottery shop"
+    },
+    "rolesIds": [
+      69,
+      45,
+      15,
+      68,
+      17
+    ],
+    "categoriesIds": [
+      10
+    ],
+    "imgPath": "placeImgs/fdf75af0-ccff-43ba-bad9-f198cd403e13.jpg"
+  },
+  {
+    "id": 188,
+    "name": {
+      "pt": "Pizzaria",
+      "en": "Pizzeria"
+    },
+    "rolesIds": [
+      175,
+      19,
+      15,
+      148,
+      17
+    ],
+    "categoriesIds": [
+      2,
+      10
+    ],
+    "imgPath": "placeImgs/acb6c1da-4cea-42e4-b9ae-5d6cb6339f6f.jpg"
+  },
+  {
+    "id": 189,
+    "name": {
+      "pt": "Hamburgueria",
+      "en": "Burger joint"
+    },
+    "rolesIds": [
+      5,
+      21,
+      15,
+      148,
+      69
+    ],
+    "categoriesIds": [
+      2,
+      10
+    ],
+    "imgPath": "placeImgs/b95eceeb-ef78-4725-b89c-085708da0222.jpg"
+  },
+  {
+    "id": 190,
+    "name": {
+      "pt": "Loja de material de construção",
+      "en": "Hardware store"
+    },
+    "rolesIds": [
+      67,
+      171,
+      15,
+      147,
+      148
+    ],
+    "categoriesIds": [
+      10
+    ],
+    "imgPath": "placeImgs/a9be9e22-8f76-4f23-b6cd-c98be8d10a4d.jpg"
+  },
+  {
+    "id": 191,
+    "name": {
+      "pt": "Papelaria",
+      "en": "Stationery store"
+    },
+    "rolesIds": [
+      67,
+      15,
+      57,
+      56,
+      69
+    ],
+    "categoriesIds": [
+      10,
+      8
+    ],
+    "imgPath": "placeImgs/bddde815-db19-464b-b291-8e00d3e997a3.jpg"
+  },
+  {
+    "id": 192,
+    "name": {
+      "pt": "Antiquário",
+      "en": "Antique shop"
+    },
+    "rolesIds": [
+      153,
+      67,
+      152,
+      75,
+      15
+    ],
+    "categoriesIds": [
+      10
+    ],
+    "imgPath": "placeImgs/2da0886e-ae6d-4901-ad37-2e1123a5faad.jpg"
+  },
+  {
+    "id": 193,
+    "name": {
+      "pt": "Loja de instrumentos musicais",
+      "en": "Music store"
+    },
+    "rolesIds": [
+      176,
+      67,
+      102,
+      15,
+      11
+    ],
+    "categoriesIds": [
+      10,
+      5
+    ],
+    "imgPath": "placeImgs/366f202e-d055-4e86-b5ff-971e23fb1a7c.jpg"
+  },
+  {
+    "id": 194,
+    "name": {
+      "pt": "Detran",
+      "en": "Vehicle licensing office"
+    },
+    "rolesIds": [
+      21,
+      7,
+      57,
+      97,
+      68
+    ],
+    "categoriesIds": [
+      6
+    ],
+    "imgPath": "placeImgs/2d50f455-8874-496c-b862-433d89d3ad87.jpg"
+  },
+  {
+    "id": 195,
+    "name": {
+      "pt": "Casa de repouso",
+      "en": "Nursing home"
+    },
+    "rolesIds": [
+      177,
+      40,
+      38,
+      23,
+      5
+    ],
+    "categoriesIds": [
+      6
+    ],
+    "imgPath": "placeImgs/e92c3957-47fc-47c7-bc18-abf2b4c8b5c4.jpg"
+  },
+  {
+    "id": 196,
+    "name": {
+      "pt": "Lava-jato",
+      "en": "Car wash"
+    },
+    "rolesIds": [
+      136,
+      7,
+      15,
+      21,
+      80
+    ],
+    "categoriesIds": [
+      6,
+      1
+    ],
+    "imgPath": "placeImgs/e9f14c39-05de-4d5b-995a-72f3663d590b.jpg"
+  },
+  {
+    "id": 197,
+    "name": {
+      "pt": "Laboratório de exames",
+      "en": "Medical lab"
+    },
+    "rolesIds": [
+      86,
+      39,
+      12,
+      40,
+      11
+    ],
+    "categoriesIds": [
+      6
+    ],
+    "imgPath": "placeImgs/aa48a7f5-f00e-4a27-952a-a1a311e7eb4b.jpg"
+  },
+  {
+    "id": 198,
+    "name": {
+      "pt": "Estaleiro",
+      "en": "Shipyard"
+    },
+    "rolesIds": [
+      87,
+      131,
+      80,
+      49,
+      48
+    ],
+    "categoriesIds": [
+      12,
+      1
+    ],
+    "imgPath": "placeImgs/0a04b952-0e57-41ef-afa4-e3b3a48d52b6.jpg"
+  },
+  {
+    "id": 199,
+    "name": {
+      "pt": "Usina hidrelétrica",
+      "en": "Hydroelectric dam"
+    },
+    "rolesIds": [
+      87,
+      49,
+      11,
+      14,
+      61
+    ],
+    "categoriesIds": [
+      12,
+      4
+    ],
+    "imgPath": "placeImgs/158e46da-f382-4885-9c12-8815ee169e70.jpg"
+  },
+  {
+    "id": 200,
+    "name": {
+      "pt": "Estúdio de dublagem",
+      "en": "Dubbing studio"
+    },
+    "rolesIds": [
+      25,
+      158,
+      11,
+      109,
+      58
+    ],
+    "categoriesIds": [
+      5,
+      12
+    ],
+    "imgPath": "placeImgs/7ae0facc-5d17-4b62-b1a6-e2fec02f673f.jpg"
+  },
+  {
+    "id": 201,
+    "name": {
+      "pt": "Rádio",
+      "en": "Radio station"
+    },
+    "rolesIds": [
+      119,
+      109,
+      102,
+      128,
+      11
+    ],
+    "categoriesIds": [
+      5,
+      12
+    ],
+    "imgPath": "placeImgs/8ea79758-a957-4ec0-bbca-660086d4c87d.jpg"
+  },
+  {
+    "id": 202,
+    "name": {
+      "pt": "Escola de música",
+      "en": "Music school"
+    },
+    "rolesIds": [
+      178,
+      56,
+      57,
+      102,
+      12
+    ],
+    "categoriesIds": [
+      8,
+      5
+    ],
+    "imgPath": "placeImgs/55e56652-5784-42cc-9d80-b21d9afd11ff.jpg"
+  },
+  {
+    "id": 203,
+    "name": {
+      "pt": "Pré-vestibular",
+      "en": "Test-prep school"
+    },
+    "rolesIds": [
+      56,
+      57,
+      58,
+      12,
+      77
+    ],
+    "categoriesIds": [
+      8
+    ],
+    "imgPath": "placeImgs/da505393-3cf4-417e-aa3c-18d13ded2de0.jpg"
+  },
+  {
+    "id": 204,
+    "name": {
+      "pt": "Arena de e-sports",
+      "en": "Esports arena"
+    },
+    "rolesIds": [
+      10,
+      24,
+      119,
+      11,
+      109
+    ],
+    "categoriesIds": [
+      9,
+      3
+    ],
+    "imgPath": "placeImgs/33365278-b263-413f-87bb-292251efab31.jpg"
+  },
+  {
+    "id": 205,
+    "name": {
+      "pt": "Jogo de várzea",
+      "en": "Amateur soccer match"
+    },
+    "rolesIds": [
+      10,
+      63,
+      64,
+      62,
+      11
+    ],
+    "categoriesIds": [
+      9,
+      4
+    ],
+    "imgPath": "placeImgs/b9b72384-fedf-4525-a307-f3116de186c8.jpg"
+  },
+  {
+    "id": 206,
+    "name": {
+      "pt": "Bar de sinuca",
+      "en": "Pool hall"
+    },
+    "rolesIds": [
+      10,
+      163,
+      15,
+      63,
+      68
+    ],
+    "categoriesIds": [
+      3,
+      5
+    ],
+    "imgPath": "placeImgs/30849ad7-c428-4fb4-9824-fe2e7ff9d85e.jpg"
+  },
+  {
+    "id": 207,
+    "name": {
+      "pt": "Tirolesa",
+      "en": "Zip line"
+    },
+    "rolesIds": [
+      13,
+      97,
+      61,
+      95,
+      68
+    ],
+    "categoriesIds": [
+      4,
+      9
+    ],
+    "imgPath": "placeImgs/8fc5bc4d-0388-43cb-b17d-8cc44816865d.jpg"
+  },
+  {
+    "id": 208,
+    "name": {
+      "pt": "Salto de paraquedas",
+      "en": "Skydiving"
+    },
+    "rolesIds": [
+      97,
+      1,
+      61,
+      95,
+      66
+    ],
+    "categoriesIds": [
+      9,
+      4
+    ],
+    "imgPath": "placeImgs/242ee7e0-29b7-43d0-b4d1-042c669b9691.png"
+  },
+  {
+    "id": 209,
+    "name": {
+      "pt": "Convenção de cosplay",
+      "en": "Cosplay convention"
+    },
+    "rolesIds": [
+      179,
+      10,
+      95,
+      67,
+      24
+    ],
+    "categoriesIds": [
+      5,
+      3
+    ],
+    "imgPath": "placeImgs/b46c2a98-f7dc-4808-9a32-0b7edc47485d.jpg"
+  },
+  {
+    "id": 210,
+    "name": {
+      "pt": "Festa de 15 anos",
+      "en": "Debutante ball"
+    },
+    "rolesIds": [
+      181,
+      162,
+      95,
+      103,
+      19
+    ],
+    "categoriesIds": [
+      5,
+      2
+    ],
+    "imgPath": "placeImgs/3519faad-9c80-47dd-941b-bac45aa7ffa5.jpg"
+  },
+  {
+    "id": 211,
+    "name": {
+      "pt": "Bingo",
+      "en": "Bingo hall"
+    },
+    "rolesIds": [
+      45,
+      119,
+      69,
+      15,
+      68
+    ],
+    "categoriesIds": [
+      3,
+      5
+    ],
+    "imgPath": "placeImgs/1075e846-84da-4dff-98c6-95bc8aa74d45.jpg"
+  },
+  {
+    "id": 212,
+    "name": {
+      "pt": "Desfile de moda",
+      "en": "Fashion show"
+    },
+    "rolesIds": [
+      180,
+      160,
+      95,
+      154,
+      109
+    ],
+    "categoriesIds": [
+      5
+    ],
+    "imgPath": "placeImgs/16587477-7e4d-4f81-b4ed-bb0df7af0edf.jpg"
+  },
+  {
+    "id": 213,
+    "name": {
+      "pt": "Oktoberfest",
+      "en": "Oktoberfest"
+    },
+    "rolesIds": [
+      163,
+      102,
+      61,
+      68,
+      130
+    ],
+    "categoriesIds": [
+      5,
+      3
+    ],
+    "imgPath": "placeImgs/46b07105-beb6-4592-9627-0536045334f1.jpg"
+  },
+  {
+    "id": 214,
+    "name": {
+      "pt": "Café de jogos de tabuleiro",
+      "en": "Board game café"
+    },
+    "rolesIds": [
+      10,
+      21,
+      15,
+      19,
+      17
+    ],
+    "categoriesIds": [
+      3,
+      5
+    ],
+    "imgPath": "placeImgs/88f6957b-5cd5-47ce-bb53-992f0c1c38c9.jpg"
+  },
+  {
+    "id": 215,
+    "name": {
+      "pt": "Manguezal",
+      "en": "Mangrove"
+    },
+    "rolesIds": [
+      13,
+      94,
+      61,
+      36,
+      95
+    ],
+    "categoriesIds": [
+      4
+    ],
+    "imgPath": "placeImgs/2aeaef72-7a97-43cf-946b-ec6a7eb86b0f.jpg"
+  },
+  {
+    "id": 216,
+    "name": {
+      "pt": "Cânion",
+      "en": "Canyon"
+    },
+    "rolesIds": [
+      33,
+      13,
+      95,
+      61,
+      36
+    ],
+    "categoriesIds": [
+      4
+    ],
+    "imgPath": "placeImgs/2a5de399-8cba-4777-b2a0-2f51f9c87bb2.jpg"
+  },
+  {
+    "id": 217,
+    "name": {
+      "pt": "Observação de baleias",
+      "en": "Whale-watching boat"
+    },
+    "rolesIds": [
+      47,
+      13,
+      61,
+      95,
+      98
+    ],
+    "categoriesIds": [
+      4,
+      3
+    ],
+    "imgPath": "placeImgs/7319a32e-2a15-4967-a3eb-92ab4da10d8e.jpg"
+  },
+  {
+    "id": 218,
+    "name": {
+      "pt": "Horta comunitária",
+      "en": "Community garden"
+    },
+    "rolesIds": [
+      6,
+      72,
+      56,
+      41,
+      23
+    ],
+    "categoriesIds": [
+      4,
+      8
+    ],
+    "imgPath": "placeImgs/fa98ca85-2da7-4033-a4e7-d52a03efd5f5.jpg"
+  },
+  {
+    "id": 219,
+    "name": {
+      "pt": "Coliseu",
+      "en": "Colosseum"
+    },
+    "rolesIds": [
+      138,
+      24,
+      81,
+      14,
+      112
+    ],
+    "categoriesIds": [
+      11,
+      5
+    ],
+    "imgPath": "placeImgs/7d76ecfa-31e8-4262-8187-fcec1df0a89d.jpg"
+  },
+  {
+    "id": 220,
+    "name": {
+      "pt": "Navio viking",
+      "en": "Viking ship"
+    },
+    "rolesIds": [
+      47,
+      48,
+      33,
+      131,
+      14
+    ],
+    "categoriesIds": [
+      11,
+      1
+    ],
+    "imgPath": "placeImgs/8646335e-9bb1-497d-9698-d5615c4551db.jpg"
+  },
+  {
+    "id": 221,
+    "name": {
+      "pt": "Floresta encantada",
+      "en": "Enchanted forest"
+    },
+    "rolesIds": [
+      120,
+      27,
+      82,
+      33,
+      36
+    ],
+    "categoriesIds": [
+      11,
+      4
+    ],
+    "imgPath": "placeImgs/5a2302cb-3cbd-4d0f-a50c-af1a1aeac19d.jpg"
+  },
+  {
+    "id": 222,
+    "name": {
+      "pt": "Covil do dragão",
+      "en": "Dragon's lair"
+    },
+    "rolesIds": [
+      83,
+      27,
+      81,
+      33,
+      120
+    ],
+    "categoriesIds": [
+      11
+    ],
+    "imgPath": "placeImgs/6ec76408-a9e9-414b-8616-a2450e463a9a.jpg"
+  },
+  {
+    "id": 223,
+    "name": {
+      "pt": "Zoológico alienígena",
+      "en": "Alien zoo"
+    },
+    "rolesIds": [
+      85,
+      74,
+      86,
+      61,
+      14
+    ],
+    "categoriesIds": [
+      11,
+      3
+    ],
+    "imgPath": "placeImgs/4b6e46e6-30b9-40c7-8fc7-49e60854ed2f.jpg"
+  },
+  {
+    "id": 224,
+    "name": {
+      "pt": "Academia de super-heróis",
+      "en": "Superhero academy"
+    },
+    "rolesIds": [
+      56,
+      57,
+      138,
+      86,
+      58
+    ],
+    "categoriesIds": [
+      11,
+      8
+    ],
+    "imgPath": "placeImgs/30e807a2-0a9f-4a1d-a38a-a76d7faeb07a.jpg"
+  },
+  {
+    "id": 225,
+    "name": {
+      "pt": "Lagoa das sereias",
+      "en": "Mermaid lagoon"
+    },
+    "rolesIds": [
+      182,
+      52,
+      48,
+      98,
+      61
+    ],
+    "categoriesIds": [
+      11,
+      4
+    ],
+    "imgPath": "placeImgs/f3fb93ee-d234-4f34-812c-196ac68553cc.jpg"
+  }
+]

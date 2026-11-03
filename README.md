@@ -84,82 +84,82 @@ Com tudo instalado, para colocar o jogo no ar em modo de produção, siga os pas
 
 As principais variáveis que devem ser modificadas são:
 
-  - `DB_PATH`: endpoint para fazer requisições ao banco de dados.
-  - `ADM_PATH`: endpoint para acessar a página de administração (configurações do banco de dados). Para acessar a página, a URL final será: `<endereço_servidor>/<DB_PATH>`.
+  - `DB_PATH`: endpoint para fazer requisições aos dados (lugares, cargos e categorias).
+  - `ADM_PATH`: endpoint para acessar a página de administração (configurações dos dados do jogo). Para acessar a página, a URL final será: `<endereço_servidor>/<DB_PATH>`.
   - `GAME_PATH`: endpoint para acessar a página do jogo. Para acessar a página, a URL final será: `<endereço_servidor>/<GAME_PATH>`.
-  - `PORT`: porta em que toda a aplicação ficará exposta.
-  - `PASSWORD`: senha que será pedida para acessar a página de administração. Essa senha dará acesso total para manipulação do banco de dados, logo, cuide bem dela.
+  - `PORT`: porta em que o jogo ficará exposto.
+  - `ADM_PORT`: porta em que o servidor de administração ficará exposto, quando ele estiver ligado.
 
 2 - `docker-compose up`
+2 - `docker-compose up`
+
+Esse comando sobe apenas o jogo.
+
+3 - Servidor de administração (separado, opcional)
+
+O servidor de administração é um processo separado do jogo: ele serve a página de administração e a API de escrita dos dados (criar/editar/remover lugares, cargos e categorias). Ele **não tem senha**, por isso só deve ser ligado quando for necessário e desligado logo em seguida:
+
+```
+docker compose --profile adm up adm
+```
+
+Isso sobe somente a administração (sem o jogo), em `http://localhost:3001/spyfall/adm` (porta `ADM_PORT`, caminho `ADM_PATH`). Para desligar: `docker compose stop adm`. O servidor do jogo, por sua vez, só lê os dados por essa API (`GET`); tentativas de escrita nele retornam `405`.
 
 Esse comando irá subir o servidor no ar (esse comando funciona para o Windows, mas pode ser diferente para outro OS). Isso pode levar um tempo considerável, já que irá instalar todas as bibliotecas necessárias. Mas, uma vez feito isso, é esperado que não seja mais tão demorado para executar novamente.
 
 ### Como executar - Modo desenvolvimento
 
-Para subir o servidor de banco de dados, é preciso ter instalado o `Docker` e o `Docker Compose`. O docker disponibiliza um [tutorial para sua instalação](https://docs.docker.com/desktop/).
-
-Para instalar as bibliotecas, é neceessário ter o Node.js instalado. Pode ser instalado pelo [próprio site do Node.js](https://nodejs.org/en).
+Para instalar as bibliotecas, é necessário ter o Node.js instalado. Pode ser instalado pelo [próprio site do Node.js](https://nodejs.org/en). Não é preciso nenhum banco de dados: os dados ficam em arquivos JSON (ver seção **Dados** abaixo).
 
 Com tudo instalado, para começar a desenvolver, siga os passos abaixo:
 
-1 - Na pasta `backend`, rodar `docker-compose up`
-
-Este comando irá subir o servidor de banco de dados.
-
-2 - Na mesma pasta, em outro terminal, executar `npm install`
+1 - Na pasta `backend`, executar `npm install`
 
 Instalará as bibliotecas necessárias para subir o servidor do backend.
 
-3- Rodar o comando `npm run server`
+2- Rodar o comando `npm run server`
 
-Irá subir o servidor backend
+Irá subir o servidor backend do jogo. Para subir apenas o servidor de administração (sem o jogo), rode `npm run adm` em outro terminal; ele ficará em `http://localhost:3001/spyfall/adm` e não pede senha.
 
-4 - Escolher o frontend `spyfall-br-adm` ou `spyfall-br-game` e rodar `npm install` e depois `npm run start`.
+3 - Escolher o frontend `spyfall-br-adm` ou `spyfall-br-game` e rodar `npm install` e depois `npm run start`.
 
 Isso irá gerar o frontend ao vivo, podendo edita-lo e ver as modificações rapidamente. `spyfall-br-adm` é o frontend da página de administração e `spyfall-br-game` é o frontend da página do jogo.
 
-## Backup
+## Dados
 
-O banco de dados virá "vazio" por padrão, sem nada cadastrado. Existe o arquivo `dumpfile` com um backup, que possui um banco de dados previamente populado que pode ser utilizado como base.
+Não há banco de dados. Todos os dados do jogo ficam em arquivos JSON na pasta `backend/data`:
 
-Mas, carregar o backup não é obrigatório, o banco de dados pode ser populado manualmente na página de administração.
+  - `backend/data/places.json`: lugares, no formato `{ "id": 1, "name": "Casa", "imgPath": "placeImgs/...png", "rolesIds": [3, 4], "categoriesIds": [2] }` (`imgPath` é opcional).
+  - `backend/data/roles.json`: cargos, no formato `{ "id": 1, "name": "Piloto" }`.
+  - `backend/data/categories.json`: categorias, no formato `{ "id": 1, "name": "Meio de transporte" }`.
 
-### Aplicando backup ao banco de dados
+Os servidores leem esses arquivos a cada requisição e o servidor de administração os reescreve a cada alteração (escrita em arquivo temporário + renomeação, para não corromper o arquivo). As imagens dos lugares continuam na pasta `backend/placeImgs`.
 
-Para aplicar o backup do banco de dados, siga os passos abaixo:
+### Backup
 
-1- Execute o comando: `docker ps`
+Para fazer backup, basta copiar a pasta `backend/data` (e, se quiser as imagens, `backend/placeImgs`). Para restaurar, copie os arquivos de volta. Os IDs são números sequenciais gerados a partir do maior ID existente em cada arquivo, então também é possível editar os JSON manualmente — só mantenha os `id` únicos e os `rolesIds`/`categoriesIds` dos lugares apontando para cargos/categorias existentes.
 
-Esse comando irá mostrar os containers ativos no momento (é preciso que o servidor esteja no ar). É preciso buscar o id do container de nome `spyfall-br_db`.
+## Idiomas
 
-Por exemplo, um possível retorno desse comando seria:
+O jogo usa `i18next` com português (padrão) e inglês: alterne no seletor **PT/EN** no topo da página. A escolha fica salva no navegador (`localStorage`) e, na primeira visita, o idioma do navegador é usado quando suportado. As traduções da interface ficam em `frontend/spyfall-br-game/src/locales/` (`pt.ts` e `en.ts`). Os nomes de lugares, cargos e categorias também são traduzidos: em `backend/data`, o campo `name` é um objeto de traduções por locale, ex. `"name": { "pt": "Casa", "en": "House" }` (`pt` é obrigatório; sem `en`, vale o `pt`). No admin, os formulários de local/cargo/categoria têm campos separados para português e inglês.
 
-![print resultado do comando docker ps](prints/containers.png)
+## Testes
 
-Nesse print, está marcado o container com nome `spyfall-br_db`. Este tem o id `f83859a807d4`, que deverá ser utilizado nos comandos posteriores.
+Backend (lógica do jogo, administração, store JSON e integração dos dois servidores, usando o test runner nativo do Node, sem dependências novas):
 
-2- Execute o comando: `docker exec -i <container-id> pg_restore -U postgres -d spyfall --clean --create < dumpfile`
+```
+cd backend
+npm test
+```
 
-No comando acima, antes de executar, substitua `<container-id>` pelo id descoberto pelo primeeiro comando executado. No caso do exemplo,
-`container-id` seria substituido por `f83859a807d4`.
+Os testes do backend usam diretórios temporários (`DATA_DIR`), então os arquivos reais de `backend/data` nunca são alterados.
 
-Este comando aplicará o backup no servidor de banco de dados.
+Frontends (Jest + Testing Library, já existentes nos projetos):
 
-OBS: pode ser que esse comando não funcione totalmente ao executar apenas uma vez... Talvez executar duas vezes resolva o problema.
+```
+cd frontend/spyfall-br-game
+npm test -- --watchAll=false
 
-### Criando arquivo de backup
-
-Para criar um novo backup, siga os comandos abaixo:
-
-1- Execute o comando: `docker ps`
-
-Esse comando irá mostrar os containers ativos no momento (é preciso que o servidor esteja no ar). É preciso buscar o id do container de nome `spyfall-br_db` (mesma coisa que o
-comando 1 para aplicar o backup).
-
-2- Execute o comando: `docker exec -i <container-id> pg_dump -U postgres -d spyfall -F c --clean --create -f dumpfile`
-
-No comando acima, antes de executar, substitua `<container-id>` pelo id descoberto pelo primeeiro comando executado. No caso do exemplo,
-`container-id` seria substituido por `f83859a807d4`.
-
-Esse comando irá criar um novo arquivo `dumpfile` com o backup do banco de dados. CUIDADO: esse comando irá sobrescrever o arquivo `dumpfile`,
-então, tome cuidado antes de executar esse comando.
+cd frontend/spyfall-br-adm
+npm test -- --watchAll=false
+```

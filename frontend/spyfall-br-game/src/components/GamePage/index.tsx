@@ -1,13 +1,10 @@
 import { useState } from 'react';
-import { Button, Card, Container, Nav} from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { Socket } from "socket.io-client";
 
 import PlayerCard from '../PlayerCard';
 import UsersContainer from '../PlayersContainer'
 import PlacesContainer from '../PlacesContainer';
 import PlaceCard from '../PlaceCard';
-import styles from './GamePage.module.scss'
 
 import Place from '../../interfaces/PlaceInterface'
 import Player from '../../interfaces/PlayerInterface'
@@ -16,8 +13,10 @@ import AccuseModal from './AccuseModal';
 import VoteModal from './VoteModal';
 import GuessModal from './GuessModal';
 import QuestionModal from './QuestionModal';
-import classNames from 'classnames';
 import Timer from './Timer';
+import { ActionButton } from '../ui/Modal';
+import { useTranslation } from 'react-i18next';
+import { localizedName } from '../../utils/localizedName';
 
 
 
@@ -46,93 +45,101 @@ interface GamePageProps {
 
 export default function GamePage({show, isSpy, selectedPlace, playerRole, possiblePlaces, players, currentUserID, leaderUserID, askingUserID, targetUserID, inVotation, previousAskingUserID, accusedUserID, accuserUserID, agreedUsersIds, desagreedUsersIds, socket, matchTime, votationTime}: GamePageProps) {
 
+    const { t, i18n } = useTranslation()
     const [showAccuseModal, setShowAccuseModal] = useState(false)
     const [showGuessModal, setShowGuessModal] = useState(false)
     const [showQuestionModal, setShowQuestionModal] = useState(false)
+    const myTurn = currentUserID === askingUserID && !targetUserID
+
+    if (!show) {
+        return null
+    }
 
     return (
         <>
-          <Container className={classNames({'d-none': !show}, styles['container-margin'])}>
-            <div className="d-flex justify-content-center mb-5">
+          <div>
+            <div className="mb-6 flex justify-center">
               <Timer time={matchTime} />
             </div>
 
-            <Container fluid>
-      
-              <Card className='text-center m-auto' style={{maxWidth: '340px'}}>
-                <Card.Header className='h4'>{(!isSpy) ? ('Lugar selecionado') : ('Você é o espião')}</Card.Header>
-                <Card.Body>
+            <section className={`mx-auto max-w-[340px] overflow-hidden rounded-xl border shadow-sm ${isSpy ? 'border-red-300 bg-red-50' : 'border-zinc-200 bg-white'}`}>
+                <h4 className={`border-b px-4 py-3 text-center text-xl font-semibold ${isSpy ? 'border-red-200 text-red-800' : 'border-zinc-200'}`}>
+                    {(!isSpy) ? t('game.selectedPlace') : t('game.youAreSpy')}
+                </h4>
+                <div className="p-4">
                   <PlaceCard
-                    title={(selectedPlace) ? (selectedPlace.name) : ('Espião')}
+                    title={(selectedPlace) ? localizedName(selectedPlace.name, i18n.language) : t('game.spy')}
                     type='selected'
                     imgURL={(selectedPlace) ? (selectedPlace.imgPath) : (undefined)}
                   />
                   {playerRole &&
-                    <p className='h5'>Cargo: {playerRole.name}</p>
+                    <p className="mt-3 text-center text-lg">
+                        {t('game.role')}: <strong>{localizedName(playerRole.name, i18n.language)}</strong>
+                    </p>
                   }
-                </Card.Body>
-              </Card>
-      
-      
-              <div className="d-grid gap-3 col-10 col-sm-9 col-md-8 col-lg-6 col-xl-4 m-auto mt-5">
-                <Button 
-                  onClick={() => setShowAccuseModal(true)}
-                >
-                  Acusar
-                </Button>
-                <Button 
-                  onClick={() => setShowQuestionModal(true)}
-                  disabled={!(currentUserID === askingUserID && !targetUserID)}
-                >
-                  Questionar
-                </Button>
-                <Button 
-                  onClick={() => setShowGuessModal(true)}
-                  disabled={!isSpy}
-                >
-                  Adivinhar lugar
-                </Button>
-              </div>
-            </Container>
-      
-            <UsersContainer title='Jogadores' containerClassName='mt-5'>
+                  {isSpy &&
+                    <p className="mt-2 text-center text-sm text-red-700">
+                        {t('game.spyHint')}
+                    </p>
+                  }
+                </div>
+            </section>
+
+
+            <div className="mx-auto mt-6 grid max-w-xl gap-3 sm:grid-cols-3">
+                <ActionButton variant="dark" className="w-full" onClick={() => setShowAccuseModal(true)}>
+                  {t('game.accuse')}
+                </ActionButton>
+                <ActionButton className="w-full" onClick={() => setShowQuestionModal(true)} disabled={!myTurn}>
+                  {t('game.question')}
+                </ActionButton>
+                <ActionButton variant="danger" className="w-full" onClick={() => setShowGuessModal(true)} disabled={!isSpy}>
+                  {t('game.guessPlace')}
+                </ActionButton>
+            </div>
+            <p className="mt-3 text-center text-sm text-zinc-500" role="status">
+                {myTurn
+                    ? t('game.yourTurn')
+                    : targetUserID
+                        ? t('game.questioningInProgress')
+                        : t('game.turnOf', { name: players.find((p) => p.id === askingUserID)?.username ?? t('game.otherPlayer') })}
+            </p>
+
+            <UsersContainer title={t('game.players')} containerClassName='mt-8'>
               {players.map((player) => (
-                <div className='col' key={player.id}>
-                  <PlayerCard 
+                  <PlayerCard
+                    key={player.id}
                     username={player.username}
                     leader={player.id === leaderUserID}
-                    score={player.score} 
+                    score={player.score}
                     isCurrentUser={player.id === currentUserID}
                     asking={player.id === askingUserID}
                     target={player.id === targetUserID}
                     inGame
                   />
-                </div>
               ))}
             </UsersContainer>
-      
-            <PlacesContainer title='Lugares' containerClassName='mt-5'>
+
+            <PlacesContainer title={t('game.possiblePlaces')} containerClassName='mt-8'>
               {possiblePlaces.map((place) => (
-                <div className='col' key={place.id}>
-                  <PlaceCard title={place.name} imgURL={place.imgPath} type={'markable'} />
-                </div>
+                  <PlaceCard key={place.id} title={localizedName(place.name, i18n.language)} imgURL={place.imgPath} type={'markable'} />
               ))}
             </PlacesContainer>
-          </Container>
+          </div>
 
-          <footer className={classNames({'d-none': !show}, styles['game-footer'], 'bg-dark')}>
-            {(askingUserID === currentUserID && !targetUserID) &&
-              <a className={styles['footer-link']} href="#" onClick={() => setShowQuestionModal(true)}>
-                Sua vez de questionar
-              </a>
-            }
-
-            {(askingUserID === currentUserID && targetUserID) &&
-              <a className={styles['footer-link']} href="#" onClick={() => socket.emit('end-questioning')}>
-                Finalizar questionamento
-              </a>
-            }
+          {(askingUserID === currentUserID) &&
+          <footer className="fixed inset-x-0 bottom-0 z-40 bg-zinc-900 py-3 text-center shadow-[0_-2px_10px_rgba(0,0,0,0.25)]">
+            {!targetUserID ? (
+              <button type="button" className="text-base font-medium text-emerald-300 underline-offset-4 hover:underline" onClick={() => setShowQuestionModal(true)}>
+                {t('game.yourTurnFooter')}
+              </button>
+            ) : (
+              <button type="button" className="text-base font-medium text-emerald-300 underline-offset-4 hover:underline" onClick={() => socket.emit('end-questioning')}>
+                {t('game.endQuestioning')}
+              </button>
+            )}
           </footer>
+          }
 
           <AccuseModal
             show={showAccuseModal}

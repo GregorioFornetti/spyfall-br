@@ -4,6 +4,7 @@ import { ActionMeta, Options } from 'react-select';
 import { Dispatch, SetStateAction, useRef } from "react";
 
 import Select from 'react-select';
+import { useTranslation } from 'react-i18next';
 import makeAnimated from 'react-select/animated';
 
 const animate = makeAnimated();
@@ -35,11 +36,12 @@ export type Option = {
  * the parent and the parent maintains the state of the object for 
  * callbacks and function handling. */
 export default function MultiSelect(props: Props) {
+  const { t } = useTranslation();
   // For component "memory"
   const valueRef = useRef(props.selected);
   valueRef.current = props.selected;
   
-  const selectAllOption = {value: "*", label:"Tudo"};
+  const selectAllOption = {value: "*", label: t('common.all')};
   const isSelectAllSelected = () => (valueRef.current.length === props.options.length) && props.options.length > 1;
   const isOptionSelected = (option: Option, selectValue: Options<Option>) => 
     valueRef.current.some(({value}) => value === option.value) ||
@@ -85,6 +87,9 @@ export default function MultiSelect(props: Props) {
         options={getOptions()}
         onChange={handleSelect}
         hideSelectedOptions={props.hide ?? false}
+        menuPortalTarget={typeof document !== 'undefined' ? document.body : undefined}
+        menuPosition="fixed"
+        styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
         instanceId={props.title}
         id={props.title}
         isDisabled={props.disabled}

@@ -6,65 +6,44 @@ services:
       context: .
       dockerfile: ./Dockerfiles/server.Dockerfile
       args:
-        adm_path: ${ADM_PATH}
         game_path: ${GAME_PATH}
         db_path: ${DB_PATH}
     command: "npm run server"
     working_dir: /home/node/app/backend
-    networks:
-      webdb:
-        ipv4_address: 172.16.10.2
     environment:
       NODE_ENV: ${NODE_ENV}
       PORT: ${PORT}
-      PASSWORD: ${PASSWORD}
-      ADM_PATH: ${ADM_PATH}
       GAME_PATH: ${GAME_PATH}
       DB_PATH: ${DB_PATH}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_NAME: ${DB_NAME}
-      DB_HOST: ${DB_HOST}
-      DB_PORT: ${DB_PORT}
     expose:
       - "${PORT}"
     ports:
       - "${PORT}:${PORT}"
-    depends_on:
-      db:
-        condition: service_healthy
-    links:
-      - db
     restart: always
     volumes:
       - ./backend/placeImgs:/home/node/app/backend/placeImgs
-  db:
+      - ./backend/data:/home/node/app/backend/data
+  adm:
+    container_name: adm
+    profiles:
+      - adm
     build:
       context: .
-      dockerfile: ./Dockerfiles/db.Dockerfile
-    expose:
-      - "${DB_PORT}"
-    container_name: postgres
-    restart: always
+      dockerfile: ./Dockerfiles/adm.Dockerfile
+      args:
+        adm_path: ${ADM_PATH}
+        db_path: ${DB_PATH}
+    command: "npm run adm"
+    working_dir: /home/node/app/backend
     environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_PORT: ${DB_PORT}
-    networks:
-      webdb:
-        ipv4_address: ${DB_HOST}
+      NODE_ENV: ${NODE_ENV}
+      ADM_PORT: ${ADM_PORT}
+      ADM_PATH: ${ADM_PATH}
+      DB_PATH: ${DB_PATH}
+    expose:
+      - "${ADM_PORT}"
+    ports:
+      - "${ADM_PORT}:${ADM_PORT}"
     volumes:
-      - ./data:/var/lib/postgresql/data
-    healthcheck:
-        test: ["CMD-SHELL", "pg_isready -d ${DB_NAME} -U ${DB_USER}"]
-        interval: 10s
-        timeout: 10s
-        retries: 10
-
-networks:
-  webdb:
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.16.10.0/24
+      - ./backend/placeImgs:/home/node/app/backend/placeImgs
+      - ./backend/data:/home/node/app/backend/data

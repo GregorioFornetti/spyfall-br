@@ -50,7 +50,9 @@ export default class Match extends EventEmitter {
         const usersIDs = players.map((player) => (player.user.userID))
         const newMatch = new this(config, players, usersIDs, io)
 
-        newMatch.usersRolesIDs = selectUserRoles(await getPlaceRoles(newMatch.selectedPlaceID), usersIDs, newMatch.spyUserID)
+        const customPlace = (config.customPlaces ?? []).find((place) => place.id === newMatch.selectedPlaceID)
+        const placeRolesIDs = customPlace ? customPlace.rolesIds : await getPlaceRoles(newMatch.selectedPlaceID)
+        newMatch.usersRolesIDs = selectUserRoles(placeRolesIDs, usersIDs, newMatch.spyUserID)
         newMatch.emitMatchStart(io)
 
         return newMatch
@@ -313,7 +315,14 @@ export default class Match extends EventEmitter {
             accuserUserID: this.accuserUserID,
             agreedUsersIds: this.agreedUsersIds,
             desagreedUsersIds: this.desagreedUsersIds,
-            votationTimeLeft: this.votationTimeLeft
+            votationTimeLeft: this.votationTimeLeft,
+
+            // Public definitions of the custom places/roles among the possible
+            // places, so every client can resolve names, images and roles.
+            customPlaces: (this.config.customPlaces ?? []).filter((place) => this.possiblePlacesIDs.includes(place.id)),
+            customRoles: (this.config.customRoles ?? []).filter((role) =>
+                (this.config.customPlaces ?? []).some((place) =>
+                    this.possiblePlacesIDs.includes(place.id) && place.rolesIds.includes(role.id)))
         }
     
         if (userID === this.spyUserID) {

@@ -1,0 +1,86 @@
+[
+  {
+    "id": 1,
+    "name": {
+      "pt": "Meio de transporte",
+      "en": "Transportation"
+    }
+  },
+  {
+    "id": 2,
+    "name": {
+      "pt": "Casual",
+      "en": "Casual"
+    }
+  },
+  {
+    "id": 3,
+    "name": {
+      "pt": "Diversão",
+      "en": "Fun"
+    }
+  },
+  {
+    "id": 4,
+    "name": {
+      "pt": "Ambiente aberto",
+      "en": "Outdoors"
+    }
+  },
+  {
+    "id": 5,
+    "name": {
+      "pt": "Entretenimento",
+      "en": "Entertainment"
+    }
+  },
+  {
+    "id": 6,
+    "name": {
+      "pt": "Prestação de serviços",
+      "en": "Services"
+    }
+  },
+  {
+    "id": 7,
+    "name": {
+      "pt": "Religioso",
+      "en": "Religious"
+    }
+  },
+  {
+    "id": 8,
+    "name": {
+      "pt": "Educação",
+      "en": "Education"
+    }
+  },
+  {
+    "id": 9,
+    "name": {
+      "pt": "Esportes",
+      "en": "Sports"
+    }
+  },
+  {
+    "id": 10,
+    "name": {
+      "pt": "Comércio",
+      "en": "Shopping"
+    }
+  },
+  {
+    "id": 11,
+    "name": {
+      "pt": "Fantasia",
+      "en": "Fantasy"
+    }
+  },
+  {
+    "id": 12,
+    "name": {
+      "pt": "Trabalho",
+      "en": "Work"
+    }
+  }
+]

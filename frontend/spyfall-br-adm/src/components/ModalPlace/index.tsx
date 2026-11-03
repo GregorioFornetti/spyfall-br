@@ -1,20 +1,16 @@
-
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
 import Place from '../../interfaces/PlaceInterface'
 import ModalProperties from '../../interfaces/ModalProperties'
 import Category from '../../interfaces/CategoryInterface'
 import Role from '../../interfaces/RoleInterface';
-import Spinner from 'react-bootstrap/Spinner'
-import { category2CategoryOption, getCategoryById, getRoleById, getPlaceById, role2RoleOption, createEmptyPlace } from '../../utils/utils';
+import { category2CategoryOption, getCategoryById, getRoleById, role2RoleOption, createEmptyPlace, displayName } from '../../utils/utils';
 import { dbPath } from '../../utils/configs';
 import { useState } from 'react';
 import PlaceCardPreview from '../PlaceCardPreview';
 import axios from 'axios'
 import CreatableSelect from 'react-select/creatable';
+import Modal, { Spinner, PrimaryButton, SecondaryButton, inputClass, labelClass } from '../ui/Modal'
 
-var currentFile: File|null = null
+var currentFile: File | null = null
 var newRoles: string[] = []
 var newCategories: string[] = []
 var deleteImage: boolean = false
@@ -30,13 +26,13 @@ interface ModalPlaceProps {
     roles: Role[]
 }
 
-export default function ModalPlace({modalPlaceProperties, setModalPlaceProperties, setPlaces, places, categories, roles, setRoles, setCategories}: ModalPlaceProps) {
+export default function ModalPlace({ modalPlaceProperties, setModalPlaceProperties, setPlaces, places, categories, roles, setRoles, setCategories }: ModalPlaceProps) {
 
     const [loading, setLoading] = useState(false)
-    const {show, type, currentValue} = modalPlaceProperties
+    const { show, type, currentValue } = modalPlaceProperties
     const place = currentValue
     const handleClose = () => {
-        setModalPlaceProperties({type: 'create', currentValue: createEmptyPlace(), show: false})
+        setModalPlaceProperties({ type: 'create', currentValue: createEmptyPlace(), show: false })
         newRoles = []
         newCategories = []
         deleteImage = false
@@ -49,7 +45,7 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
 
     const createNewRoles = async () => {
         return Promise.all(
-            newRoles.map((newRole) => (axios.post(`${dbPath}/roles`, {name: newRole})))
+            newRoles.map((newRole) => (axios.post(`${dbPath}/roles`, { name: { pt: newRole, en: newRole } })))
         )
         .then((responses) => {
             place.rolesIds = place.rolesIds.concat(
@@ -61,7 +57,7 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
 
     const createNewCategories = async () => {
         return Promise.all(
-            newCategories.map((newCategory) => (axios.post(`${dbPath}/categories`, {name: newCategory})))
+            newCategories.map((newCategory) => (axios.post(`${dbPath}/categories`, { name: { pt: newCategory, en: newCategory } })))
         )
         .then((responses) => {
             place.categoriesIds = place.categoriesIds.concat(
@@ -73,9 +69,9 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
 
     const createPlace = () => {
         Promise.all([createNewCategories(), createNewRoles()])
-        .then((response) => {
+        .then(() => {
             const formData = new FormData()
-            formData.append('name', place.name)
+            formData.append('name', JSON.stringify(place.name))
             formData.append('rolesIds', JSON.stringify(place.rolesIds))
             formData.append('categoriesIds', JSON.stringify(place.categoriesIds))
             if (place.imgPath && currentFile) {
@@ -96,9 +92,9 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
 
     const updatePlace = () => {
         Promise.all([createNewCategories(), createNewRoles()])
-        .then((response) => {
+        .then(() => {
             const formData = new FormData()
-            formData.append('name', place.name)
+            formData.append('name', JSON.stringify(place.name))
             formData.append('rolesIds', JSON.stringify(place.rolesIds))
             formData.append('categoriesIds', JSON.stringify(place.categoriesIds))
             if (deleteImage) {
@@ -109,7 +105,7 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
             }
 
             axios.put(`${dbPath}/places/${place.id}`, formData)
-            .then((response) => {
+            .then(() => {
                 let placeIndex = places.findIndex((placeParam) => (placeParam.id === place.id))
                 places[placeIndex] = place
                 setPlaces([...places])
@@ -124,7 +120,7 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
 
     const deletePlace = () => {
         axios.delete(`${dbPath}/places/${place.id}`)
-        .then((response) => {
+        .then(() => {
             setPlaces(places.filter((placeParam) => place !== placeParam))
 
             setLoading(false)
@@ -136,7 +132,7 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
     const titleMap = {
         create: 'Criando novo local',
         update: 'Editando local',
-        delete: `Deletar o local "${place.name}" ?`
+        delete: `Deletar o local "${displayName(place.name)}" ?`
     }
     const btnLabelMap = {
         create: 'Criar local',
@@ -144,39 +140,75 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
         delete: 'Deletar local'
     }
 
-    console.log(place)
+    const submit = () => {
+        if (type === 'create') {
+            createPlace()
+        } else if (type === 'update') {
+            updatePlace()
+        } else if (type === 'delete') {
+            deletePlace()
+        }
+        setLoading(true)
+    }
 
     return (
-        <Modal show={show} onHide={handleClose}>
-            <Modal.Header closeButton={!loading}>
-                <Modal.Title>
-                    {titleMap[type]}
-                </Modal.Title>
-            </Modal.Header>
-            {(!loading) ? (
-            <>
-                <Modal.Body>
+        <Modal
+            show={show}
+            title={titleMap[type]}
+            onClose={handleClose}
+            closeable={!loading}
+            footer={!loading && (
+                <>
+                    <SecondaryButton onClick={handleClose}>Fechar</SecondaryButton>
+                    <PrimaryButton danger={type === 'delete'} onClick={submit}>
+                        {btnLabelMap[type]}
+                    </PrimaryButton>
+                </>
+            )}
+        >
+            {loading ? (
+                <Spinner />
+            ) : (
+                <div className="flex flex-col gap-4">
                     {type === 'delete' &&
-                        <p>Deseja mesmo excluir "{place.name}" ?</p>
+                        <p className="text-sm text-zinc-600">Deseja mesmo excluir &ldquo;{displayName(place.name)}&rdquo; ?</p>
                     }
 
-                    {(type === 'create' || type === 'update') && 
+                    {(type === 'create' || type === 'update') &&
                     <>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Nome</Form.Label>
-                            <Form.Control 
+                        <div>
+                            <label htmlFor="place-name-pt" className={labelClass}>Nome (português)</label>
+                            <input
+                                id="place-name-pt"
+                                className={inputClass}
                                 type="text"
                                 onChange={(event) => {
-                                    place.name = event.target.value
-                                    setModalPlaceProperties({...modalPlaceProperties, currentValue: place})
+                                    place.name = { ...place.name, pt: event.target.value }
+                                    setModalPlaceProperties({ ...modalPlaceProperties, currentValue: place })
                                 }}
-                                value={place.name}
+                                value={place.name.pt}
                             />
-                        </Form.Group>
+                        </div>
 
-                        <Form.Group className="mb-3">
-                            <Form.Label>Imagem</Form.Label>
-                            <Form.Control 
+                        <div>
+                            <label htmlFor="place-name-en" className={labelClass}>Nome (inglês)</label>
+                            <input
+                                id="place-name-en"
+                                className={inputClass}
+                                type="text"
+                                onChange={(event) => {
+                                    place.name = { ...place.name, en: event.target.value }
+                                    setModalPlaceProperties({ ...modalPlaceProperties, currentValue: place })
+                                }}
+                                value={place.name.en}
+                            />
+                        </div>
+
+                        <div>
+                            <label htmlFor="place-image" className={labelClass}>Imagem</label>
+                            <input
+                                id="place-image"
+                                className="block w-full cursor-pointer rounded-lg border border-zinc-300 bg-white text-sm text-zinc-600 file:mr-3 file:cursor-pointer file:border-0 file:bg-zinc-900 file:px-3 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-zinc-700"
                                 type="file"
                                 onChange={(event) => {
                                     const files = (event.target as HTMLInputElement).files
@@ -184,37 +216,36 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
                                         deleteImage = false
                                         currentFile = files[0]
                                         place.imgPath = URL.createObjectURL(currentFile)
-                                        setModalPlaceProperties({...modalPlaceProperties, currentValue: place})
+                                        setModalPlaceProperties({ ...modalPlaceProperties, currentValue: place })
                                     } else {
                                         deleteImage = true
                                         currentFile = null
                                         delete place.imgPath
-                                        setModalPlaceProperties({...modalPlaceProperties, currentValue: place})
+                                        setModalPlaceProperties({ ...modalPlaceProperties, currentValue: place })
                                     }
                                 }}
                                 accept="image/*"
                             />
 
-                            {(place.imgPath) &&
-                                <div style={{paddingTop: '5px'}}>
-                                    <a  style={{textDecoration: 'none'}} 
-                                        href='#' 
-                                        className="link-danger"
-                                        onClick={() => {
-                                            deleteImage = true
-                                            delete place.imgPath
-                                            setModalPlaceProperties({...modalPlaceProperties, currentValue: place})
-                                        }}
-                                    >
-                                        Apagar imagem atual
-                                    </a>
-                                </div>
+                            {place.imgPath &&
+                                <button
+                                    type="button"
+                                    className="mt-1.5 text-sm font-medium text-red-700 hover:text-red-900 hover:underline"
+                                    onClick={() => {
+                                        deleteImage = true
+                                        delete place.imgPath
+                                        setModalPlaceProperties({ ...modalPlaceProperties, currentValue: place })
+                                    }}
+                                >
+                                    Apagar imagem atual
+                                </button>
                             }
-                        </Form.Group>
+                        </div>
 
-                        <Form.Group className="mb-3">
-                            <Form.Label>Cargos</Form.Label>
+                        <div>
+                            <label htmlFor="place-roles" className={labelClass}>Cargos</label>
                             <CreatableSelect
+                                inputId="place-roles"
                                 isMulti
                                 options={roles.map(role2RoleOption)}
                                 defaultValue={place.rolesIds.map((roleId) => role2RoleOption(getRoleById(roleId, roles)))}
@@ -224,15 +255,14 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
                                     place.rolesIds = rolesOptions.filter((roleOption) => (!Object.hasOwn(roleOption, '__isNew__')))
                                                                  .map((roleOption) => (roleOption.value))
                                 }}
-                                className="basic-multi-select"
-                                classNamePrefix="select"
                                 placeholder=""
                             />
-                        </Form.Group>
+                        </div>
 
-                        <Form.Group className="mb-3">
-                            <Form.Label>Categorias</Form.Label>
+                        <div>
+                            <label htmlFor="place-categories" className={labelClass}>Categorias</label>
                             <CreatableSelect
+                                inputId="place-categories"
                                 isMulti
                                 options={categories.map(category2CategoryOption)}
                                 defaultValue={place.categoriesIds.map((categoryId) => category2CategoryOption(getCategoryById(categoryId, categories)))}
@@ -243,54 +273,22 @@ export default function ModalPlace({modalPlaceProperties, setModalPlacePropertie
                                     place.categoriesIds = categoriesOptions
                                                           .filter((categoryOption) => (!Object.hasOwn(categoryOption, '__isNew__')))
                                                           .map((categoryOption) => (categoryOption.value))
-                                    
+
                                 }}
-                                className="basic-multi-select"
-                                classNamePrefix="select"
                                 placeholder=""
                             />
-                        </Form.Group>
+                        </div>
 
                     </>
                     }
 
-                    <hr/>
+                    <hr className="border-zinc-200" />
 
                     <PlaceCardPreview
                         imgURL={place.imgPath}
-                        title={place.name}
+                        title={displayName(place.name)}
                     />
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Fechar
-                    </Button>
-                    <Button 
-                        variant={(type === 'delete') ? ('danger') : ('primary')}
-                        onClick={() => {
-                            if (type === 'create') {
-                                createPlace()
-                            } else if (type === 'update') {
-                                updatePlace()
-                            } else if (type === 'delete') {
-                                deletePlace()
-                            }
-                            setLoading(true)
-                        }}
-                    >
-                        {btnLabelMap[type]}
-                    </Button>
-                </Modal.Footer>
-            </>) :
-            (
-                <Modal.Body>
-                    <div className='text-center'>
-                        <Spinner
-                            animation="border" 
-                            variant="primary" 
-                        />
-                    </div>
-                </Modal.Body>
+                </div>
             )}
         </Modal>
     )

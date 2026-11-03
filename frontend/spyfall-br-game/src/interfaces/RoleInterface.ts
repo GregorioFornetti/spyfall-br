@@ -1,5 +1,6 @@
+import LocalizedName from './LocalizedName'
 
 export default interface RoleInterface {
     id: number,
-    name: string
+    name: LocalizedName
 }

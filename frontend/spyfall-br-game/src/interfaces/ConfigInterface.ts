@@ -1,5 +1,8 @@
 
 
+import Place from './PlaceInterface'
+import Role from './RoleInterface'
+
 export default interface ConfigInterface {
     nonSpyVictoryScore: number,
     nonSpyAcusatorScore: number,
@@ -9,6 +12,8 @@ export default interface ConfigInterface {
 
     qntSelectedPlaces: number,
     selectedPlacesIds: number[],
+    customPlaces?: Place[],
+    customRoles?: Role[],
 
     roundMaxTime: number
 }
@@ -22,6 +27,8 @@ export const defaultConfig: ConfigInterface = {
 
     qntSelectedPlaces: 1,
     selectedPlacesIds: [],
+    customPlaces: [],
+    customRoles: [],
 
     roundMaxTime: 5
 }

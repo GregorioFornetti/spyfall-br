@@ -1,4 +1,3 @@
-import { ReactElement } from "react"
 import RootContainer from "../RootContainer"
 
 
@@ -11,9 +10,9 @@ interface PlayersContainerProps {
 
 export default function PlayersContainer({title, children, containerClassName}: PlayersContainerProps) {
     return (
-        <RootContainer 
-            title={title} 
-            rowClassName={'row-cols-1 row-cols-lg-2 row-cols-xl-3 gy-4'}
+        <RootContainer
+            title={title}
+            rowClassName={'grid-cols-1 lg:grid-cols-2 xl:grid-cols-3'}
             containerClassName={containerClassName}
         >
             {children}

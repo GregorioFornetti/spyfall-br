@@ -1,31 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import Role from './interfaces/RoleInterface'
 import Place from './interfaces/PlaceInterface'
 import Category from './interfaces/CategoryInterface'
 import ModalRole from './components/ModalRole';
 import ModalPlace from './components/ModalPlace';
 import ModalCategory from './components/ModalCategory';
-import './App.css';
-import Row from 'react-bootstrap/Row';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Col from 'react-bootstrap/Col';
 import SimpleCard from './components/SimpleCard';
 import ModalProperties from './interfaces/ModalProperties';
-import {dbPath} from './utils/configs'
+import { dbPath } from './utils/configs'
 import ModalLoading from './components/ModalLoading';
 import axios from 'axios'
-import { createEmptyCategory, createEmptyPlace, createEmptyRole } from './utils/utils';
+import { createEmptyCategory, createEmptyPlace, createEmptyRole, displayName, getCategoryById, getRoleById } from './utils/utils';
 
-const buttonTittleMap = {
+const buttonTitleMap = {
   role: "Criar novo cargo",
   place: "Criar novo local",
   category: "Criar nova categoria"
 }
+
+const tabs = [
+  { key: 'place', label: 'Locais' },
+  { key: 'role', label: 'Cargos' },
+  { key: 'category', label: 'Categorias' }
+] as const
+
+type Page = typeof tabs[number]['key']
 
 var placesGetCalled = false
 var categoriesGetCalled = false
@@ -35,7 +34,7 @@ var pendingRequests = 3
 
 function App() {
   const [loading, setLoading] = useState(true)
-  const [page, setPage] = useState<"role"|"place"|"category">("place")
+  const [page, setPage] = useState<Page>("place")
   const [filter, setFilter] = useState("")
 
   const [categories, setCategories] = useState<Category[]>([])
@@ -70,7 +69,6 @@ function App() {
       axios.get(`${dbPath}/categories`)
       .then((response) => {
         let categoriesJSON = response.data
-        console.log(categoriesJSON)
         setCategories(categoriesJSON)
 
         pendingRequests--
@@ -88,7 +86,6 @@ function App() {
       axios.get(`${dbPath}/roles`)
       .then((response) => {
         let rolesJSON = response.data
-        console.log(rolesJSON)
         setRoles(rolesJSON)
 
         pendingRequests--
@@ -117,172 +114,169 @@ function App() {
     currentValue: createEmptyCategory()
   })
 
+  const counts: Record<Page, number> = { place: places.length, role: roles.length, category: categories.length }
+  const matches = (name: Place['name']) => Object.values(name).some((text) => text.toLowerCase().startsWith(filter.toLowerCase()))
+  const filteredPlaces = places.filter((place) => matches(place.name))
+  const filteredRoles = roles.filter((role) => matches(role.name))
+  const filteredCategories = categories.filter((category) => matches(category.name))
+  const visibleCount = page === 'place' ? filteredPlaces.length : page === 'role' ? filteredRoles.length : filteredCategories.length
+
+  const createNew = () => {
+    if (page === 'category') {
+      setModalCategoryProperties({ show: true, type: "create", currentValue: createEmptyCategory() })
+    } else if (page === 'place') {
+      setModalPlaceProperties({ show: true, type: "create", currentValue: createEmptyPlace() })
+    } else {
+      setModalRoleProperties({ show: true, type: "create", currentValue: createEmptyRole() })
+    }
+  }
+
+  const placeMeta = (place: Place) => {
+    const roleNames = place.rolesIds.map((id) => { const n = getRoleById(id, roles)?.name; return n ? displayName(n) : undefined }).filter(Boolean)
+    const categoryNames = place.categoriesIds.map((id) => { const n = getCategoryById(id, categories)?.name; return n ? displayName(n) : undefined }).filter(Boolean)
+    const parts = [
+      `${place.rolesIds.length} cargo${place.rolesIds.length === 1 ? '' : 's'}`,
+      `${place.categoriesIds.length} categoria${place.categoriesIds.length === 1 ? '' : 's'}`
+    ]
+    if (roleNames.length > 0) {
+      parts.push(roleNames.slice(0, 3).join(', ') + (roleNames.length > 3 ? '...' : ''))
+    }
+    if (categoryNames.length > 0) {
+      parts.push(categoryNames.join(', '))
+    }
+    return parts.join(' · ')
+  }
+
   return (
-    <>
-      <header>
-        <Navbar bg="dark" variant="dark" fixed="top">
-          <Container>
-            <Navbar.Brand href="#home">Spyfall admin</Navbar.Brand>
-            <Nav className="me-auto">
-              <Nav.Link 
-                active={page === 'place'} 
-                onClick={() => {
-                  setPage("place")
-                  setFilter("")
-                }}
+    <div className="min-h-screen">
+      <header className="sticky top-0 z-40 bg-zinc-900 text-white shadow-md">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3 sm:px-6">
+          <a href="#home" className="flex items-baseline gap-2 text-white no-underline">
+            <span className="font-display text-xl font-bold tracking-tight">Spyfall</span>
+            <span className="rounded bg-emerald-600 px-1.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider">admin</span>
+          </a>
+          <nav className="flex gap-1" aria-label="Seções">
+            {tabs.map((tab) => (
+              <button
+                key={tab.key}
+                type="button"
+                onClick={() => { setPage(tab.key); setFilter("") }}
+                aria-current={page === tab.key ? 'page' : undefined}
+                className={`rounded-md px-3 py-1.5 text-sm font-medium transition ${
+                  page === tab.key
+                    ? 'bg-white text-zinc-900'
+                    : 'text-zinc-300 hover:bg-zinc-800 hover:text-white'
+                }`}
               >
-                Locais
-              </Nav.Link>
-              <Nav.Link
-                active={page === 'role'}
-                onClick={() => {
-                  setPage("role")
-                  setFilter("")
-                }}
-              >
-                Cargos
-              </Nav.Link>
-              <Nav.Link
-                active={page === 'category'}
-                onClick={() => {
-                  setPage("category")
-                  setFilter("")
-                }}
-              >
-                Categorias
-              </Nav.Link>
-            </Nav>
-          </Container>
-        </Navbar>
+                {tab.label}
+                <span className={`ml-1.5 rounded-full px-1.5 py-0.5 text-[11px] font-semibold ${
+                  page === tab.key ? 'bg-zinc-900 text-white' : 'bg-zinc-700 text-zinc-200'
+                }`}>
+                  {counts[tab.key]}
+                </span>
+              </button>
+            ))}
+          </nav>
+        </div>
       </header>
 
 
-      <main>
-        <Container fluid="md">
-          <Row className="justify-content-center mb-2">
-            <Col xxl={5} xl={6} lg={7} md={8} sm={9} xs={10}>
-              <Form.Control 
-                type="text" 
-                placeholder='Filtro...'
-                value={filter}
-                onChange={(event) => {setFilter(event.target.value)}}
-              />
-            </Col>
-          </Row>
-          <Row className="justify-content-center mb-5">
-            <Col xxl={3} xl={4} lg={5} md={6} sm={7} xs={8}>
-              <div className="d-grid">
-                  <Button
-                    variant="success"
-                    onClick={() => {
-                      if (page === 'category') {
-                        setModalCategoryProperties({
-                          show: true,
-                          type: "create",
-                          currentValue: createEmptyCategory()
-                        })
-                      } else if (page === 'place') {
-                        setModalPlaceProperties({
-                          show: true,
-                          type: "create",
-                          currentValue: createEmptyPlace()
-                        })
-                      } else if (page === 'role') {
-                        setModalRoleProperties({
-                          show: true,
-                          type: "create",
-                          currentValue: createEmptyRole()
-                        })
-                      }
-                    }}
-                  >
-                    {buttonTittleMap[page]}
-                  </Button>
-              </div>
-            </Col>
-          </Row>
-        </Container>
+      <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6">
+        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <label className="relative flex-1">
+            <span className="sr-only">Filtrar por nome</span>
+            <input
+              type="text"
+              placeholder="Filtrar por nome..."
+              value={filter}
+              onChange={(event) => { setFilter(event.target.value) }}
+              className="w-full rounded-lg border border-zinc-300 bg-white py-2.5 pl-10 pr-9 text-sm shadow-sm outline-none transition placeholder:text-zinc-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20"
+            />
+            <svg className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fillRule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.45 4.39l3.83 3.83a1 1 0 01-1.41 1.41l-3.83-3.83A7 7 0 012 9z" clipRule="evenodd" />
+            </svg>
+            {filter && (
+              <button
+                type="button"
+                onClick={() => setFilter("")}
+                aria-label="Limpar filtro"
+                className="absolute right-2 top-1/2 -translate-y-1/2 rounded px-1 text-lg leading-none text-zinc-400 hover:text-zinc-700"
+              >
+                &times;
+              </button>
+            )}
+          </label>
+          <button
+            type="button"
+            onClick={createNew}
+            className="shrink-0 rounded-lg bg-emerald-700 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-emerald-800 focus:outline-none focus:ring-2 focus:ring-emerald-700 focus:ring-offset-2"
+          >
+            + {buttonTitleMap[page]}
+          </button>
+        </div>
 
+        <p className="mb-4 text-sm text-zinc-500" role="status">
+          {visibleCount} {visibleCount === 1 ? 'item' : 'itens'}
+          {filter && <> para &ldquo;{filter}&rdquo;</>}
+        </p>
 
-        <Container fluid="md" className={(page === 'place') ? ('') : ("d-none")}>
-          <Row xl={5} lg={4} md={3} sm={2} className={"gy-5 gx-4"}>
-            {places
-            .filter((place) => place.name.toLowerCase().startsWith(filter.toLowerCase()))
-            .map((place) => (
+        {visibleCount === 0 && !loading ? (
+          <div className="rounded-lg border border-dashed border-zinc-300 bg-white px-6 py-14 text-center">
+            <p className="text-base font-medium text-zinc-700">Nada encontrado</p>
+            <p className="mt-1 text-sm text-zinc-500">
+              {filter ? 'Tente outro termo ou limpe o filtro.' : 'Crie o primeiro item usando o botão acima.'}
+            </p>
+          </div>
+        ) : page === 'place' ? (
+          <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" aria-label="Locais">
+            {filteredPlaces.map((place) => (
               <SimpleCard
-                name={place.name}
+                key={place.id}
+                name={displayName(place.name)}
+                imgURL={place.imgPath}
+                meta={placeMeta(place)}
                 updateFunction={() => {
-                  setModalPlaceProperties({
-                    show: true,
-                    type: "update",
-                    currentValue: {...place}
-                  })
+                  setModalPlaceProperties({ show: true, type: "update", currentValue: {...place, name: {...place.name}} })
                 }}
                 deleteFunction={() => {
-                  setModalPlaceProperties({
-                    show: true,
-                    type: "delete",
-                    currentValue: place
-                  })
+                  setModalPlaceProperties({ show: true, type: "delete", currentValue: place })
                 }}
               />
             ))}
-          </Row>
-        </Container>
-
-        <Container fluid="md" className={(page === 'role') ? ('') : ("d-none")}>
-          <Row xl={5} lg={4} md={3} sm={2} className={"gy-5 gx-4"}>
-            {roles
-            .filter((role) => role.name.toLowerCase().startsWith(filter.toLowerCase()))
-            .map((role) => (
+          </section>
+        ) : page === 'role' ? (
+          <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" aria-label="Cargos">
+            {filteredRoles.map((role) => (
               <SimpleCard
-                name={role.name}
+                key={role.id}
+                name={displayName(role.name)}
                 updateFunction={() => {
-                  setModalRoleProperties({
-                    show: true,
-                    type: "update",
-                    currentValue: {...role}
-                  })
+                  setModalRoleProperties({ show: true, type: "update", currentValue: {...role, name: {...role.name}} })
                 }}
                 deleteFunction={() => {
-                  setModalRoleProperties({
-                    show: true,
-                    type: "delete",
-                    currentValue: role
-                  })
+                  setModalRoleProperties({ show: true, type: "delete", currentValue: role })
                 }}
               />
             ))}
-          </Row>
-        </Container>
-        
-        <Container fluid="md" className={(page === 'category') ? ('') : ("d-none")}>
-          <Row xl={5} lg={4} md={3} sm={2} className={"gy-5 gx-4"}>
-            {categories
-            .filter((category) => category.name.toLowerCase().startsWith(filter.toLowerCase()))
-            .map((category) => (
+          </section>
+        ) : (
+          <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" aria-label="Categorias">
+            {filteredCategories.map((category) => (
               <SimpleCard
-                name={category.name}
+                key={category.id}
+                name={displayName(category.name)}
                 updateFunction={() => {
-                  setModalCategoryProperties({
-                    show: true,
-                    type: "update",
-                    currentValue: {...category}
-                  })
+                  setModalCategoryProperties({ show: true, type: "update", currentValue: {...category, name: {...category.name}} })
                 }}
                 deleteFunction={() => {
-                  setModalCategoryProperties({
-                    show: true,
-                    type: "delete",
-                    currentValue: category
-                  })
+                  setModalCategoryProperties({ show: true, type: "delete", currentValue: category })
                 }}
               />
             ))}
-          </Row>
-        </Container>
+          </section>
+        )}
 
-        
+
         <ModalRole
           modalRoleProperties={modalRoleProperties}
           setModalRoleProperties={setModalRoleProperties}
@@ -316,7 +310,7 @@ function App() {
           show={loading}
         />
       </main>
-    </>
+    </div>
   );
 }
 

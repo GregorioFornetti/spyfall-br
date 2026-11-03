@@ -1,0 +1,6 @@
+.git
+**/node_modules
+frontend/spyfall-br-game/build
+frontend/spyfall-br-adm/build
+prints
+generated_images

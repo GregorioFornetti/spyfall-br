@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
-import { Container, Row } from 'react-bootstrap';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+import React from 'react';
 
 import Place from '../../interfaces/PlaceInterface'
 import Player from '../../interfaces/PlayerInterface'
 import PlaceCard from '../PlaceCard';
 import PlayerCard from '../PlayerCard'
+import Modal, { ActionButton } from '../ui/Modal';
+import { useTranslation } from 'react-i18next';
+import { translateServerMessage } from '../../i18n';
+import { localizedName } from '../../utils/localizedName';
 
 
 interface ResultsModalInterface {
@@ -19,39 +20,42 @@ interface ResultsModalInterface {
 }
 
 export default function ResultsModal({show, setShow, winner, winDescripton, selectedPlace, spy}: ResultsModalInterface) {
+    const { t, i18n } = useTranslation()
     const handleClose = () => setShow(false);
 
     let winText = ''
     if (winner) {
-        winText = (winner === 'spy') ? ('O espião ganhou') : ('Os agentes ganharam') 
+        winText = (winner === 'spy') ? t('results.spyWon') : t('results.agentsWon')
     }
 
     return (
-        <Modal show={show} onHide={handleClose} centered>
-            <Modal.Header closeButton>
-                <Modal.Title>Resultado da partida</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <div className='mb-5'>
-                    <h2 className='text-center'>
+        <Modal
+            show={show}
+            title={t('results.title')}
+            onClose={handleClose}
+            footer={<ActionButton variant="secondary" onClick={handleClose}>{t('common.close')}</ActionButton>}
+        >
+            <div className="flex flex-col gap-8 text-center">
+                <div>
+                    <h3 className={`font-display text-3xl font-bold ${winner === 'spy' ? 'text-red-700' : 'text-emerald-700'}`}>
                         {winText}
-                    </h2>
-                    <p className='text-center h5'>
-                        {winDescripton}
+                    </h3>
+                    <p className="mt-1 text-lg text-zinc-600">
+                        {winDescripton ? translateServerMessage(winDescripton) : winDescripton}
                     </p>
                 </div>
-                <div className='mb-5'>
-                    <h3 className='text-center'>O local selecionado era:</h3>
+                <div>
+                    <h4 className="mb-3 text-lg font-semibold">{t('results.selectedPlaceWas')}</h4>
                     {(selectedPlace) &&
                         <PlaceCard
-                            title={selectedPlace.name}
+                            title={localizedName(selectedPlace.name, i18n.language)}
                             imgURL={selectedPlace.imgPath}
                             type='selected'
                         />
                     }
                 </div>
-                <div className='mb-3'>
-                    <h3 className='text-center'>O espião era:</h3>
+                <div>
+                    <h4 className="mb-3 text-lg font-semibold">{t('results.spyWas')}</h4>
                     {(spy) &&
                         <PlayerCard
                             username={spy.username}
@@ -59,12 +63,7 @@ export default function ResultsModal({show, setShow, winner, winDescripton, sele
                         />
                     }
                 </div>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
-                    Fechar
-                </Button>
-            </Modal.Footer>
+            </div>
         </Modal>
     );
 }

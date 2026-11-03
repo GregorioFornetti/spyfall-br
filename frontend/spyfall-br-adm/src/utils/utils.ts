@@ -1,7 +1,17 @@
 import Category from "../interfaces/CategoryInterface";
 import Role from "../interfaces/RoleInterface";
 import Place from "../interfaces/PlaceInterface";
+import LocalizedName from "../interfaces/LocalizedName";
 
+
+// Nome exibido na administração (em português). Aceita string por
+// robustez contra dados antigos ainda em memória.
+export function displayName(name: LocalizedName | string): string {
+    if (typeof name === 'string') {
+        return name
+    }
+    return name?.pt ?? name?.en ?? ''
+}
 
 export function getPlaceById(id: number, places: Place[]): Place {
     return places.find((place) => place.id === id) as Place
@@ -17,22 +27,22 @@ export function getCategoryById(id: number, categories: Category[]): Category {
 
 
 export function category2CategoryOption(category: Category) {
-    return {value: category.id, label: category.name}
+    return {value: category.id, label: displayName(category.name)}
 }
 
 export function role2RoleOption(role: Role) {
-    return {value: role.id, label: role.name}
+    return {value: role.id, label: displayName(role.name)}
 }
 
 
 export function createEmptyRole(): Role {
-    return {id: -1, name: ''}
+    return {id: -1, name: {pt: '', en: ''}}
 }
 
 export function createEmptyPlace(): Place {
-    return {id: -1, name: '', categoriesIds: [], rolesIds: []}
+    return {id: -1, name: {pt: '', en: ''}, categoriesIds: [], rolesIds: []}
 }
 
 export function createEmptyCategory(): Category {
-    return {id: -1, name: ''}
+    return {id: -1, name: {pt: '', en: ''}}
 }

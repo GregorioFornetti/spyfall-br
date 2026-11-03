@@ -1,81 +1,30 @@
-import Category from "./Category.js"
-import Place from './Place.js'
-import Role from "./Role.js"
-import place2JSON from "./place2JSON.js"
+import { getCollection, findById } from "./store.js"
 
-var categories
-var roles
-var places
-
+// Sem cache em memória: o servidor do jogo e o de administração rodam em
+// processos separados, então os arquivos JSON são lidos do disco a cada
+// chamada para um servidor sempre enxergar as alterações feitas pelo outro.
 export async function getCategories() {
-    if (!categories) {
-        categories = await Category.findAll({
-            attributes: ['id', 'name']
-        })
-        categories = categories.map((category) => ({
-            id: Number(category.id),
-            name: category.name
-        }))
-    }
-    return categories
+    const categories = await getCollection('categories')
+    return categories.map((category) => ({
+        id: Number(category.id),
+        name: category.name
+    }))
 }
 
 export async function getRoles() {
-    if (!roles) {
-        roles = await Role.findAll({
-            attributes: ['id', 'name']
-        })
-        roles = roles.map((role) => ({
-            id: Number(role.id),
-            name: role.name
-        }))
-    }
-    return roles
+    const roles = await getCollection('roles')
+    return roles.map((role) => ({
+        id: Number(role.id),
+        name: role.name
+    }))
 }
 
 export async function getPlaces() {
-    if (!places) {
-        places = await Place.findAll({
-            include: [
-                {
-                    model: Role
-                },
-                {
-                    model: Category
-                }
-            ]
-        })
-        places = places.map(place2JSON)
-    }
-    return places
+    return getCollection('places')
 }
 
 export async function getPlaceRoles(placeID) {
-    const place = await Place.findOne({
-        where: {
-            id: Number(placeID)
-        },
-        include: [
-            {
-                model: Role
-            },
-            {
-                model: Category
-            }
-        ]
-    })
-    return place2JSON(place).rolesIds
-}
-
-
-export function resetCategories() {
-    categories = null
-}
-
-export function resetRoles() {
-    roles = null
-}
-
-export function resetPlaces() {
-    places = null
+    const places = await getCollection('places')
+    const place = findById(places, Number(placeID))
+    return place.rolesIds
 }

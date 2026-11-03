@@ -1,5 +1,5 @@
-import Role from '../models/Role.js'
-import { getRoles, resetRoles } from '../models/getters.js'
+import { getRoles } from '../models/getters.js'
+import { getCollection, updateCollection, removePlaceReferences, nextId, assertUniqueName, findById, normalizeName } from '../models/store.js'
 
 export async function getAllRoles(req, res) {
     try {
@@ -11,12 +11,7 @@ export async function getAllRoles(req, res) {
 
 export async function getRoleById(req, res) {
     try {
-        const role = await Role.findOne({
-            where: {
-                id: Number(req.params.id)
-            },
-            attributes: ['id', 'name']
-        })
+        const role = findById(await getCollection('roles'), Number(req.params.id))
         return res.status(200).json({
             id: Number(role.id),
             name: role.name
@@ -28,14 +23,19 @@ export async function getRoleById(req, res) {
 
 export async function createRole(req, res) {
     try {
-        if (req.body.name.length === 0) {
+        const name = normalizeName(req.body.name)
+        if (!name) {
             return res.status(400).json({'error': 'O nome não pode ser vazio'})
         }
-        
-        const newRole = await Role.create(req.body)
-        resetRoles()
+
+        const newRole = await updateCollection('roles', (roles) => {
+            assertUniqueName(roles, name)
+            const role = { id: nextId(roles), name }
+            roles.push(role)
+            return role
+        })
         return res.status(200).json({
-            id: Number(newRole.id), 
+            id: Number(newRole.id),
             name: newRole.name
         })
     } catch(error) {
@@ -45,23 +45,18 @@ export async function createRole(req, res) {
 
 export async function updateRole(req, res) {
     try {
-        if (req.body.name.length === 0) {
+        const name = normalizeName(req.body.name)
+        if (!name) {
             return res.status(400).json({'error': 'O nome não pode ser vazio'})
         }
 
-        await Role.update(req.body, {
-            where: {
-                id: Number(req.params.id)
-            }
+        const id = Number(req.params.id)
+        const updatedRole = await updateCollection('roles', (roles) => {
+            const role = findById(roles, id)
+            assertUniqueName(roles, name, id)
+            role.name = name
+            return role
         })
-        const updatedRole = await Role.findOne({
-            where: {
-                id: Number(req.params.id)
-            },
-            attributes: ['id', 'name']
-        })
-
-        resetRoles()
         return res.status(200).json({
             id: Number(updatedRole.id),
             name: updatedRole.name
@@ -73,13 +68,14 @@ export async function updateRole(req, res) {
 
 export async function deleteRole(req, res) {
     try {
-        await Role.destroy({
-            where: {
-                id: Number(req.params.id)
+        const id = Number(req.params.id)
+        await updateCollection('roles', (roles) => {
+            const index = roles.findIndex((role) => role.id === id)
+            if (index !== -1) {
+                roles.splice(index, 1)
             }
         })
-
-        resetRoles()
+        await removePlaceReferences('rolesIds', id)
         return res.status(200).json({message: `Role with id ${req.params.id} deleted`})
     } catch(error) {
         return res.status(500).json(error.message)

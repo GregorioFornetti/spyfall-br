@@ -1,8 +1,5 @@
 import { io } from "socket.io-client"
-import 'bootstrap/dist/css/bootstrap.min.css';
 
-import Container from 'react-bootstrap/Container';
-import Navbar from 'react-bootstrap/Navbar';
 import GamePage from './components/GamePage';
 import MainPage from "./components/MainPage";
 import { useState, useEffect } from "react";
@@ -13,10 +10,17 @@ import Place from './interfaces/PlaceInterface'
 import Role from './interfaces/RoleInterface'
 import Category from './interfaces/CategoryInterface'
 import LoadingModal from "./components/LoadingModal";
-import { Nav, Row } from "react-bootstrap";
 import ResultsModal from "./components/ResultsModal";
 import ConfigInterface, { defaultConfig } from "./interfaces/ConfigInterface";
 import HelpModal from "./components/HelpModal";
+import { useTranslation } from 'react-i18next';
+import i18n, { translateServerMessage, SupportedLanguage } from './i18n';
+import {
+  CUSTOM_CATEGORY,
+  loadCustomPlaces,
+  loadCustomRoles,
+  mergeById
+} from './utils/customData';
 
 var loaded = false
 
@@ -53,14 +57,40 @@ const socket = io(
 )
 const sessionID = localStorage.getItem("sessionID")
 
+var serverPlaces: Place[] = []
+var serverRoles: Role[] = []
+var serverCategories: Category[] = []
+// Personalizados deste usuário (localStorage) e os do líder da sala
+// (recebidos na configuração/partida): ids negativos, sem colisão com o banco.
+var ownCustomPlaces: Place[] = []
+var ownCustomRoles: Role[] = []
+var remoteCustomPlaces: Place[] = []
+var remoteCustomRoles: Role[] = []
+
 var places: Place[] = []
 var roles: Role[] = []
 var categories: Category[] = []
+
+function rebuildData() {
+  places = mergeById(mergeById(serverPlaces, remoteCustomPlaces), ownCustomPlaces)
+  roles = mergeById(mergeById(serverRoles, remoteCustomRoles), ownCustomRoles)
+  categories = [...serverCategories, CUSTOM_CATEGORY]
+}
+
+function learnRemoteCustom(customPlaces?: Place[], customRoles?: Role[]) {
+  if (!customPlaces?.length && !customRoles?.length) {
+    return
+  }
+  remoteCustomPlaces = mergeById(remoteCustomPlaces, customPlaces ?? [])
+  remoteCustomRoles = mergeById(remoteCustomRoles, customRoles ?? [])
+  rebuildData()
+}
 
 var matchTimeoutObject: undefined|NodeJS.Timeout
 var votationTimeoutObject: undefined|NodeJS.Timeout
 
 function App() {
+  const { t } = useTranslation()
 
   const [URLGameCode, setURLGameCode] = useState("")
   const [gameCode, setGameCode] = useState("")
@@ -114,14 +144,17 @@ function App() {
         fetch(`${dbPath}/categories`, {method: 'GET'}).then((response) => (response.json())),
         fetch(`${dbPath}/roles`, {method: 'GET'}).then((response) => (response.json()))
       ]).then((responses) => {
-        places = responses[0].map((place: any) => {
+        serverPlaces = responses[0].map((place: any) => {
           if (place.imgPath) {
             return {...place, imgPath: `${dbPath}/${place.imgPath}`}
           }
           return place
         })
-        categories = responses[1]
-        roles = responses[2]
+        serverCategories = responses[1]
+        serverRoles = responses[2]
+        ownCustomPlaces = loadCustomPlaces()
+        ownCustomRoles = loadCustomRoles()
+        rebuildData()
 
         if (sessionID) {
           socket.auth = { sessionID }
@@ -136,6 +169,10 @@ function App() {
         setCurrentUserID(userID)
 
         if (gameInfo) {
+          learnRemoteCustom(gameInfo.config?.customPlaces, gameInfo.config?.customRoles)
+          if (gameInfo.inMatch) {
+            learnRemoteCustom(gameInfo.match?.customPlaces, gameInfo.match?.customRoles)
+          }
           setPlayers(gameInfo.players)
           window.history.replaceState({}, '', `${gamePath}/${gameInfo.code}`)
           setGameCode(gameInfo.code)
@@ -170,6 +207,7 @@ function App() {
       });
 
       socket.on('success-join', (gameInfo) => {
+        learnRemoteCustom(gameInfo.config?.customPlaces, gameInfo.config?.customRoles)
         setPlayers([...gameInfo.players])
         window.history.replaceState({}, '', `${gamePath}/${gameInfo.code}`)
         setGameCode(gameInfo.code)
@@ -195,10 +233,11 @@ function App() {
       })
 
       socket.on('error', (message) => {
-        alert(message)
+        alert(translateServerMessage(message))
       })
 
       socket.on('new-config', (newConfig: ConfigInterface) => {
+        learnRemoteCustom(newConfig.customPlaces, newConfig.customRoles)
         setConfig(newConfig)
       })
 
@@ -262,6 +301,7 @@ function App() {
   })
 
   socket.on('match-start', (match) => {
+    learnRemoteCustom(match.customPlaces, match.customRoles)
     setPlayers(players.map((player) => ({...player, ready: false})))
     setAskingUserID(match.askingUserID)
     setTargetUserID(match.targetUserID)
@@ -285,25 +325,32 @@ function App() {
 
   return (
     <>
-      <Navbar fixed="top" bg="dark" variant="dark">
-        <Container>
-          <Navbar.Brand>Spyfall-br</Navbar.Brand>
-          <Container>
-            <Row xs={2}>
-              <Nav>
-                  <Nav.Link href="#" onClick={() => setShowHelpModal(true)}>Ajuda</Nav.Link>
-              </Nav>
-              <Nav className="me-auto justify-content-end">
-                {(currentPage === 'lobby' || currentPage === 'game') && 
-                  <Nav.Link href="#" className='link-danger' onClick={() => socket.emit('logout')}>Sair do jogo</Nav.Link>
-                }
-              </Nav>
-            </Row>
-          </Container>
-        </Container>
-      </Navbar>
+      <header className="sticky top-0 z-40 bg-zinc-900 text-white shadow-md">
+        <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-3 sm:px-6">
+          <span className="font-display text-xl font-bold tracking-tight">Spyfall-br</span>
+          <div className="ml-auto flex items-center gap-1" role="group" aria-label={t('common.language')}>
+            {(['pt', 'en'] as SupportedLanguage[]).map((lng) => (
+              <button
+                key={lng}
+                type="button"
+                onClick={() => i18n.changeLanguage(lng)}
+                aria-pressed={i18n.language === lng}
+                className={`rounded-md px-2 py-1 text-xs font-semibold uppercase tracking-wide transition ${i18n.language === lng ? 'bg-white text-zinc-900' : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'}`}
+              >
+                {lng}
+              </button>
+            ))}
+          </div>
+          <nav className="flex items-center gap-1" aria-label={t('app.mainNav')}>
+            <button type="button" onClick={() => setShowHelpModal(true)} className="rounded-md px-3 py-1.5 text-sm font-medium text-zinc-300 transition hover:bg-zinc-800 hover:text-white">{t('app.help')}</button>
+            {(currentPage === 'lobby' || currentPage === 'game') &&
+              <button type="button" onClick={() => socket.emit('logout')} className="rounded-md px-3 py-1.5 text-sm font-medium text-red-300 transition hover:bg-zinc-800 hover:text-red-200">{t('app.leaveGame')}</button>
+            }
+          </nav>
+        </div>
+      </header>
 
-      <main style={{marginTop: '100px'}}>
+      <main className="mx-auto w-full max-w-6xl px-4 pb-24 pt-8 sm:px-6">
         <LoadingModal 
           show={currentPage === 'loading'} 
         />
@@ -326,8 +373,14 @@ function App() {
           gameCode={gameCode}
           places={places}
           categories={categories}
+          roles={roles}
           config={config}
           setConfig={setConfig}
+          onCustomDataChange={(customPlaces, customRoles) => {
+            ownCustomPlaces = customPlaces
+            ownCustomRoles = customRoles
+            rebuildData()
+          }}
         />
 
         <GamePage

@@ -1,6 +1,5 @@
 import RootContainer from "../RootContainer"
 
-
 interface PlaceContainerProps {
     title: string,
     children: JSX.Element[]|JSX.Element,
@@ -10,9 +9,9 @@ interface PlaceContainerProps {
 
 export default function PlacesContainer({title, children, containerClassName}: PlaceContainerProps) {
     return (
-        <RootContainer 
-            title={title} 
-            rowClassName={'row-cols-1 row-cols-md-2 row-cols-xl-3 row-cols-xxl-4 gy-4'}
+        <RootContainer
+            title={title}
+            rowClassName={'grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4'}
             containerClassName={containerClassName}
         >
             {children}

@@ -1,14 +1,11 @@
-
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
 import Role from '../../interfaces/RoleInterface'
 import Place from '../../interfaces/PlaceInterface'
 import ModalProperties from '../../interfaces/ModalProperties'
-import Spinner from 'react-bootstrap/Spinner'
-import {useState} from 'react'
-import {dbPath} from '../../utils/configs'
+import { useState } from 'react'
+import { dbPath } from '../../utils/configs'
+import { displayName } from '../../utils/utils'
 import axios from 'axios'
+import Modal, { Spinner, PrimaryButton, SecondaryButton, inputClass, labelClass } from '../ui/Modal'
 
 interface ModalRoleProps {
     modalRoleProperties: ModalProperties<Role>,
@@ -19,12 +16,12 @@ interface ModalRoleProps {
     places: Place[]
 }
 
-export default function ModalRole({modalRoleProperties, roles, setModalRoleProperties, setRoles, setPlaces, places}: ModalRoleProps) {
+export default function ModalRole({ modalRoleProperties, roles, setModalRoleProperties, setRoles, setPlaces, places }: ModalRoleProps) {
 
     const [loading, setLoading] = useState(false)
-    let {show, type, currentValue} = modalRoleProperties
+    let { show, type, currentValue } = modalRoleProperties
     let role = currentValue
-    const handleClose = () => setModalRoleProperties({...modalRoleProperties, show: false})
+    const handleClose = () => setModalRoleProperties({ ...modalRoleProperties, show: false })
     const handleError = (error: any) => {
         console.error(error)
         alert('Ocorreu um erro ! Olhar o console para mais informações')
@@ -48,9 +45,9 @@ export default function ModalRole({modalRoleProperties, roles, setModalRolePrope
         axios.put(`${dbPath}/roles/${role.id}`, {
             name: role.name
         })
-        .then((response) => {
-            let RoleIndex = roles.findIndex((roleParam) => (roleParam.id === role.id))
-            roles[RoleIndex] = role
+        .then(() => {
+            let roleIndex = roles.findIndex((roleParam) => (roleParam.id === role.id))
+            roles[roleIndex] = role
             setRoles([...roles])
 
             setLoading(false)
@@ -61,14 +58,11 @@ export default function ModalRole({modalRoleProperties, roles, setModalRolePrope
 
     const deleteRole = () => {
         axios.delete(`${dbPath}/roles/${role.id}`)
-        .then((response) => {
-            console.log(places)
-            console.log(roles)
+        .then(() => {
             for (let place of places) {
                 place.rolesIds = place.rolesIds.filter((roleId) => (roleId !== role.id))
             }
             setPlaces([...places])
-            console.log(places)
             setRoles(roles.filter((roleParam) => role !== roleParam))
 
             setLoading(false)
@@ -80,7 +74,7 @@ export default function ModalRole({modalRoleProperties, roles, setModalRolePrope
     const titleMap = {
         create: 'Criando novo cargo',
         update: 'Editando cargo',
-        delete: `Deletar o cargo "${role.name}" ?`
+        delete: `Deletar o cargo "${displayName(role.name)}" ?`
     }
     const btnLabelMap = {
         create: 'Criar cargo',
@@ -88,68 +82,71 @@ export default function ModalRole({modalRoleProperties, roles, setModalRolePrope
         delete: 'Deletar cargo'
     }
 
-    return (
-        <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false}>
-            <Modal.Header closeButton={!loading}>
-                <Modal.Title>
-                    {titleMap[type]}
-                </Modal.Title>
-            </Modal.Header>
-            {(!loading) ? 
-            (
-                <>
-                    <Modal.Body>
-                        {(type === 'delete') && 
-                            <p>Deseja mesmo excluir "{role.name}" ?</p>
-                        }
+    const submit = () => {
+        if (type === 'create') {
+            createRole()
+        } else if (type === 'update') {
+            updateRole()
+        } else if (type === 'delete') {
+            deleteRole()
+        }
+        setLoading(true)
+    }
 
-                        {(type === 'create' || type === 'update') &&
-                            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                <Form.Label>Nome</Form.Label>
-                                <Form.Control 
-                                    type="text"
-                                    onChange={(event) => {
-                                        role.name = event.target.value
-                                        setModalRoleProperties({...modalRoleProperties, currentValue: role})
-                                    }}
-                                    value={role.name}
-                                />
-                            </Form.Group>
-                        }
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
-                            Fechar
-                        </Button>
-                        <Button 
-                            variant={(type === 'delete') ? ('danger') : ('primary')} 
-                            onClick={() => {
-                                if (type === 'create') {
-                                    createRole()
-                                } else if (type === 'update') {
-                                    updateRole()
-                                } else if (type === 'delete') {
-                                    deleteRole()
-                                }
-                                setLoading(true)
-                            }}
-                        >
-                            {btnLabelMap[type]}
-                        </Button>
-                    </Modal.Footer>
+    const setName = (locale: 'pt' | 'en', value: string) => {
+        role.name = { ...role.name, [locale]: value }
+        setModalRoleProperties({ ...modalRoleProperties, currentValue: role })
+    }
+
+    return (
+        <Modal
+            show={show}
+            title={titleMap[type]}
+            onClose={handleClose}
+            closeable={!loading}
+            footer={!loading && (
+                <>
+                    <SecondaryButton onClick={handleClose}>Fechar</SecondaryButton>
+                    <PrimaryButton danger={type === 'delete'} onClick={submit}>
+                        {btnLabelMap[type]}
+                    </PrimaryButton>
                 </>
-            ) :
-            (
-                <Modal.Body>
-                    <div className='text-center'>
-                        <Spinner
-                            animation="border" 
-                            variant="primary" 
-                        />
-                    </div>
-                </Modal.Body>
-            )
-            }
+            )}
+        >
+            {loading ? (
+                <Spinner />
+            ) : (
+                <>
+                    {type === 'delete' &&
+                        <p className="text-sm text-zinc-600">Deseja mesmo excluir &ldquo;{displayName(role.name)}&rdquo; ?</p>
+                    }
+
+                    {(type === 'create' || type === 'update') &&
+                        <div className="flex flex-col gap-4">
+                            <div>
+                                <label htmlFor="role-name-pt" className={labelClass}>Nome (português)</label>
+                                <input
+                                    id="role-name-pt"
+                                    className={inputClass}
+                                    type="text"
+                                    onChange={(event) => setName('pt', event.target.value)}
+                                    value={role.name.pt}
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="role-name-en" className={labelClass}>Nome (inglês)</label>
+                                <input
+                                    id="role-name-en"
+                                    className={inputClass}
+                                    type="text"
+                                    onChange={(event) => setName('en', event.target.value)}
+                                    value={role.name.en}
+                                />
+                            </div>
+                        </div>
+                    }
+                </>
+            )}
         </Modal>
     )
 }

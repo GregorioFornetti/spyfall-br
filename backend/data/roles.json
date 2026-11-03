@@ -1,0 +1,1276 @@
+[
+  {
+    "id": 1,
+    "name": {
+      "pt": "Piloto",
+      "en": "Pilot"
+    }
+  },
+  {
+    "id": 2,
+    "name": {
+      "pt": "Tripulante",
+      "en": "Crew member"
+    }
+  },
+  {
+    "id": 3,
+    "name": {
+      "pt": "Morador",
+      "en": "Resident"
+    }
+  },
+  {
+    "id": 4,
+    "name": {
+      "pt": "Faxineiro",
+      "en": "Cleaner"
+    }
+  },
+  {
+    "id": 5,
+    "name": {
+      "pt": "Cozinheiro",
+      "en": "Cook"
+    }
+  },
+  {
+    "id": 6,
+    "name": {
+      "pt": "Jardineiro",
+      "en": "Gardener"
+    }
+  },
+  {
+    "id": 7,
+    "name": {
+      "pt": "Motorista",
+      "en": "Driver"
+    }
+  },
+  {
+    "id": 8,
+    "name": {
+      "pt": "Cobrador",
+      "en": "Fare collector"
+    }
+  },
+  {
+    "id": 9,
+    "name": {
+      "pt": "Passageiro",
+      "en": "Passenger"
+    }
+  },
+  {
+    "id": 10,
+    "name": {
+      "pt": "Jogador",
+      "en": "Player"
+    }
+  },
+  {
+    "id": 11,
+    "name": {
+      "pt": "Técnico",
+      "en": "Technician"
+    }
+  },
+  {
+    "id": 12,
+    "name": {
+      "pt": "Recepcionista",
+      "en": "Receptionist"
+    }
+  },
+  {
+    "id": 13,
+    "name": {
+      "pt": "Guia",
+      "en": "Guide"
+    }
+  },
+  {
+    "id": 14,
+    "name": {
+      "pt": "Guarda",
+      "en": "Guard"
+    }
+  },
+  {
+    "id": 15,
+    "name": {
+      "pt": "Cliente",
+      "en": "Customer"
+    }
+  },
+  {
+    "id": 16,
+    "name": {
+      "pt": "Chefe de cozinha",
+      "en": "Head chef"
+    }
+  },
+  {
+    "id": 17,
+    "name": {
+      "pt": "Gerente",
+      "en": "Manager"
+    }
+  },
+  {
+    "id": 18,
+    "name": {
+      "pt": "Cliente chato",
+      "en": "Annoying customer"
+    }
+  },
+  {
+    "id": 19,
+    "name": {
+      "pt": "Garçom",
+      "en": "Waiter"
+    }
+  },
+  {
+    "id": 20,
+    "name": {
+      "pt": "Maquinista",
+      "en": "Train driver"
+    }
+  },
+  {
+    "id": 21,
+    "name": {
+      "pt": "Atendente",
+      "en": "Attendant"
+    }
+  },
+  {
+    "id": 22,
+    "name": {
+      "pt": "Coveiro",
+      "en": "Gravedigger"
+    }
+  },
+  {
+    "id": 23,
+    "name": {
+      "pt": "Visitante",
+      "en": "Visitor"
+    }
+  },
+  {
+    "id": 24,
+    "name": {
+      "pt": "Espectador",
+      "en": "Spectator"
+    }
+  },
+  {
+    "id": 25,
+    "name": {
+      "pt": "Ator",
+      "en": "Actor"
+    }
+  },
+  {
+    "id": 26,
+    "name": {
+      "pt": "Palhaço",
+      "en": "Clown"
+    }
+  },
+  {
+    "id": 27,
+    "name": {
+      "pt": "Mágico",
+      "en": "Magician"
+    }
+  },
+  {
+    "id": 28,
+    "name": {
+      "pt": "Malabarista",
+      "en": "Juggler"
+    }
+  },
+  {
+    "id": 29,
+    "name": {
+      "pt": "Domador de animais",
+      "en": "Animal tamer"
+    }
+  },
+  {
+    "id": 30,
+    "name": {
+      "pt": "Bombeiro",
+      "en": "Firefighter"
+    }
+  },
+  {
+    "id": 31,
+    "name": {
+      "pt": "Socorrido",
+      "en": "Rescued person"
+    }
+  },
+  {
+    "id": 32,
+    "name": {
+      "pt": "Lenhador",
+      "en": "Lumberjack"
+    }
+  },
+  {
+    "id": 33,
+    "name": {
+      "pt": "Explorador",
+      "en": "Explorer"
+    }
+  },
+  {
+    "id": 34,
+    "name": {
+      "pt": "Seringueiro",
+      "en": "Rubber tapper"
+    }
+  },
+  {
+    "id": 35,
+    "name": {
+      "pt": "Escoteiro",
+      "en": "Scout"
+    }
+  },
+  {
+    "id": 36,
+    "name": {
+      "pt": "Guarda florestal",
+      "en": "Forest ranger"
+    }
+  },
+  {
+    "id": 37,
+    "name": {
+      "pt": "Cirurgião",
+      "en": "Surgeon"
+    }
+  },
+  {
+    "id": 38,
+    "name": {
+      "pt": "Médico",
+      "en": "Doctor"
+    }
+  },
+  {
+    "id": 39,
+    "name": {
+      "pt": "Paciente",
+      "en": "Patient"
+    }
+  },
+  {
+    "id": 40,
+    "name": {
+      "pt": "Enfermeiro",
+      "en": "Nurse"
+    }
+  },
+  {
+    "id": 41,
+    "name": {
+      "pt": "Criança",
+      "en": "Child"
+    }
+  },
+  {
+    "id": 42,
+    "name": {
+      "pt": "Pastor",
+      "en": "Pastor"
+    }
+  },
+  {
+    "id": 43,
+    "name": {
+      "pt": "Freira",
+      "en": "Nun"
+    }
+  },
+  {
+    "id": 44,
+    "name": {
+      "pt": "Crente",
+      "en": "Believer"
+    }
+  },
+  {
+    "id": 45,
+    "name": {
+      "pt": "Apostador",
+      "en": "Gambler"
+    }
+  },
+  {
+    "id": 46,
+    "name": {
+      "pt": "Dealer",
+      "en": "Dealer"
+    }
+  },
+  {
+    "id": 47,
+    "name": {
+      "pt": "Capitão",
+      "en": "Captain"
+    }
+  },
+  {
+    "id": 48,
+    "name": {
+      "pt": "Marujo",
+      "en": "Sailor"
+    }
+  },
+  {
+    "id": 49,
+    "name": {
+      "pt": "Operador",
+      "en": "Operator"
+    }
+  },
+  {
+    "id": 50,
+    "name": {
+      "pt": "Copiloto",
+      "en": "Co-pilot"
+    }
+  },
+  {
+    "id": 51,
+    "name": {
+      "pt": "Comissário de bordo",
+      "en": "Flight attendant"
+    }
+  },
+  {
+    "id": 52,
+    "name": {
+      "pt": "Náufrago",
+      "en": "Castaway"
+    }
+  },
+  {
+    "id": 53,
+    "name": {
+      "pt": "Polícia",
+      "en": "Police officer"
+    }
+  },
+  {
+    "id": 54,
+    "name": {
+      "pt": "Detetive",
+      "en": "Detective"
+    }
+  },
+  {
+    "id": 55,
+    "name": {
+      "pt": "Cientista forense",
+      "en": "Forensic scientist"
+    }
+  },
+  {
+    "id": 56,
+    "name": {
+      "pt": "Professor",
+      "en": "Teacher"
+    }
+  },
+  {
+    "id": 57,
+    "name": {
+      "pt": "Aluno",
+      "en": "Student"
+    }
+  },
+  {
+    "id": 58,
+    "name": {
+      "pt": "Diretor",
+      "en": "Principal"
+    }
+  },
+  {
+    "id": 59,
+    "name": {
+      "pt": "Salva-vidas",
+      "en": "Lifeguard"
+    }
+  },
+  {
+    "id": 60,
+    "name": {
+      "pt": "Surfista",
+      "en": "Surfer"
+    }
+  },
+  {
+    "id": 61,
+    "name": {
+      "pt": "Turista",
+      "en": "Tourist"
+    }
+  },
+  {
+    "id": 62,
+    "name": {
+      "pt": "Vendedor ambulante",
+      "en": "Beach vendor"
+    }
+  },
+  {
+    "id": 63,
+    "name": {
+      "pt": "Juiz",
+      "en": "Referee"
+    }
+  },
+  {
+    "id": 64,
+    "name": {
+      "pt": "Torcedor",
+      "en": "Fan"
+    }
+  },
+  {
+    "id": 65,
+    "name": {
+      "pt": "Personal trainer",
+      "en": "Personal trainer"
+    }
+  },
+  {
+    "id": 66,
+    "name": {
+      "pt": "Atleta",
+      "en": "Athlete"
+    }
+  },
+  {
+    "id": 67,
+    "name": {
+      "pt": "Vendedor",
+      "en": "Salesperson"
+    }
+  },
+  {
+    "id": 68,
+    "name": {
+      "pt": "Segurança",
+      "en": "Security guard"
+    }
+  },
+  {
+    "id": 69,
+    "name": {
+      "pt": "Operador de caixa",
+      "en": "Cashier"
+    }
+  },
+  {
+    "id": 70,
+    "name": {
+      "pt": "Açougueiro",
+      "en": "Butcher"
+    }
+  },
+  {
+    "id": 71,
+    "name": {
+      "pt": "Padeiro",
+      "en": "Baker"
+    }
+  },
+  {
+    "id": 72,
+    "name": {
+      "pt": "Fazendeiro",
+      "en": "Farmer"
+    }
+  },
+  {
+    "id": 73,
+    "name": {
+      "pt": "Veterinário",
+      "en": "Veterinarian"
+    }
+  },
+  {
+    "id": 74,
+    "name": {
+      "pt": "Tratador",
+      "en": "Zookeeper"
+    }
+  },
+  {
+    "id": 75,
+    "name": {
+      "pt": "Curador",
+      "en": "Curator"
+    }
+  },
+  {
+    "id": 76,
+    "name": {
+      "pt": "Bibliotecário",
+      "en": "Librarian"
+    }
+  },
+  {
+    "id": 77,
+    "name": {
+      "pt": "Estudante",
+      "en": "College student"
+    }
+  },
+  {
+    "id": 78,
+    "name": {
+      "pt": "Escritor",
+      "en": "Writer"
+    }
+  },
+  {
+    "id": 79,
+    "name": {
+      "pt": "Agente de check-in",
+      "en": "Check-in agent"
+    }
+  },
+  {
+    "id": 80,
+    "name": {
+      "pt": "Mecânico",
+      "en": "Mechanic"
+    }
+  },
+  {
+    "id": 81,
+    "name": {
+      "pt": "Rei",
+      "en": "King"
+    }
+  },
+  {
+    "id": 82,
+    "name": {
+      "pt": "Rainha",
+      "en": "Queen"
+    }
+  },
+  {
+    "id": 83,
+    "name": {
+      "pt": "Cavaleiro",
+      "en": "Knight"
+    }
+  },
+  {
+    "id": 84,
+    "name": {
+      "pt": "Bobo da corte",
+      "en": "Jester"
+    }
+  },
+  {
+    "id": 85,
+    "name": {
+      "pt": "Astronauta",
+      "en": "Astronaut"
+    }
+  },
+  {
+    "id": 86,
+    "name": {
+      "pt": "Cientista",
+      "en": "Scientist"
+    }
+  },
+  {
+    "id": 87,
+    "name": {
+      "pt": "Engenheiro",
+      "en": "Engineer"
+    }
+  },
+  {
+    "id": 88,
+    "name": {
+      "pt": "Caixa de banco",
+      "en": "Bank teller"
+    }
+  },
+  {
+    "id": 89,
+    "name": {
+      "pt": "Carteiro",
+      "en": "Mail carrier"
+    }
+  },
+  {
+    "id": 90,
+    "name": {
+      "pt": "Hóspede",
+      "en": "Hotel guest"
+    }
+  },
+  {
+    "id": 91,
+    "name": {
+      "pt": "Cabeleireiro",
+      "en": "Hairdresser"
+    }
+  },
+  {
+    "id": 92,
+    "name": {
+      "pt": "Manicure",
+      "en": "Manicurist"
+    }
+  },
+  {
+    "id": 93,
+    "name": {
+      "pt": "Tosador",
+      "en": "Pet groomer"
+    }
+  },
+  {
+    "id": 94,
+    "name": {
+      "pt": "Pescador",
+      "en": "Fisherman"
+    }
+  },
+  {
+    "id": 95,
+    "name": {
+      "pt": "Fotógrafo",
+      "en": "Photographer"
+    }
+  },
+  {
+    "id": 96,
+    "name": {
+      "pt": "Esquiador",
+      "en": "Skier"
+    }
+  },
+  {
+    "id": 97,
+    "name": {
+      "pt": "Instrutor",
+      "en": "Instructor"
+    }
+  },
+  {
+    "id": 98,
+    "name": {
+      "pt": "Mergulhador",
+      "en": "Diver"
+    }
+  },
+  {
+    "id": 99,
+    "name": {
+      "pt": "Xerife",
+      "en": "Sheriff"
+    }
+  },
+  {
+    "id": 100,
+    "name": {
+      "pt": "Noivo",
+      "en": "Groom"
+    }
+  },
+  {
+    "id": 101,
+    "name": {
+      "pt": "Noiva",
+      "en": "Bride"
+    }
+  },
+  {
+    "id": 102,
+    "name": {
+      "pt": "Cantor",
+      "en": "Singer"
+    }
+  },
+  {
+    "id": 103,
+    "name": {
+      "pt": "Convidado",
+      "en": "Wedding guest"
+    }
+  },
+  {
+    "id": 104,
+    "name": {
+      "pt": "Feirante",
+      "en": "Market vendor"
+    }
+  },
+  {
+    "id": 105,
+    "name": {
+      "pt": "Reitor",
+      "en": "Dean"
+    }
+  },
+  {
+    "id": 106,
+    "name": {
+      "pt": "Barista",
+      "en": "Barista"
+    }
+  },
+  {
+    "id": 107,
+    "name": {
+      "pt": "Livreiro",
+      "en": "Bookseller"
+    }
+  },
+  {
+    "id": 108,
+    "name": {
+      "pt": "Barbeiro",
+      "en": "Barber"
+    }
+  },
+  {
+    "id": 109,
+    "name": {
+      "pt": "Apresentador",
+      "en": "TV host"
+    }
+  },
+  {
+    "id": 110,
+    "name": {
+      "pt": "Mineiro",
+      "en": "Miner"
+    }
+  },
+  {
+    "id": 111,
+    "name": {
+      "pt": "Faroleiro",
+      "en": "Lighthouse keeper"
+    }
+  },
+  {
+    "id": 112,
+    "name": {
+      "pt": "Soldado",
+      "en": "Soldier"
+    }
+  },
+  {
+    "id": 113,
+    "name": {
+      "pt": "Quadrilheiro",
+      "en": "Square dancer"
+    }
+  },
+  {
+    "id": 114,
+    "name": {
+      "pt": "Sanfoneiro",
+      "en": "Accordion player"
+    }
+  },
+  {
+    "id": 115,
+    "name": {
+      "pt": "Passista",
+      "en": "Samba dancer"
+    }
+  },
+  {
+    "id": 116,
+    "name": {
+      "pt": "Mestre-sala",
+      "en": "Samba flag escort"
+    }
+  },
+  {
+    "id": 117,
+    "name": {
+      "pt": "Porta-bandeira",
+      "en": "Flag bearer"
+    }
+  },
+  {
+    "id": 118,
+    "name": {
+      "pt": "Peão",
+      "en": "Rodeo rider"
+    }
+  },
+  {
+    "id": 119,
+    "name": {
+      "pt": "Locutor",
+      "en": "Announcer"
+    }
+  },
+  {
+    "id": 120,
+    "name": {
+      "pt": "Duende",
+      "en": "Elf"
+    }
+  },
+  {
+    "id": 121,
+    "name": {
+      "pt": "Massagista",
+      "en": "Massage therapist"
+    }
+  },
+  {
+    "id": 122,
+    "name": {
+      "pt": "Sommelier",
+      "en": "Sommelier"
+    }
+  },
+  {
+    "id": 123,
+    "name": {
+      "pt": "Skatista",
+      "en": "Skater"
+    }
+  },
+  {
+    "id": 124,
+    "name": {
+      "pt": "Monge",
+      "en": "Monk"
+    }
+  },
+  {
+    "id": 125,
+    "name": {
+      "pt": "Advogado",
+      "en": "Lawyer"
+    }
+  },
+  {
+    "id": 126,
+    "name": {
+      "pt": "Farmacêutico",
+      "en": "Pharmacist"
+    }
+  },
+  {
+    "id": 127,
+    "name": {
+      "pt": "Tatuador",
+      "en": "Tattoo artist"
+    }
+  },
+  {
+    "id": 128,
+    "name": {
+      "pt": "Jornalista",
+      "en": "Journalist"
+    }
+  },
+  {
+    "id": 129,
+    "name": {
+      "pt": "Florista",
+      "en": "Florist"
+    }
+  },
+  {
+    "id": 130,
+    "name": {
+      "pt": "Mestre cervejeiro",
+      "en": "Brewmaster"
+    }
+  },
+  {
+    "id": 131,
+    "name": {
+      "pt": "Ferreiro",
+      "en": "Blacksmith"
+    }
+  },
+  {
+    "id": 132,
+    "name": {
+      "pt": "Nadador",
+      "en": "Swimmer"
+    }
+  },
+  {
+    "id": 133,
+    "name": {
+      "pt": "Dentista",
+      "en": "Dentist"
+    }
+  },
+  {
+    "id": 134,
+    "name": {
+      "pt": "Auxiliar de dentista",
+      "en": "Dental assistant"
+    }
+  },
+  {
+    "id": 135,
+    "name": {
+      "pt": "Frentista",
+      "en": "Gas station attendant"
+    }
+  },
+  {
+    "id": 136,
+    "name": {
+      "pt": "Lavador",
+      "en": "Laundry worker"
+    }
+  },
+  {
+    "id": 137,
+    "name": {
+      "pt": "Dançarino",
+      "en": "Dancer"
+    }
+  },
+  {
+    "id": 138,
+    "name": {
+      "pt": "Lutador",
+      "en": "Fighter"
+    }
+  },
+  {
+    "id": 139,
+    "name": {
+      "pt": "Golfista",
+      "en": "Golfer"
+    }
+  },
+  {
+    "id": 140,
+    "name": {
+      "pt": "Caddie",
+      "en": "Caddie"
+    }
+  },
+  {
+    "id": 141,
+    "name": {
+      "pt": "Patinador",
+      "en": "Ice skater"
+    }
+  },
+  {
+    "id": 142,
+    "name": {
+      "pt": "Analista",
+      "en": "Analyst"
+    }
+  },
+  {
+    "id": 143,
+    "name": {
+      "pt": "Estagiário",
+      "en": "Intern"
+    }
+  },
+  {
+    "id": 144,
+    "name": {
+      "pt": "Escrivão",
+      "en": "Notary clerk"
+    }
+  },
+  {
+    "id": 145,
+    "name": {
+      "pt": "Prefeito",
+      "en": "Mayor"
+    }
+  },
+  {
+    "id": 146,
+    "name": {
+      "pt": "Vereador",
+      "en": "City councilor"
+    }
+  },
+  {
+    "id": 147,
+    "name": {
+      "pt": "Estoquista",
+      "en": "Stock clerk"
+    }
+  },
+  {
+    "id": 148,
+    "name": {
+      "pt": "Entregador",
+      "en": "Delivery driver"
+    }
+  },
+  {
+    "id": 149,
+    "name": {
+      "pt": "Ceramista",
+      "en": "Potter"
+    }
+  },
+  {
+    "id": 150,
+    "name": {
+      "pt": "Marceneiro",
+      "en": "Carpenter"
+    }
+  },
+  {
+    "id": 151,
+    "name": {
+      "pt": "Aprendiz",
+      "en": "Apprentice"
+    }
+  },
+  {
+    "id": 152,
+    "name": {
+      "pt": "Leiloeiro",
+      "en": "Auctioneer"
+    }
+  },
+  {
+    "id": 153,
+    "name": {
+      "pt": "Colecionador",
+      "en": "Collector"
+    }
+  },
+  {
+    "id": 154,
+    "name": {
+      "pt": "Costureira",
+      "en": "Seamstress"
+    }
+  },
+  {
+    "id": 155,
+    "name": {
+      "pt": "Joalheiro",
+      "en": "Jeweler"
+    }
+  },
+  {
+    "id": 156,
+    "name": {
+      "pt": "Adestrador",
+      "en": "Dog trainer"
+    }
+  },
+  {
+    "id": 157,
+    "name": {
+      "pt": "Podcaster",
+      "en": "Podcaster"
+    }
+  },
+  {
+    "id": 158,
+    "name": {
+      "pt": "Editor de vídeo",
+      "en": "Video editor"
+    }
+  },
+  {
+    "id": 159,
+    "name": {
+      "pt": "Cinegrafista",
+      "en": "Cameraman"
+    }
+  },
+  {
+    "id": 160,
+    "name": {
+      "pt": "Maquiador",
+      "en": "Makeup artist"
+    }
+  },
+  {
+    "id": 161,
+    "name": {
+      "pt": "Figurante",
+      "en": "Extra"
+    }
+  },
+  {
+    "id": 162,
+    "name": {
+      "pt": "DJ",
+      "en": "DJ"
+    }
+  },
+  {
+    "id": 163,
+    "name": {
+      "pt": "Bartender",
+      "en": "Bartender"
+    }
+  },
+  {
+    "id": 164,
+    "name": {
+      "pt": "Monitor",
+      "en": "Party monitor"
+    }
+  },
+  {
+    "id": 165,
+    "name": {
+      "pt": "Corredor",
+      "en": "Runner"
+    }
+  },
+  {
+    "id": 166,
+    "name": {
+      "pt": "Jóquei",
+      "en": "Jockey"
+    }
+  },
+  {
+    "id": 167,
+    "name": {
+      "pt": "Comediante",
+      "en": "Comedian"
+    }
+  },
+  {
+    "id": 168,
+    "name": {
+      "pt": "Formando",
+      "en": "Graduate"
+    }
+  },
+  {
+    "id": 169,
+    "name": {
+      "pt": "Artista",
+      "en": "Artist"
+    }
+  },
+  {
+    "id": 170,
+    "name": {
+      "pt": "Escultor",
+      "en": "Sculptor"
+    }
+  },
+  {
+    "id": 171,
+    "name": {
+      "pt": "Pedreiro",
+      "en": "Bricklayer"
+    }
+  },
+  {
+    "id": 172,
+    "name": {
+      "pt": "Arquiteto",
+      "en": "Architect"
+    }
+  },
+  {
+    "id": 173,
+    "name": {
+      "pt": "Corretor de imóveis",
+      "en": "Real estate agent"
+    }
+  },
+  {
+    "id": 174,
+    "name": {
+      "pt": "Paleontólogo",
+      "en": "Paleontologist"
+    }
+  },
+  {
+    "id": 175,
+    "name": {
+      "pt": "Pizzaiolo",
+      "en": "Pizza maker"
+    }
+  },
+  {
+    "id": 176,
+    "name": {
+      "pt": "Luthier",
+      "en": "Luthier"
+    }
+  },
+  {
+    "id": 177,
+    "name": {
+      "pt": "Cuidador",
+      "en": "Caregiver"
+    }
+  },
+  {
+    "id": 178,
+    "name": {
+      "pt": "Músico",
+      "en": "Musician"
+    }
+  },
+  {
+    "id": 179,
+    "name": {
+      "pt": "Cosplayer",
+      "en": "Cosplayer"
+    }
+  },
+  {
+    "id": 180,
+    "name": {
+      "pt": "Modelo",
+      "en": "Model"
+    }
+  },
+  {
+    "id": 181,
+    "name": {
+      "pt": "Debutante",
+      "en": "Debutante"
+    }
+  },
+  {
+    "id": 182,
+    "name": {
+      "pt": "Sereia",
+      "en": "Mermaid"
+    }
+  }
+]

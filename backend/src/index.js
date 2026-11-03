@@ -1,30 +1,20 @@
 import express from 'express'
 import cors from 'cors'
 import { port, gamePath, admPath, dbPath } from './configs/index.js'
-import redirectIfNotAuth from './db-api/middlewares/redirect.js'
-import session from 'express-session'
 import { createServer } from "http";
 import { Server } from "socket.io";
 import gameEventsHandler from "./game/eventsHandlers/gameEventsHandler.js"
 import { handleSession, loadSession } from './game/session.js'
 import matchEventsHandler from './game/eventsHandlers/matchEventsHandler.js'
-import authenticationRouter from './db-api/routes/AuthenticationRoutes.js'
 import categoryRouter from './db-api/routes/CategoryRoutes.js'
 import placeRouter from './db-api/routes/PlaceRoutes.js'
 import roleRouter from './db-api/routes/RoleRoutes.js'
 
 
 const frontendPath = '../frontend'
-const frontendAdmBuildPath = `${frontendPath}/spyfall-br-adm/build`
 const frontendGameBuildPath = `${frontendPath}/spyfall-br-game/build`
 
 const app = express()
-
-app.use(session({
-    secret: 'segredo123',
-    resave: false,
-    saveUninitialized: true
-}))
 
 if (process.env.NODE_ENV === 'production') {
     app.use(
@@ -36,14 +26,21 @@ if (process.env.NODE_ENV === 'production') {
         cors() // AVISO: Remover isso quando for colocar em produção. É para parar de bloquear o frontend de acessar o backend no localhost
     )
 }
-app.use(admPath, authenticationRouter)
+
+// O servidor do jogo só lê o banco (lugares, cargos, categorias e imagens).
+// Escrita é exclusiva do servidor de administração (admServer.js).
+app.use(dbPath, (req, res, next) => {
+    if (req.method !== 'GET') {
+        return res.status(405).json({ 'message': 'Method not allowed on the game server. Use the administration server.' })
+    }
+    next()
+})
 app.use(dbPath, categoryRouter)
 app.use(dbPath, placeRouter)
 app.use(dbPath, roleRouter)
 
-app.use(redirectIfNotAuth)
-app.use(admPath, express.static(frontendAdmBuildPath))
-
+// A administração não existe neste servidor (ver admServer.js).
+app.use(admPath, (req, res) => res.status(404).json({ 'message': 'Not found. The administration server is a separate server.' }))
 app.use(gamePath, express.static(frontendGameBuildPath))
 app.use(`${gamePath}/:URLGameCode`, express.static(frontendGameBuildPath))
 
@@ -71,7 +68,7 @@ io.use((socket, next) => handleSession(socket, next, users));
 io.on('connection', (socket) => {
 
     users[socket.sessionID].online = true
-    
+
     loadSession(socket, users)
 
     gameEventsHandler(io, socket, games, users)

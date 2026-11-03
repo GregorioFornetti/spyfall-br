@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 
-import { Container, Card, Row } from "react-bootstrap";
 import MultiSelect, { Option } from "../../../Multiselect";
 import Category from '../../../../interfaces/CategoryInterface';
 import Place from '../../../../interfaces/PlaceInterface';
 import Config from '../../../../interfaces/ConfigInterface';
 import PlaceCard from '../../../PlaceCard';
 import { BsArrowDownUp } from "react-icons/bs";
+import { useTranslation } from 'react-i18next';
+import { localizedName } from '../../../../utils/localizedName';
 
 interface PlaceSelectorProps {
     categories: Category[],
@@ -18,7 +19,8 @@ interface PlaceSelectorProps {
 
 export default function PlaceSelector({categories, config, places, setConfig, disabled}: PlaceSelectorProps) {
 
-    const options = categories.map((category) => ({value: category.id, label: category.name}))
+    const { t, i18n } = useTranslation()
+    const options = categories.map((category) => ({value: category.id, label: localizedName(category.name, i18n.language)}))
     const [selectedCategories, setSelectedCategories] = useState<any>([]);
 
     useEffect(() => {
@@ -45,108 +47,99 @@ export default function PlaceSelector({categories, config, places, setConfig, di
         setSelectedCategories(options.filter((option) => selectedCategoriesIds.includes(option.value.toString())))
     }, [config.selectedPlacesIds, categories])
 
+    const placesGrid = (filtered: Place[], onPick: (place: Place) => void) => (
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            {filtered.map((place) => (
+                <PlaceCard
+                    type={disabled ? 'selected' : 'option'}
+                    title={localizedName(place.name, i18n.language)}
+                    key={place.id}
+                    imgURL={place.imgPath}
+                    onClick={disabled ? undefined : () => onPick(place)}
+                />
+            ))}
+            {filtered.length === 0 &&
+                <p className="py-6 text-center text-sm text-zinc-500 sm:col-span-2 xl:col-span-3">{t('config.noPlaces')}</p>
+            }
+        </div>
+    )
+
     return (
         <>
-            <Container className='mt-4'>
-                <Card>
-                    <Card.Header className={'text-center'}>
-                        <h3 className="h5">Lugares selecionados</h3>
-                        <MultiSelect
-                            options={options}
-                            selected={selectedCategories}
-                            setSelected={setSelectedCategories}
-                            title='Selecionar por categorias'
-                            onChange={(newValue, actionMeta, selectAllOption) => {
-                                
-                                const {action, option, removedValue} = actionMeta;
-                                const opt = option as Option
-                                const removed = removedValue as Option
+            <section className="mt-4 overflow-hidden rounded-xl border border-zinc-200">
+                <header className="border-b border-zinc-200 bg-zinc-50 px-4 py-3 text-center">
+                    <h4 className="mb-3 text-base font-semibold">{t('config.selectedPlaces', { count: config.selectedPlacesIds.length })}</h4>
+                    <MultiSelect
+                        options={options}
+                        selected={selectedCategories}
+                        setSelected={setSelectedCategories}
+                        title={t('config.selectByCategories')}
+                        onChange={(newValue, actionMeta, selectAllOption) => {
 
-                                // Todas as categorias foram selecionadas, logo, todos locais também devem ser selecionados
-                                if (action === 'select-option' && opt.value === selectAllOption.value) {
-                                    config.selectedPlacesIds = places.map((place) => place.id);
-                                    setConfig({...config});
-                                }
+                            const {action, option, removedValue} = actionMeta;
+                            const opt = option as Option
+                            const removed = removedValue as Option
 
-                                // Todas as categorias foram deselecionadas, logo, todos locais também devem ser deselecionados
-                                else if ((action === 'deselect-option' && opt.value === selectAllOption.value) || (action === 'remove-value' && removed.value === selectAllOption.value)) {
+                            // Todas as categorias foram selecionadas, logo, todos locais também devem ser selecionados
+                            if (action === 'select-option' && opt.value === selectAllOption.value) {
+                                config.selectedPlacesIds = places.map((place) => place.id);
+                                setConfig({...config});
+                            }
 
-                                    config.selectedPlacesIds = [];
-                                    setConfig({...config});
-                                }
+                            // Todas as categorias foram deselecionadas, logo, todos locais também devem ser deselecionados
+                            else if ((action === 'deselect-option' && opt.value === selectAllOption.value) || (action === 'remove-value' && removed.value === selectAllOption.value)) {
 
-                                // Uma categoria foi deselecionada, logo, todos locais dessa categoria também devem ser deselecionados
-                                else if (actionMeta.action === 'deselect-option' || actionMeta.action === 'remove-value') {
-                                    const currentOpt = removed || opt
-                                    config.selectedPlacesIds = config.selectedPlacesIds.filter((id) => {
-                                        const place = places.find((place) => place.id === id) as Place
-                                        return !place.categoriesIds.includes(currentOpt.value as number)
-                                    });
-                                    setConfig({...config});
-                                }
+                                config.selectedPlacesIds = [];
+                                setConfig({...config});
+                            }
 
-                                // Uma categoria foi selecionada, logo, todos locais dessa categoria também devem ser selecionados
-                                else if (actionMeta.action === 'select-option') {
-                                    config.selectedPlacesIds = [...config.selectedPlacesIds, ...places.filter((place) => place.categoriesIds.includes(opt.value as number)).map((place) => place.id)];
-                                    setConfig({...config});
-                                }
+                            // Uma categoria foi deselecionada, logo, todos locais dessa categoria também devem ser deselecionados
+                            else if (actionMeta.action === 'deselect-option' || actionMeta.action === 'remove-value') {
+                                const currentOpt = removed || opt
+                                config.selectedPlacesIds = config.selectedPlacesIds.filter((id) => {
+                                    const place = places.find((place) => place.id === id) as Place
+                                    return !place.categoriesIds.includes(currentOpt.value as number)
+                                });
+                                setConfig({...config});
+                            }
 
-                            }}
-                            disabled={disabled}
-                        />
-                    </Card.Header>
-                    <Card.Body style={{height: '470px', overflowY: 'scroll'}}>
-                        <Container>
-                            <Row xl={3} lg={2} sm={1} className="gy-4">
-                                {places
-                                .filter((place) => config.selectedPlacesIds.includes(place.id))
-                                .map((place) => (
-                                    <PlaceCard
-                                        type={disabled ? 'selected' : 'option'}
-                                        title={place.name}
-                                        key={place.id}
-                                        imgURL={place.imgPath}
-                                        onClick={disabled ? undefined : () => {
-                                            config.selectedPlacesIds = config.selectedPlacesIds.filter((id) => id !== place.id);
-                                            setConfig({...config});
-                                        }}
-                                    />
-                                ))}
-                            </Row>
-                        </Container>
-                    </Card.Body>
-                </Card>
-            </Container>
-            
-            <BsArrowDownUp className='d-block mx-auto mt-4' size={50} />
+                            // Uma categoria foi selecionada, logo, todos locais dessa categoria também devem ser selecionados
+                            else if (actionMeta.action === 'select-option') {
+                                config.selectedPlacesIds = [...config.selectedPlacesIds, ...places.filter((place) => place.categoriesIds.includes(opt.value as number)).map((place) => place.id)];
+                                setConfig({...config});
+                            }
 
-            <Container className='mt-4'>
-                <Card>
-                    <Card.Header className={'text-center'}>
-                        <h3 className="h5">Lugares não selecionados</h3>
-                    </Card.Header>
-                    <Card.Body style={{height: '470px', overflowY: 'scroll'}}>
-                        <Container>
-                            <Row xl={3} lg={2} sm={1} className="gy-4">
-                                {places
-                                .filter((place) => !config.selectedPlacesIds.includes(place.id))
-                                .map((place) => (
-                                    <PlaceCard
-                                        type={disabled ? 'selected' : 'option'}
-                                        title={place.name}
-                                        key={place.id}
-                                        imgURL={place.imgPath}
-                                        onClick={disabled ? undefined : () => {
-                                            config.selectedPlacesIds = [...config.selectedPlacesIds, place.id]
-                                            setConfig({...config})
-                                        }}
-                                    />
-                                ))}
-                            </Row>
-                        </Container>
-                    </Card.Body>
-                </Card>
-            </Container>
+                        }}
+                        disabled={disabled}
+                    />
+                </header>
+                <div className="max-h-[470px] overflow-y-auto p-4">
+                    {placesGrid(
+                        places.filter((place) => config.selectedPlacesIds.includes(place.id)),
+                        (place) => {
+                            config.selectedPlacesIds = config.selectedPlacesIds.filter((id) => id !== place.id);
+                            setConfig({...config});
+                        }
+                    )}
+                </div>
+            </section>
+
+            <BsArrowDownUp className='mx-auto mt-4 block text-zinc-400' size={40} aria-hidden="true" />
+
+            <section className="mt-4 overflow-hidden rounded-xl border border-zinc-200">
+                <header className="border-b border-zinc-200 bg-zinc-50 px-4 py-3 text-center">
+                    <h4 className="text-base font-semibold">{t('config.unselectedPlaces', { count: places.length - config.selectedPlacesIds.length })}</h4>
+                </header>
+                <div className="max-h-[470px] overflow-y-auto p-4">
+                    {placesGrid(
+                        places.filter((place) => !config.selectedPlacesIds.includes(place.id)),
+                        (place) => {
+                            config.selectedPlacesIds = [...config.selectedPlacesIds, place.id]
+                            setConfig({...config})
+                        }
+                    )}
+                </div>
+            </section>
         </>
     );
 }

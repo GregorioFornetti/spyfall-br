@@ -1,26 +1,22 @@
-
 import placeholderImg from '../../assets/placeholder.png'
-import styles from './PlaceCardPreview.module.scss'
 
 interface PlaceCardPreviewProps {
     title: string,
     imgURL?: string
 }
 
-export default function PlaceCardPreview({title, imgURL}: PlaceCardPreviewProps) {
+export default function PlaceCardPreview({ title, imgURL }: PlaceCardPreviewProps) {
     return (
-        <div className={styles.previewBox} draggable={false}>
+        <figure className="relative mx-auto w-[300px] max-w-full text-center">
             <img
-                className={styles.previewImg}
-                src={(imgURL) ? (imgURL) : (placeholderImg)}
+                className="aspect-[3/2] w-full select-none rounded-[20px] border-[3px] border-zinc-400 object-cover"
+                src={imgURL ? imgURL : placeholderImg}
+                alt={title}
                 draggable={false}
-                
             />
-            <div className={styles.previewTitleBox}>
-                <p className={styles.previewTitle}>
-                    {title}
-                </p>
-            </div>
-        </div>
+            <figcaption className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[20px] bg-black/70 px-3.5 py-2">
+                <span className="text-xl font-medium text-white">{title}</span>
+            </figcaption>
+        </figure>
     )
 }

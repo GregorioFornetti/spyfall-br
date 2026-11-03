@@ -1,5 +1,5 @@
-import Category from '../models/Category.js'
-import { getCategories, resetCategories } from '../models/getters.js'
+import { getCategories } from '../models/getters.js'
+import { getCollection, updateCollection, removePlaceReferences, nextId, assertUniqueName, findById, normalizeName } from '../models/store.js'
 
 export async function getAllCategories(req, res) {
     try {
@@ -11,12 +11,7 @@ export async function getAllCategories(req, res) {
 
 export async function getCategoryById(req, res) {
     try {
-        const category = await Category.findOne({
-            where: {
-                id: Number(req.params.id)
-            },
-            attributes: ['id', 'name']
-        })
+        const category = findById(await getCollection('categories'), Number(req.params.id))
         return res.status(200).json({
             id: Number(category.id),
             name: category.name
@@ -28,14 +23,19 @@ export async function getCategoryById(req, res) {
 
 export async function createCategory(req, res) {
     try {
-        if (req.body.name.length === 0) {
+        const name = normalizeName(req.body.name)
+        if (!name) {
             return res.status(400).json({'error': 'O nome não pode ser vazio'})
         }
 
-        const newCategory = await Category.create(req.body)
-        resetCategories()
+        const newCategory = await updateCollection('categories', (categories) => {
+            assertUniqueName(categories, name)
+            const category = { id: nextId(categories), name }
+            categories.push(category)
+            return category
+        })
         return res.status(200).json({
-            id: Number(newCategory.id), 
+            id: Number(newCategory.id),
             name: newCategory.name
         })
     } catch(error) {
@@ -45,23 +45,18 @@ export async function createCategory(req, res) {
 
 export async function updateCategory(req, res) {
     try {
-        if (req.body.name.length === 0) {
+        const name = normalizeName(req.body.name)
+        if (!name) {
             return res.status(400).json({'error': 'O nome não pode ser vazio'})
         }
-        
-        await Category.update(req.body, {
-            where: {
-                id: Number(req.params.id)
-            }
-        })
-        const updatedCategory = await Category.findOne({
-            where: {
-                id: Number(req.params.id)
-            },
-            attributes: ['id', 'name']
-        })
 
-        resetCategories()
+        const id = Number(req.params.id)
+        const updatedCategory = await updateCollection('categories', (categories) => {
+            const category = findById(categories, id)
+            assertUniqueName(categories, name, id)
+            category.name = name
+            return category
+        })
         return res.status(200).json({
             id: Number(updatedCategory.id),
             name: updatedCategory.name
@@ -73,13 +68,14 @@ export async function updateCategory(req, res) {
 
 export async function deleteCategory(req, res) {
     try {
-        await Category.destroy({
-            where: {
-                id: Number(req.params.id)
+        const id = Number(req.params.id)
+        await updateCollection('categories', (categories) => {
+            const index = categories.findIndex((category) => category.id === id)
+            if (index !== -1) {
+                categories.splice(index, 1)
             }
         })
-        
-        resetCategories()
+        await removePlaceReferences('categoriesIds', id)
         return res.status(200).json({message: `Category with id ${req.params.id} deleted`})
     } catch(error) {
         return res.status(500).json(error.message)

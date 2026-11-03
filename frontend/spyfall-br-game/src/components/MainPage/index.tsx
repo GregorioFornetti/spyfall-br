@@ -1,10 +1,7 @@
-import classNames from "classnames"
-import { Button } from "react-bootstrap"
-import styles from './MainPage.module.scss'
 import { useState } from 'react'
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
 import { Socket } from "socket.io-client";
+import { useTranslation } from 'react-i18next';
+import Modal, { ActionButton, inputClass, labelClass } from '../ui/Modal';
 
 interface MainPageProps {
     show?: boolean,
@@ -14,6 +11,7 @@ interface MainPageProps {
 }
 
 export default function MainPage({show, socket, URLGameCode, setURLGameCode}: MainPageProps) {
+    const { t } = useTranslation()
     const [showNewMatchModal, setShowNewMatchModal] = useState(false)
     const [showJoinMatchModal, setShowJoinMatchModal] = useState(false)
 
@@ -34,7 +32,7 @@ export default function MainPage({show, socket, URLGameCode, setURLGameCode}: Ma
             socket.emit("create-room", {username: username})
             setShowNewMatchModal(false)
         } else {
-            alert("Digite um nome !")
+            alert(t('main.alertName'))
         }
     }
 
@@ -44,78 +42,97 @@ export default function MainPage({show, socket, URLGameCode, setURLGameCode}: Ma
             setURLGameCode('')
             setShowJoinMatchModal(false)
         } else {
-            alert("Digite um nome e o código da partida !")
+            alert(t('main.alertNameAndCode'))
         }
+    }
+
+    if (!show) {
+        return null
     }
 
     return (
         <>
-            <div className={classNames('pt-5', {'d-none': !show})}>
-                <div className={classNames('m-auto mb-3 d-grid', styles['btn-div'])}>
-                    <Button variant="primary" onClick={openNewMatchModal}>
-                        Criar nova partida
-                    </Button>
+            <section className="mx-auto max-w-2xl pt-6 text-center sm:pt-12">
+                <p className="font-display text-5xl font-bold tracking-tight text-zinc-900 sm:text-6xl">
+                    Spyfall<span className="text-emerald-700">-br</span>
+                </p>
+                <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-zinc-600 sm:text-lg">
+                    {t('main.tagline')}
+                </p>
+
+                <div className="mx-auto mt-8 grid max-w-xl gap-3 text-left sm:grid-cols-2">
+                    <button
+                        type="button"
+                        onClick={openNewMatchModal}
+                        className="rounded-xl bg-emerald-700 px-5 py-4 text-white shadow-sm transition hover:bg-emerald-800 focus:outline-none focus:ring-2 focus:ring-emerald-700 focus:ring-offset-2"
+                    >
+                        <span className="block text-base font-semibold">{t('main.createTitle')}</span>
+                        <span className="mt-0.5 block text-sm text-emerald-100">{t('main.createSubtitle')}</span>
+                    </button>
+                    <button
+                        type="button"
+                        onClick={openJoinMatchModal}
+                        className="rounded-xl border border-zinc-300 bg-white px-5 py-4 text-zinc-900 shadow-sm transition hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:ring-offset-2"
+                    >
+                        <span className="block text-base font-semibold">{t('main.joinTitle')}</span>
+                        <span className="mt-0.5 block text-sm text-zinc-500">{t('main.joinSubtitle')}</span>
+                    </button>
                 </div>
-                <div className={classNames('m-auto mb-3 d-grid', styles['btn-div'])}>
-                    <Button variant="primary" onClick={openJoinMatchModal}>
-                        Entrar em uma partida
-                    </Button>
-                </div>
-            </div>
+
+                <ol className="mx-auto mt-10 grid max-w-xl gap-4 text-left text-sm text-zinc-600 sm:grid-cols-3">
+                    <li>
+                        <span className="font-display text-2xl font-bold text-zinc-900">1.</span>
+                        <p className="mt-1">{t('main.how1')}</p>
+                    </li>
+                    <li>
+                        <span className="font-display text-2xl font-bold text-zinc-900">2.</span>
+                        <p className="mt-1">{t('main.how2')}</p>
+                    </li>
+                    <li>
+                        <span className="font-display text-2xl font-bold text-zinc-900">3.</span>
+                        <p className="mt-1">{t('main.how3')}</p>
+                    </li>
+                </ol>
+            </section>
 
             <Modal
                 show={showNewMatchModal}
-                onHide={closeNewMatchModal}
-                backdrop="static"
-                keyboard={false}
+                title={t('main.createTitle')}
+                onClose={closeNewMatchModal}
+                footer={
+                    <>
+                        <ActionButton variant="secondary" onClick={closeNewMatchModal}>{t('common.close')}</ActionButton>
+                        <ActionButton onClick={createRoom}>{t('main.create')}</ActionButton>
+                    </>
+                }
             >
-                <Modal.Header closeButton>
-                    <Modal.Title>Criar nova partida</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form.Label>Nome</Form.Label>
-                    <Form.Control value={username} onChange={(event) => setUsername(event.target.value)} type="text" />
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={closeNewMatchModal}>
-                        Fechar
-                    </Button>
-                    <Button variant="primary" onClick={createRoom}>
-                        Criar
-                    </Button>
-                </Modal.Footer>
+                <label htmlFor="create-username" className={labelClass}>{t('main.name')}</label>
+                <input id="create-username" className={inputClass} value={username} onChange={(event) => setUsername(event.target.value)} type="text" autoFocus />
             </Modal>
 
             <Modal
                 show={showJoinMatchModal || URLGameCode.length !== 0}
-                onHide={closeJoinMatchModal}
-                backdrop="static"
-                keyboard={false}
+                title={t('main.joinTitle')}
+                onClose={closeJoinMatchModal}
+                footer={
+                    <>
+                        <ActionButton variant="secondary" onClick={closeJoinMatchModal}>{t('common.close')}</ActionButton>
+                        <ActionButton onClick={joinRoom}>{t('main.enter')}</ActionButton>
+                    </>
+                }
             >
-                <Modal.Header closeButton>
-                    <Modal.Title>Entrar em uma partida</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
+                <div className="flex flex-col gap-4">
                     {(!URLGameCode) &&
-                        <>
-                            <Form.Label>Código da partida</Form.Label>
-                            <Form.Control 
-                                value={roomCode} 
-                                onChange={(event) => setRoomCode(event.target.value)} type="text" />
-                            <br />
-                        </>
+                        <div>
+                            <label htmlFor="join-code" className={labelClass}>{t('main.roomCode')}</label>
+                            <input id="join-code" className={inputClass} value={roomCode} onChange={(event) => setRoomCode(event.target.value)} type="text" />
+                        </div>
                     }
-                    <Form.Label>Nome</Form.Label>
-                    <Form.Control value={username} onChange={(event) => setUsername(event.target.value)} type="text" />
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={closeJoinMatchModal}>
-                        Fechar
-                    </Button>
-                    <Button variant="primary" onClick={joinRoom}>
-                        Entrar
-                    </Button>
-                </Modal.Footer>
+                    <div>
+                        <label htmlFor="join-username" className={labelClass}>{t('main.name')}</label>
+                        <input id="join-username" className={inputClass} value={username} onChange={(event) => setUsername(event.target.value)} type="text" autoFocus={!!URLGameCode} />
+                    </div>
+                </div>
             </Modal>
         </>
     )
