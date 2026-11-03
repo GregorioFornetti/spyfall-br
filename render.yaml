@@ -10,9 +10,9 @@ services:
     plan: free
     dockerfilePath: ./Dockerfiles/server.Dockerfile
     dockerContext: .
-    # The Dockerfile's CMD already does this; kept explicit because
-    # docker-compose is what used to override the old broken CMD.
-    dockerCommand: cd /home/node/app/backend && node src/index.js
+    # No dockerCommand: Render does not run it through a shell, so
+    # `cd ... && node ...` exits with status 128. The image starts via
+    # the Dockerfile CMD (node src/index.js, WORKDIR backend) instead.
     healthCheckPath: /spyfall
     autoDeploy: true
     envVars:
