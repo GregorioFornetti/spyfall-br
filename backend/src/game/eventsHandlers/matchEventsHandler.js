@@ -13,6 +13,39 @@ export default function matchEventsHandler(io, socket, users) {
         await game.startMatch(io, user, socket)
     })
 
+    socket.on('next-round', async (arg) => {
+        var user = users[socket.sessionID]
+        var game = user.game
+
+        if (!game || game.inMatch) {
+            return
+        }
+
+        await game.startNextRound(io, user, socket)
+    })
+
+    socket.on('request-extension', (arg) => {
+        var user = users[socket.sessionID]
+        var game = user.game
+
+        if (!game || !game.inMatch) {
+            return
+        }
+
+        game.match.requestExtension(io, socket, user.userID)
+    })
+
+    socket.on('extension-vote', (arg) => {
+        var user = users[socket.sessionID]
+        var game = user.game
+
+        if (!game || !game.inMatch) {
+            return
+        }
+
+        game.match.receiveExtensionVote(io, socket, user.userID, arg)
+    })
+
     socket.on('new-questioning', (arg) => {
         var targetUserID = arg
         var user = users[socket.sessionID]

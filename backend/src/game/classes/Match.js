@@ -44,11 +44,14 @@ function selectUserRoles(possibleRolesIDs, usersIDs, spyID) {
 }
 
 
+export const EXTENSION_SECONDS = 60
+export const EXTENSION_VOTE_TIMEOUT_MS = 20 * 1000
+
 export default class Match extends EventEmitter {
-    static async build(config, players, io) {
+    static async build(config, players, io, options = {}) {
 
         const usersIDs = players.map((player) => (player.user.userID))
-        const newMatch = new this(config, players, usersIDs, io)
+        const newMatch = new this(config, players, usersIDs, io, options)
 
         const customPlace = (config.customPlaces ?? []).find((place) => place.id === newMatch.selectedPlaceID)
         const placeRolesIDs = customPlace ? customPlace.rolesIds : await getPlaceRoles(newMatch.selectedPlaceID)
@@ -58,7 +61,7 @@ export default class Match extends EventEmitter {
         return newMatch
     }
 
-    constructor(config, players, usersIDs, io) {
+    constructor(config, players, usersIDs, io, options = {}) {
         super()
         this.config = config
         this.players = players
@@ -66,7 +69,13 @@ export default class Match extends EventEmitter {
         this.possiblePlacesIDs = selectMatchPossiblePlaces(config.selectedPlacesIds, config.qntSelectedPlaces)
         this.selectedPlaceID = selectMatchPlace(this.possiblePlacesIDs)
         this.spyUserID = selectSpy(usersIDs)
-        this.askingUserID = selectAskingUser(usersIDs)
+        this.askingUserID = usersIDs.includes(options.askingUserID) ? options.askingUserID : selectAskingUser(usersIDs)
+        this.initialAskingUserID = this.askingUserID
+        this.round = Number.isInteger(options.round) && options.round > 0 ? options.round : 1
+        this.questionLog = []
+        this.extensionUsed = false
+        this.extensionVote = null
+        this.extensionVoteTimeout = null
         this.targetUserID = null
         this.usersRolesIDs = null
         this.previousAskingUserID = null
@@ -125,9 +134,10 @@ export default class Match extends EventEmitter {
         }
         
         this.targetUserID = targetUserID
+        this.questionLog.push({ askingUserID: userID, targetUserID })
 
         for (let user of this.users) {
-            io.to(user.socketID).emit('new-questioning', targetUserID)
+            io.to(user.socketID).emit('new-questioning', { targetUserID, askingUserID: userID, questionLog: [...this.questionLog] })
         }
     }
 
@@ -143,6 +153,89 @@ export default class Match extends EventEmitter {
 
         for (let user of this.users) {
             io.to(user.socketID).emit('end-questioning')
+        }
+    }
+
+    requestExtension(io, socket, userID) {
+        if (this.extensionUsed) {
+            socket.emit('error', 'A extensão de tempo já foi usada nesta rodada')
+            return
+        }
+        if (this.extensionVote) {
+            socket.emit('error', 'Já há uma votação de extensão em andamento')
+            return
+        }
+        if (this.inVotation) {
+            socket.emit('error', 'Não é possível pedir extensão durante uma votação')
+            return
+        }
+        if (this.matchTimeLeft <= 0) {
+            socket.emit('error', 'Não é possível pedir extensão agora')
+            return
+        }
+
+        this.extensionVote = { proposerUserID: userID, agreedUsersIds: [userID], disagreedUsersIds: [] }
+        this.extensionVoteTimeout = setTimeout(() => this.closeExtensionVote(io, false), EXTENSION_VOTE_TIMEOUT_MS)
+        this.extensionVoteTimeout.unref?.()
+
+        for (let user of this.users) {
+            io.to(user.socketID).emit('extension-vote-start', { ...this.extensionVote })
+        }
+        this.checkExtensionVote(io)
+    }
+
+    receiveExtensionVote(io, socket, userID, agree) {
+        if (!this.extensionVote) {
+            socket.emit('error', 'Não há uma votação de extensão em andamento')
+            return
+        }
+        if (this.extensionVote.agreedUsersIds.includes(userID) || this.extensionVote.disagreedUsersIds.includes(userID)) {
+            socket.emit('error', 'Não é possível votar novamente')
+            return
+        }
+
+        if (agree) {
+            this.extensionVote.agreedUsersIds.push(userID)
+        } else {
+            this.extensionVote.disagreedUsersIds.push(userID)
+        }
+
+        for (let user of this.users) {
+            io.to(user.socketID).emit('extension-vote-update', { ...this.extensionVote })
+        }
+        this.checkExtensionVote(io)
+    }
+
+    checkExtensionVote(io) {
+        if (!this.extensionVote) {
+            return
+        }
+        const needed = Math.floor(this.users.length / 2) + 1
+        if (this.extensionVote.agreedUsersIds.length >= needed) {
+            this.closeExtensionVote(io, true)
+        } else if (this.extensionVote.disagreedUsersIds.length > this.users.length - needed) {
+            this.closeExtensionVote(io, false)
+        }
+    }
+
+    closeExtensionVote(io, granted) {
+        if (!this.extensionVote) {
+            return
+        }
+        clearTimeout(this.extensionVoteTimeout)
+        this.extensionVoteTimeout = null
+        this.extensionVote = null
+
+        if (granted) {
+            this.extensionUsed = true
+            this.matchTimeLeft += EXTENSION_SECONDS
+            for (let user of this.users) {
+                io.to(user.socketID).emit('extension-granted', { matchTimeLeft: this.matchTimeLeft, extensionUsed: true })
+            }
+        } else {
+            for (let user of this.users) {
+                io.to(user.socketID).emit('extension-rejected', { extensionUsed: this.extensionUsed })
+            }
         }
     }
 
@@ -175,6 +268,10 @@ export default class Match extends EventEmitter {
     }
 
     makeAccusation(io, socket, accuserUserID, accusedUserID) {
+        if (this.extensionVote) {
+            socket.emit('error', 'Não é possível acusar durante uma votação de extensão')
+            return
+        }
         if (accuserUserID === accusedUserID) {
             socket.emit('error', 'Não é possível se acusar')
             return
@@ -284,11 +381,16 @@ export default class Match extends EventEmitter {
 
     endMatch(io, winner, winDescription) {
         console.log(this.spyUserID)
+        clearTimeout(this.extensionVoteTimeout)
+        this.extensionVoteTimeout = null
+        this.extensionVote = null
         let matchResult = {
             spyUserID: this.spyUserID,
             selectedPlaceID: this.selectedPlaceID,
             winner: winner,
             winDescription: winDescription,
+            round: this.round,
+            questionLog: [...this.questionLog],
             players: this.players.map((player) => (player.toJSON()))
         }
 
@@ -309,6 +411,10 @@ export default class Match extends EventEmitter {
             possiblePlacesIDs: this.possiblePlacesIDs,
             previousAskingUserID: this.previousAskingUserID,
             matchTimeLeft: this.matchTimeLeft,
+            round: this.round,
+            questionLog: [...this.questionLog],
+            extensionUsed: this.extensionUsed,
+            extensionVote: this.extensionVote ? { ...this.extensionVote, agreedUsersIds: [...this.extensionVote.agreedUsersIds], disagreedUsersIds: [...this.extensionVote.disagreedUsersIds] } : null,
 
             inVotation: this.inVotation,
             accusedUserID: this.accusedUserID,

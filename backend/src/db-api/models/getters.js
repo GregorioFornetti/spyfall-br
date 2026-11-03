@@ -15,7 +15,8 @@ export async function getRoles() {
     const roles = await getCollection('roles')
     return roles.map((role) => ({
         id: Number(role.id),
-        name: role.name
+        name: role.name,
+        ...(role.hint ? { hint: role.hint } : {})
     }))
 }
 

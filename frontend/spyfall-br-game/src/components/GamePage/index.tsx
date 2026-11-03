@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { Socket } from "socket.io-client";
 
 import PlayerCard from '../PlayerCard';
@@ -14,11 +14,25 @@ import VoteModal from './VoteModal';
 import GuessModal from './GuessModal';
 import QuestionModal from './QuestionModal';
 import Timer from './Timer';
-import { ActionButton } from '../ui/Modal';
+import Modal, { ActionButton } from '../ui/Modal';
 import { useTranslation } from 'react-i18next';
 import { localizedName } from '../../utils/localizedName';
+import { alertMyTurn, playTickSound, requestNotificationPermission, notifyVoteOpened, notifyBrowser } from '../../utils/alerts';
+import { questionHintsFor } from '../../utils/questionHints';
+import { roleHintText } from '../../utils/roleHint';
+import { useState } from 'react';
 
 
+export interface QuestionLogEntry {
+    askingUserID: string,
+    targetUserID: string
+}
+
+export interface ExtensionVote {
+    proposerUserID: string,
+    agreedUsersIds: string[],
+    disagreedUsersIds: string[]
+}
 
 interface GamePageProps {
     show?: boolean,
@@ -39,25 +53,75 @@ interface GamePageProps {
     accuserUserID?: string,
     agreedUsersIds: string[],
     desagreedUsersIds: string[],
+    round: number,
+    questionLog: QuestionLogEntry[],
+    extensionUsed: boolean,
+    extensionVote: ExtensionVote | null,
     socket: Socket
 }
 
 
-export default function GamePage({show, isSpy, selectedPlace, playerRole, possiblePlaces, players, currentUserID, leaderUserID, askingUserID, targetUserID, inVotation, previousAskingUserID, accusedUserID, accuserUserID, agreedUsersIds, desagreedUsersIds, socket, matchTime, votationTime}: GamePageProps) {
+export default function GamePage({show, isSpy, selectedPlace, playerRole, possiblePlaces, players, currentUserID, leaderUserID, askingUserID, targetUserID, inVotation, previousAskingUserID, accusedUserID, accuserUserID, agreedUsersIds, desagreedUsersIds, socket, matchTime, votationTime, round, questionLog, extensionUsed, extensionVote}: GamePageProps) {
 
     const { t, i18n } = useTranslation()
     const [showAccuseModal, setShowAccuseModal] = useState(false)
     const [showGuessModal, setShowGuessModal] = useState(false)
     const [showQuestionModal, setShowQuestionModal] = useState(false)
     const myTurn = currentUserID === askingUserID && !targetUserID
+    const playerName = (userID?: string) => players.find((p) => p.id === userID)?.username ?? t('game.otherPlayer')
+    const hintText = (!isSpy) ? roleHintText(playerRole, selectedPlace, i18n.language, (role, place) => t('game.roleHintFallback', { role, place })) : null
+    const hints = questionHintsFor(i18n.language, questionLog.length)
+
+    // Alerta de turno: som + vibração quando chega a minha vez de questionar
+    // (e notificação se a aba estiver escondida).
+    useEffect(() => {
+        if (show && myTurn) {
+            alertMyTurn()
+            if (document.hidden) {
+                notifyBrowser(t('game.yourTurnNotify'), '')
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [myTurn, askingUserID, show])
+
+    // Notificação do navegador quando uma votação de acusação abre.
+    useEffect(() => {
+        if (show && inVotation) {
+            notifyVoteOpened(
+                t('game.voteNotifyTitle'),
+                `${playerName(accuserUserID)} → ${playerName(accusedUserID)}`
+            )
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [inVotation, show])
+
+    // Tic-tac nos últimos 10 segundos da rodada.
+    useEffect(() => {
+        if (show && matchTime > 0 && matchTime <= 10) {
+            playTickSound()
+        }
+    }, [matchTime, show])
+
+    useEffect(() => {
+        if (show) {
+            requestNotificationPermission()
+        }
+    }, [show])
 
     if (!show) {
         return null
     }
 
+    const extensionVoted = extensionVote
+        ? (extensionVote.agreedUsersIds.includes(currentUserID) || extensionVote.disagreedUsersIds.includes(currentUserID))
+        : false
+
     return (
         <>
           <div>
+            {round > 0 &&
+              <p className="mb-3 text-center text-sm font-semibold uppercase tracking-wide text-zinc-500">{t('game.round', { round })}</p>
+            }
             <div className="mb-6 flex justify-center">
               <Timer time={matchTime} />
             </div>
@@ -75,6 +139,11 @@ export default function GamePage({show, isSpy, selectedPlace, playerRole, possib
                   {playerRole &&
                     <p className="mt-3 text-center text-lg">
                         {t('game.role')}: <strong>{localizedName(playerRole.name, i18n.language)}</strong>
+                    </p>
+                  }
+                  {hintText &&
+                    <p className="mt-3 rounded-lg bg-emerald-50 px-3 py-2 text-center text-sm text-emerald-900">
+                        <span className="font-semibold">{t('game.roleHintLabel')}:</span> {hintText}
                     </p>
                   }
                   {isSpy &&
@@ -97,13 +166,34 @@ export default function GamePage({show, isSpy, selectedPlace, playerRole, possib
                   {t('game.guessPlace')}
                 </ActionButton>
             </div>
+            <div className="mx-auto mt-3 max-w-xl">
+                <ActionButton
+                  variant="secondary"
+                  className="w-full"
+                  disabled={extensionUsed || !!extensionVote || inVotation}
+                  onClick={() => socket.emit('request-extension')}
+                >
+                  {extensionUsed ? t('game.extendUsed') : t('game.extendTime')}
+                </ActionButton>
+            </div>
             <p className="mt-3 text-center text-sm text-zinc-500" role="status">
                 {myTurn
                     ? t('game.yourTurn')
                     : targetUserID
                         ? t('game.questioningInProgress')
-                        : t('game.turnOf', { name: players.find((p) => p.id === askingUserID)?.username ?? t('game.otherPlayer') })}
+                        : t('game.turnOf', { name: playerName(askingUserID) })}
             </p>
+
+            {myTurn &&
+              <section className="mx-auto mt-4 max-w-xl rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3">
+                <h5 className="text-sm font-semibold text-emerald-900">{t('game.questionHints')}</h5>
+                <ul className="mt-2 list-inside list-disc space-y-1 text-sm text-emerald-900">
+                  {hints.map((hint) => (
+                    <li key={hint}>{hint}</li>
+                  ))}
+                </ul>
+              </section>
+            }
 
             <UsersContainer title={t('game.players')} containerClassName='mt-8'>
               {players.map((player) => (
@@ -119,6 +209,23 @@ export default function GamePage({show, isSpy, selectedPlace, playerRole, possib
                   />
               ))}
             </UsersContainer>
+
+            <section className="mx-auto mt-8 max-w-xl">
+              <h4 className="text-center text-lg font-semibold text-zinc-900">{t('game.questionLog')}</h4>
+              {questionLog.length === 0 ? (
+                <p className="mt-2 text-center text-sm text-zinc-500">{t('game.logEmpty')}</p>
+              ) : (
+                <ol className="mt-3 space-y-1.5">
+                  {questionLog.map((entry, index) => (
+                    <li key={index} className="rounded-lg border border-zinc-200 bg-white px-4 py-2 text-sm text-zinc-700 shadow-sm">
+                      <span className="font-medium text-zinc-900">{playerName(entry.askingUserID)}</span>
+                      {' → '}
+                      <span className="font-medium text-zinc-900">{playerName(entry.targetUserID)}</span>
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </section>
 
             <PlacesContainer title={t('game.possiblePlaces')} containerClassName='mt-8'>
               {possiblePlaces.map((place) => (
@@ -163,6 +270,37 @@ export default function GamePage({show, isSpy, selectedPlace, playerRole, possib
             desagreedUsersIds={desagreedUsersIds}
           />
 
+          <Modal
+            show={!!extensionVote}
+            title={t('game.extensionTitle')}
+            wide
+            footer={
+                <>
+                    <ActionButton onClick={() => socket.emit('extension-vote', true)} disabled={extensionVoted} className="flex-1 sm:flex-none">
+                        {t('game.agree')}
+                    </ActionButton>
+                    <ActionButton variant="danger" onClick={() => socket.emit('extension-vote', false)} disabled={extensionVoted} className="flex-1 sm:flex-none">
+                        {t('game.disagree')}
+                    </ActionButton>
+                </>
+            }
+          >
+            <p className="text-sm text-zinc-600">
+                {t('game.extensionAsk', { name: playerName(extensionVote?.proposerUserID) })}
+            </p>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                {players.map((player) => (
+                    <PlayerCard
+                        key={player.id}
+                        username={player.username}
+                        score={player.score}
+                        agreed={extensionVote?.agreedUsersIds.includes(player.id)}
+                        desagreed={extensionVote?.disagreedUsersIds.includes(player.id)}
+                    />
+                ))}
+            </div>
+          </Modal>
+
           <GuessModal
             show={showGuessModal}
             setShow={setShowGuessModal}
@@ -179,6 +317,7 @@ export default function GamePage({show, isSpy, selectedPlace, playerRole, possib
             players={players}
             currentUserID={currentUserID}
             previousAskingUserID={previousAskingUserID}
+            hints={hints}
           />
         </>
       );

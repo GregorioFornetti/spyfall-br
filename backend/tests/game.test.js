@@ -235,3 +235,58 @@ test('Game: salas, jogadores, prontidão e configuração', async (t) => {
         assert.ok(json.config)
     })
 })
+
+test('Game: startNextRound dispensa pronto, mantém placar e gira o questionador', async (t) => {
+    useTempDataDir(t)
+    const { default: Game } = await import('../src/game/classes/Game.js')
+    const { default: Player } = await import('../src/game/classes/Player.js')
+    const io = fakeIo()
+
+    const leaderUser = fakeUser('s-0', 'u-0')
+    const game = new Game(leaderUser, 'Líder')
+    const { default: Config } = await import('../src/game/classes/Config.js')
+    game.config = await Config.build()
+    for (let i = 1; i < 4; i++) {
+        const user = fakeUser('s-' + i, 'u-' + i)
+        user.game = game
+        game.players.push(new Player(user, 'Jogador ' + i))
+    }
+    leaderUser.game = game
+
+    // primeira rodada pelo fluxo normal (todos prontos)
+    for (const player of game.players) player.ready = true
+    await game.startMatch(io, leaderUser, fakeSocket('s-0'))
+    assert.equal(game.inMatch, true)
+    assert.equal(game.round, 1)
+    const firstAsker = game.match.initialAskingUserID
+    game.players[0].score = 7
+
+    game.match.endMatch(io, 'spy', 'O tempo acabou')
+    assert.equal(game.inMatch, false)
+    assert.equal(game.match, null)
+
+    // ninguém está pronto, mas a próxima rodada começa mesmo assim
+    assert.ok(game.players.every((p) => !p.ready))
+    const notLeader = game.players[1].user
+    const sNotLeader = fakeSocket('s-1')
+    await game.startNextRound(io, notLeader, sNotLeader)
+    assert.equal(game.inMatch, false)
+    assert.equal(sNotLeader.emitted.at(-1)[0], 'error')
+
+    await game.startNextRound(io, leaderUser, fakeSocket('s-0'))
+    assert.equal(game.inMatch, true)
+    assert.equal(game.round, 2)
+    assert.equal(game.match.round, 2)
+
+    // quem começa questionando é o próximo jogador após o inicial anterior
+    const firstIndex = game.players.findIndex((p) => p.user.userID === firstAsker)
+    const expectedAsker = game.players[(firstIndex + 1) % game.players.length].user.userID
+    assert.equal(game.match.askingUserID, expectedAsker)
+    assert.notEqual(game.match.askingUserID, firstAsker)
+
+    // placar da sala é mantido entre rodadas
+    assert.equal(game.players[0].score, 7)
+
+    clearInterval(game.match.matchInterval)
+    game.endMatch()
+})

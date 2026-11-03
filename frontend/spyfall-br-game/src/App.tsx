@@ -1,6 +1,7 @@
 import { io } from "socket.io-client"
 
-import GamePage from './components/GamePage';
+import GamePage, { QuestionLogEntry, ExtensionVote } from './components/GamePage';
+
 import MainPage from "./components/MainPage";
 import { useState, useEffect } from "react";
 import Player from './interfaces/PlayerInterface'
@@ -117,6 +118,10 @@ function App() {
   const [desagreedUsersIds, setDesagreedsUsersIds] = useState<string[]>([])
 
   const [showResultsModal, setShowResultsModal] = useState(false)
+  const [round, setRound] = useState(0)
+  const [questionLog, setQuestionLog] = useState<QuestionLogEntry[]>([])
+  const [extensionUsed, setExtensionUsed] = useState(false)
+  const [extensionVote, setExtensionVote] = useState<ExtensionVote | null>(null)
   const [winner, setWinner] = useState<"spy"|"agents"|undefined>()
   const [winDescription, setWinDescription] = useState<string|undefined>()
   const [spy, setSpy] = useState<Player|undefined>()
@@ -187,6 +192,10 @@ function App() {
             setSelectedPlace(places.find((place) => (place.id === match.selectedPlaceID)))
             setPlayerRole(roles.find((role) => (role.id === match.userRoleID)))
             setPreviousAskingUserID(match.previousAskingUserID)
+            setRound(match.round ?? 1)
+            setQuestionLog(match.questionLog ?? [])
+            setExtensionUsed(match.extensionUsed ?? false)
+            setExtensionVote(match.extensionVote ?? null)
             setMatchTime(match.matchTimeLeft)
             if (match.inVotation) {
               setInVotation(true)
@@ -223,8 +232,15 @@ function App() {
         setVotationTime(votationTime)
       })
 
-      socket.on('new-questioning', (targetUserID) => {
-        setTargetUserID(targetUserID)
+      socket.on('new-questioning', (payload: any) => {
+        if (typeof payload === 'string') {
+          setTargetUserID(payload)
+        } else {
+          setTargetUserID(payload.targetUserID)
+          if (payload.questionLog) {
+            setQuestionLog(payload.questionLog)
+          }
+        }
       })
 
       socket.on('logout', () => {
@@ -260,12 +276,38 @@ function App() {
     setTargetUserID(undefined)
   })
 
+  socket.on('extension-vote-start', (vote: ExtensionVote) => {
+    setExtensionVote(vote)
+  })
+
+  socket.on('extension-vote-update', (vote: ExtensionVote) => {
+    setExtensionVote(vote)
+  })
+
+  socket.on('extension-granted', ({ matchTimeLeft }: { matchTimeLeft: number }) => {
+    setExtensionVote(null)
+    setExtensionUsed(true)
+    setMatchTime(matchTimeLeft)
+  })
+
+  socket.on('extension-rejected', () => {
+    setExtensionVote(null)
+  })
+
   socket.on('match-end', (matchResults) => {
     setWinner(matchResults.winner)
     setWinDescription(matchResults.winDescription)
     setSelectedPlace(places.find((place) => (place.id === matchResults.selectedPlaceID)))
     setSpy(players.find((player) => (player.id === matchResults.spyUserID)))
     setPlayers(matchResults.players)
+    if (matchResults.round) {
+      setRound(matchResults.round)
+    }
+    if (matchResults.questionLog) {
+      setQuestionLog(matchResults.questionLog)
+    }
+    setExtensionVote(null)
+    setExtensionUsed(false)
 
     setAccusedUserID(undefined)
     setAccusedUserID(undefined)
@@ -302,6 +344,11 @@ function App() {
 
   socket.on('match-start', (match) => {
     learnRemoteCustom(match.customPlaces, match.customRoles)
+    setShowResultsModal(false)
+    setRound(match.round ?? 0)
+    setQuestionLog(match.questionLog ?? [])
+    setExtensionUsed(match.extensionUsed ?? false)
+    setExtensionVote(match.extensionVote ?? null)
     setPlayers(players.map((player) => ({...player, ready: false})))
     setAskingUserID(match.askingUserID)
     setTargetUserID(match.targetUserID)
@@ -401,6 +448,10 @@ function App() {
           agreedUsersIds={agreedUsersIds}
           desagreedUsersIds={desagreedUsersIds}
           accusedUserID={accusedUserID}
+          round={round}
+          questionLog={questionLog}
+          extensionUsed={extensionUsed}
+          extensionVote={extensionVote}
           accuserUserID={accuserUserID}
           socket={socket}
         />
@@ -412,6 +463,9 @@ function App() {
           spy={spy}
           selectedPlace={selectedPlace}
           winDescripton={winDescription}
+          round={round}
+          isLeader={currentUserID === leaderUserID}
+          onNextRound={() => socket.emit('next-round')}
           winner={winner}
         />
 

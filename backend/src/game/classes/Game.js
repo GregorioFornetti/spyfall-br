@@ -29,6 +29,8 @@ export default class Game {
         this.players = [new Player(user, username)]
         this.config = null
         this.match = null
+        this.round = 0
+        this.lastAskingUserID = null
     }
 
     addNewPlayer(user, username, socket, io) {
@@ -126,8 +128,32 @@ export default class Game {
             return
         }
 
+        await this.launchMatch(io)
+    }
 
-        this.match = await Match.build(this.config, this.players, io)
+    async startNextRound(io, user, socket) {
+        if (user !== this.leader) {
+            socket.emit('error', 'Apenas o lider da sala pode começar a próxima rodada')
+            return
+        }
+        if (this.inMatch) {
+            return
+        }
+        if (this.players.length < 3) {
+            socket.emit('error', 'Só é possível começar uma partida com 3 ou mais jogadores')
+            return
+        }
+
+        // Próxima rodada dispensa o pronto de todos e gira quem começa
+        // questionando: o próximo jogador depois de quem começou a anterior.
+        const lastIndex = this.players.findIndex((player) => player.user.userID === this.lastAskingUserID)
+        const nextAsking = this.players[(lastIndex + 1) % this.players.length].user.userID
+        await this.launchMatch(io, nextAsking)
+    }
+
+    async launchMatch(io, askingUserID) {
+        this.round += 1
+        this.match = await Match.build(this.config, this.players, io, { askingUserID, round: this.round })
         this.match.on('match-end', () => this.endMatch())
         for (let player of this.players) {
             player.ready = false
@@ -136,6 +162,9 @@ export default class Game {
     }
 
     endMatch() {
+        if (this.match) {
+            this.lastAskingUserID = this.match.initialAskingUserID
+        }
         this.match = null
         this.inMatch = false
     }
@@ -147,7 +176,8 @@ export default class Game {
             leaderUserID: this.leader.userID,
             players: this.players.map((player) => (player.toJSON())),
             config: this.config.toJSON(),
-            match: null
+            match: null,
+            round: this.round
         }
 
         if (this.inMatch) {

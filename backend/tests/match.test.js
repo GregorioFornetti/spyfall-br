@@ -260,3 +260,77 @@ test('Match: fim por tempo esgotado premia o espião', async (t) => {
     assert.equal(sent[2].winner, 'spy')
     assert.equal(sent[2].spyUserID, match.spyUserID)
 })
+
+test('Match: questionLog registra questionamentos e vai no toJSON', async (t) => {
+    const { match, users, io } = await makeMatch(t)
+    const asker = users.find((u) => u.userID === match.askingUserID)
+    const other = users.find((u) => u.userID !== match.askingUserID)
+
+    match.makeNewQuestioning(io, fakeSocket(asker.socketID), asker.userID, other.userID)
+    assert.deepEqual(match.questionLog, [{ askingUserID: asker.userID, targetUserID: other.userID }])
+
+    const sent = io.sent.find(([, event]) => event === 'new-questioning')
+    assert.equal(sent[2].targetUserID, other.userID)
+    assert.equal(sent[2].askingUserID, asker.userID)
+    assert.deepEqual(sent[2].questionLog, match.questionLog)
+
+    // o histórico é público: até o espião o recebe (não revela lugar nem cargo)
+    assert.deepEqual(match.toJSON(match.spyUserID).questionLog, match.questionLog)
+})
+
+test('Match: extensão de tempo por maioria, uma vez por rodada', async (t) => {
+    const { match, users, io } = await makeMatch(t, 4)
+    const [a, b, c] = users
+    const before = match.matchTimeLeft
+
+    // sem votação aberta, votar dá erro
+    match.receiveExtensionVote(io, fakeSocket(a.socketID), a.userID, true)
+    assert.equal(match.extensionVote, null)
+
+    match.requestExtension(io, fakeSocket(a.socketID), a.userID)
+    assert.equal(match.extensionVote.proposerUserID, a.userID)
+    assert.deepEqual(match.extensionVote.agreedUsersIds, [a.userID])
+
+    // voto duplicado rejeitado; maioria em 4 jogadores é 3 (proponente + 2)
+    match.receiveExtensionVote(io, fakeSocket(a.socketID), a.userID, true)
+    assert.deepEqual(match.extensionVote.agreedUsersIds, [a.userID])
+    match.receiveExtensionVote(io, fakeSocket(b.socketID), b.userID, true)
+    assert.ok(match.extensionVote)
+    match.receiveExtensionVote(io, fakeSocket(c.socketID), c.userID, true)
+
+    assert.equal(match.extensionVote, null)
+    assert.equal(match.extensionUsed, true)
+    assert.equal(match.matchTimeLeft, before + 60)
+    assert.ok(io.sent.some(([, event]) => event === 'extension-granted'))
+
+    // segunda extensão na mesma rodada é recusada
+    const socket = fakeSocket(a.socketID)
+    match.requestExtension(io, socket, a.userID)
+    assert.equal(socket.emitted.at(-1)[0], 'error')
+    assert.equal(match.matchTimeLeft, before + 60)
+})
+
+test('Match: extensão rejeitada não consome o uso e acusação espera a votação', async (t) => {
+    const { match, users, io } = await makeMatch(t, 4)
+    const [a, b, c, d] = users
+
+    match.requestExtension(io, fakeSocket(a.socketID), a.userID)
+    // durante a votação de extensão não pode acusar
+    const accuseSocket = fakeSocket(b.socketID)
+    match.makeAccusation(io, accuseSocket, b.userID, c.userID)
+    assert.equal(match.inVotation, false)
+    assert.equal(accuseSocket.emitted.at(-1)[0], 'error')
+
+    // 2 discordâncias em 4 jogadores tornam a maioria impossível
+    match.receiveExtensionVote(io, fakeSocket(b.socketID), b.userID, false)
+    assert.ok(match.extensionVote)
+    match.receiveExtensionVote(io, fakeSocket(c.socketID), c.userID, false)
+    assert.equal(match.extensionVote, null)
+    assert.equal(match.extensionUsed, false)
+    assert.ok(io.sent.some(([, event]) => event === 'extension-rejected'))
+
+    // pode pedir de novo depois da rejeição
+    match.requestExtension(io, fakeSocket(d.socketID), d.userID)
+    assert.equal(match.extensionVote.proposerUserID, d.userID)
+    match.closeExtensionVote(io, false)
+})

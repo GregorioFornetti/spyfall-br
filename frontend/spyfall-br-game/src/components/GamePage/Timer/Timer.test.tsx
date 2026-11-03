@@ -16,13 +16,18 @@ test('Timer formata segundos como MM:SS com zero à esquerda', () => {
 })
 
 test('Timer expõe o estado visual conforme o tempo restante', () => {
-    const { container, rerender } = render(<Timer time={30} />)
+    const { container, rerender } = render(<Timer time={31} />)
     expect(container.firstChild).toHaveAttribute('data-state', 'normal')
     expect(container.firstChild).toHaveClass('text-zinc-900')
 
+    // últimos 30 segundos: aviso âmbar
+    rerender(<Timer time={30} />)
+    expect(container.firstChild).toHaveAttribute('data-state', 'warning')
+    expect(container.firstChild).toHaveClass('text-amber-700')
+
     rerender(<Timer time={8} />)
     expect(container.firstChild).toHaveAttribute('data-state', 'alert')
-    expect(container.firstChild).toHaveClass('text-amber-700')
+    expect(container.firstChild).toHaveClass('text-amber-800')
 
     rerender(<Timer time={5} />)
     expect(container.firstChild).toHaveAttribute('data-state', 'danger')

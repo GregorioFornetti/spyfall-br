@@ -9,16 +9,19 @@ export default function Timer({time}: TimerProps) {
     let minutes = Math.floor(time / 60)
     let seconds = time % 60
 
-    const state = (minutes == 0 && seconds <= 5)
+    const state = time <= 5
         ? 'danger'
-        : (minutes == 0 && seconds <= 10)
+        : time <= 10
             ? 'alert'
-            : 'normal'
+            : time <= 30
+                ? 'warning'
+                : 'normal'
 
     const colors = {
         normal: 'border-zinc-300 bg-white text-zinc-900',
-        alert: 'border-amber-500 bg-amber-50 text-amber-700',
-        danger: 'border-red-600 bg-red-50 text-red-700'
+        warning: 'border-amber-400 bg-amber-50 text-amber-700',
+        alert: 'border-amber-600 bg-amber-100 text-amber-800 motion-safe:animate-pulse',
+        danger: 'border-red-600 bg-red-50 text-red-700 motion-safe:animate-pulse'
     }
 
     return (
